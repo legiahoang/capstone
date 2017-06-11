@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="report_form">
+				<h:outputStylesheet library="css" name="report.css" />
+				<h2 align="center">#{msg['report.title']}</h2>
+				<br />
+				<p:panel header="Hỗ trợ tìm kiếm" toggleable="true"
+					toggleSpeed="500" widgetVar="panel"
+					style="margin-bottom: 20px; margin-left: 100px; margin-right: 100px">
+					<h:panelGrid style="margin: 0 auto" columns="8" cellpadding="10">
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Tiêu đề báo cáo" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:inputText placeholder="Từ khóa" id="reportTitle"
+									value="#{reportBean.reportTitle}" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:outputLabel value="Từ ngày" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:calendar placeholder="Chọn ngày bắt đầu" pattern="dd/MM/yyyy"
+									label="Thời gian" value="#{reportBean.reportDateBegin}"
+									converterMessage="Ngày cấp không đúng!">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:calendar>
+							</p:column>&nbsp;
+							<p:column>
+								<p:outputLabel value="Đến ngày" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:calendar placeholder="Chọn ngày kết thúc"
+									pattern="dd/MM/yyyy" label="Thời gian"
+									value="#{reportBean.reportDateEnd}"
+									converterMessage="Ngày cấp không đúng!">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:calendar>
+							</p:column>&nbsp;
+							<p:column>
+								<p:commandButton icon="fa fa-search" styleClass="btn_search"
+									actionListener="#{reportBean.searchReportForUser}"
+									update="table_report" value="Tìm kiếm" />
+							</p:column>
+						</p:row>
+					</h:panelGrid>
+				</p:panel>
+				<br />
+				<div class="table_form">
+					<div class="table_content">
+						<p:row dir="rtl">
+							<p:column>
+								<div align="right" dir="ltr">
+									<h:outputLink value="AddNewReport.xhtml"
+										styleClass="add-new-button">
+										<f:param name="id" value="0" />
+										<h:outputText value="Tạo báo cáo mới" />
+									</h:outputLink>
+								</div>
+							</p:column>
+						</p:row>
+						<br />
+						<p:dataTable id="table_report" value="#{reportBean.reportList}"
+							var="report" border="1" binding="#{table}" paginator="true"
+							rows="10" paginatorPosition="bottom" lazy="true"
+							emptyMessage="Không có dữ liệu"
+							currentPageReportTemplate="#{msg['label.data.table.footer']} {startRecord} #{msg['label.data.table.footer2']} {endRecord} #{msg['label.data.table.footer3']} {totalRecords} #{msg['label.data.table.footer4']} "
+							rowKey="#{report.id}"
+							rowsPerPageTemplate="#{msg['rowsPerPageTemplate']}"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+							<p:growl id="message" showDetail="true" />
+							<p:column width="5%">
+								<f:facet name="header">STT</f:facet>
+								<div align="right">#{table.rowIndex + 1}</div>
+							</p:column>
+							<p:column width="30%">
+								<f:facet name="header">Tiêu đề báo cáo</f:facet>
+								<div align="left">
+									<h:outputLink value="DetailReportUser.xhtml">
+										<f:param name="id" value="#{report.id}" />
+										<h:outputText value="#{report.reportTitle}" />
+									</h:outputLink>
+								</div>
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Thời gian gửi</f:facet>
+								<div align="left">#{report.reportDate}</div>
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Phản hồi</f:facet>
+								<h:outputLink value="DetailReportUser.xhtml">
+									<f:param name="id" value="#{report.id}" />
+									<h:outputText value="Có phản hồi"
+										rendered="#{report.reportReply != null}" />
+								</h:outputLink>
+								<h:outputLink value="DetailReportUser.xhtml" disabled="true"
+									rendered="#{report.reportReply == null}">
+									<f:param name="id" value="#{report.id}" />
+									<h:outputText value="Chưa có phản hồi" />
+								</h:outputLink>
+							</p:column>
+							<p:column width="7.5%">
+								<f:facet name="header">Hủy bỏ</f:facet>
+								<p:commandButton actionListener="#{reportBean.deleteReport}"
+									icon="fa fa-trash-o" update="table_report message">
+									<p:confirm header="Thông báo"
+										message="Bạn có chắc chắn muốn xóa báo cáo này không?"
+										icon="ui-icon-alert" />
+									<f:param name="report_id" value="#{report.id}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton style="left:30%" value="OK" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton style="left:30%" value="Cancel" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

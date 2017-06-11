@@ -1,0 +1,5 @@
+package vn.co.cex.bean;
+
+public class CommentBean extends BaseBean{
+
+}

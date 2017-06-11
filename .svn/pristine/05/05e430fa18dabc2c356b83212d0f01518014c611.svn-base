@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 28, 2015 9:41:06 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+	<class name="vn.co.cex.orm.Users" table="users">
+		<id name="id" type="int">
+			<column name="Id" />
+			<generator class="identity" />
+		</id>
+		<property name="fullName" type="string">
+			<column name="FullName" length="50" not-null="true" />
+		</property>
+		<property name="email" type="string">
+			<column name="Email" length="50" not-null="true" />
+		</property>
+		<property name="password" type="string">
+			<column name="Password" length="50" not-null="true" />
+		</property>
+		<property name="phoneNumber" type="string">
+			<column name="PhoneNumber" length="20" not-null="false" />
+		</property>
+		<property name="address" type="string">
+			<column name="Address" length="100" not-null="false" />
+		</property>
+		<many-to-one name="district" class="vn.co.cex.orm.District"
+			property-ref="code" cascade="none" lazy="false" fetch="select">
+			<column name="DistrictCode" length="10" not-null="false" />
+		</many-to-one>
+		<property name="districtCode" type="string" insert="false"
+			update="false">
+			<column name="DistrictCode" length="10" not-null="false" />
+		</property>
+		<property name="identityCard" type="string">
+			<column name="IdentityCard" length="20" not-null="false" />
+		</property>
+		<property name="identityCardPlace" type="string">
+			<column name="IdentityCardPlace" length="100" not-null="false" />
+		</property>
+		<property name="identityCardDate" type="date">
+			<column name="IdentityCardDate" not-null="false" />
+		</property>
+		<property name="identityCardImage" type="string">
+			<column name="IdentityCardImage" not-null="false" />
+		</property>
+		<property name="role" type="int">
+			<column name="Role" not-null="true" />
+		</property>
+		<property name="status" type="int">
+			<column name="Status" not-null="true" />
+		</property>
+		<property name="created" type="timestamp">
+			<column name="Created" not-null="true" />
+		</property>
+		<many-to-one name="company" class="vn.co.cex.orm.Company"
+			lazy="false" fetch="select">
+			<column name="CompanyId" not-null="false" />
+		</many-to-one>
+		<property name="companyId" type="int" insert="false" update="false">
+			<column name="CompanyId" not-null="false" />
+		</property>
+		<property name="userAvatar" type="string">
+			<column name="UserAvatar" not-null="false" />
+		</property>
+		<set name="billOfLading" table="billOfLading" inverse="true" lazy="true"
+			fetch="select">
+			<key>
+				<column name="Id" not-null="true" />
+			</key>
+			<one-to-many class="vn.co.cex.orm.Users" />
+		</set>
+		<set name="carrierAuction" table="carrierauction" inverse="true"
+			lazy="true" fetch="select">
+			<key>
+				<column name="Id" not-null="true" />
+			</key>
+			<one-to-many class="vn.co.cex.orm.Users" />
+		</set>
+		<set name="comment" table="comment" inverse="true" lazy="true"
+			fetch="select">
+			<key>
+				<column name="Id" not-null="true" />
+			</key>
+			<one-to-many class="vn.co.cex.orm.Users" />
+		</set>
+		<set name="report" table="report" inverse="true" lazy="true"
+			fetch="select">
+			<key>
+				<column name="Id" not-null="true" />
+			</key>
+			<one-to-many class="vn.co.cex.orm.Users" />
+		</set>
+		<one-to-one name="usersAccount" class="vn.co.cex.orm.UsersAccount"
+			cascade="save-update"></one-to-one>
+	</class>
+</hibernate-mapping>

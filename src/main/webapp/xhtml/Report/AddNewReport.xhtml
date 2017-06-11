@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Gửi báo cáo</ui:define>
+		<ui:define name="content">
+			<h:form id="report_form">
+				<h:outputStylesheet library="css" name="report.css" />
+				<br />
+				<p:panel style="margin-right: 220px; margin-left: 300px" id="panel"
+					header="MẪU BÁO CÁO CHO QUẢN TRỊ VIÊN">
+					<table align="center"
+						style="border-collapse: separate; border-spacing: 20px">
+						<tbody>
+							<tr>
+								<td><p:messages id="msgs" /></td>
+							</tr>
+							<tr>
+								<td><h:outputLabel styleClass="question-report"
+										value="Chủ đề bạn muốn báo cáo là gì? *" /></td>
+							</tr>
+							<tr>
+								<td><p:inputText
+										placeholder="Nhập chủ đề bạn muốn báo cáo vào đây"
+										styleClass="input-report" id="reportTitle"
+										value="#{reportDetailBean.reportTitle}" required="true"
+										maxlength="75" requiredMessage="Chủ đề báo cáo chưa được nhập!" /></td>
+								<td><p:message for="reportTitle" display="icon" /></td>
+							</tr>
+							<tr>
+								<td><h:outputLabel styleClass="question-report"
+										value="Câu hỏi của bạn là gì?" /></td>
+							</tr>
+							<tr>
+								<td><p:inputText placeholder="Nhập câu hỏi của bạn vào đây"
+										styleClass="input-report" id="reportQuestion"
+										value="#{reportDetailBean.reportQuestion}" maxlength="75" /></td>
+							</tr>
+							<tr>
+								<td><h:outputLabel styleClass="question-report"
+										value="Bạn mong muốn xử lý như thế nào?" /></td>
+							</tr>
+							<tr>
+								<td><p:inputText
+										placeholder="Nhập yêu cầu bạn muốn xử lý vào đây"
+										styleClass="input-report" id="reportSolution"
+										value="#{reportDetailBean.reportSolution}" maxlength="200" /></td>
+							</tr>
+							<tr>
+								<td><h:outputLabel styleClass="question-report"
+										value="Nội dung báo cáo của bạn*" /></td>
+							</tr>
+							<tr>
+								<td><p:inputTextarea
+										placeholder="Nhập nội dung báo cáo của bạn vào đây"
+										styleClass="input-report" id="reportContent"
+										value="#{reportDetailBean.reportContent}"
+										label="Insert text here..." required="true"
+										requiredMessage="Nội dung báo cáo chưa được nhập!"
+										maxlength="200" /></td>
+								<td><p:message for="reportContent" display="icon" /></td>
+							</tr>
+							<tr dir="ltr">
+								<td><p:spacer width="270" height="10" /> <p:commandButton
+										style="width:160px; height:38px; text-align: center"
+										icon="fa fa-send" styleClass="responseButton"
+										value="Gửi báo cáo"
+										actionListener="#{reportDetailBean.addNewReport}"
+										update="message_dlg panel"
+										oncomplete="if(!args.validationFailed) PF('message_dlg').show()">
+										<f:param name="id" value="0"></f:param>
+									</p:commandButton> <p:spacer width="20" height="10" /><h:outputLink
+										styleClass="goBackButton1"
+										value="/../CEX/faces/xhtml/Report/ListReportUser.xhtml">
+										<h:outputText value="Quay lại" />
+									</h:outputLink></td>
+							</tr>
+						</tbody>
+					</table>
+				</p:panel>
+				<p:dialog header="Thông báo" widgetVar="message_dlg"
+					id="message_dlg" resizable="false" modal="true">
+					<p:panelGrid styleClass="ui-noborder">
+						<p:row>
+							<p:column>
+								<h:outputText value="Thêm mới thành công!"
+									rendered="#{reportDetailBean.isSuccess}" />
+								<h:outputText value="Thêm mới thất bại!"
+									rendered="#{reportDetailBean.isSuccess == false}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column style="text-align: center">
+								<p:commandButton value="OK" immediate="true"
+									action="#{reportDetailBean.goToListReportUser}">
+									<f:param name="id" value="0" />
+								</p:commandButton>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:dialog>
+				<br></br>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,84 @@
+package vn.co.cex.bo.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import vn.co.cex.bo.ReportBO;
+import vn.co.cex.dto.ReportDTO;
+import vn.co.cex.orm.Report;
+
+public class ReportBOImpl extends BaseBOImpl implements ReportBO {
+
+	/**
+	 * get all report
+	 */
+	public List<Report> getAllReport() {
+		return reportDAO.getAllReport();
+	}
+
+	/**
+	 * search report for admin
+	 */
+	public List<Report> searchReport(String userName, String fullName, String reportTitle, String reportReply,
+			int pageSize, int pageIndex) {
+		return reportDAO.searchReport(userName, fullName, reportTitle, reportReply, pageSize, pageIndex);
+	}
+
+	/**
+	 *
+	 */
+	public int countReport(String userName, String fullName, String reportTitle, String reportReply) {
+		return reportDAO.countReport(userName, fullName, reportTitle, reportReply);
+	}
+
+	/**
+	 * get detail report by id
+	 */
+	public ReportDTO getReportById(int id) {
+		return reportDAO.getReportById(id);
+	}
+
+	/**
+	 * update
+	 */
+	public boolean updateReport(Report data) {
+		return reportDAO.updateReport(data);
+	}
+
+	/**
+	 * Search report for user
+	 */
+	public List<Report> searchReportByUser(int id, Date reportDate, String reportTitle, boolean status, int pageSize,
+			int pageIndex) {
+		return reportDAO.searchReportByUser(id, reportDate, reportTitle, status, pageSize, pageIndex);
+	}
+
+	/**
+	 * Count report by user
+	 */
+	public int countReportByUser(int uid, Date reportDate, String reportTitle, boolean status) {
+		return reportDAO.countReportByUser(uid, reportDate, reportTitle, status);
+	}
+
+	/**
+	 * add new report from user
+	 */
+	public boolean addNewReport(Report report) {
+		return reportDAO.addNewReport(report);
+	}
+
+	/**
+	 * get all report for user
+	 */
+	public List<Report> getAllReportByUserId(int id) {
+		return reportDAO.getAllReportByUserId(id);
+	}
+
+	/**
+	 * delete report
+	 */
+	public void deleteReport(int report_id) {
+		reportDAO.deleteReport(report_id);
+	}
+
+}

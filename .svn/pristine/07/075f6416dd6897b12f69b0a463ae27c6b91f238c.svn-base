@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:social="http://www.springframework.org/schema/social"
+	xmlns:facebook="http://www.springframework.org/schema/social/facebook"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+    	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    	http://www.springframework.org/schema/jdbc
+    	http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+     	http://www.springframework.org/schema/social http://www.springframework.org/schema/social/spring-social.xsd
+    	http://www.springframework.org/schema/social/facebook http://www.springframework.org/schema/social/spring-social-facebook.xsd">
+	<!-- Database Configuration -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/properties/database.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
+		<property name="jndiName" value="java:jboss/datasources/TNETTestDS" /> </bean> -->
+	<!-- java:jboss/TnetDEV java:jboss/datasources/TNETTestDS -->
+	<!-- Hibernate session factory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop><!-- create -->
+			</props>
+		</property>
+
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:vn/co/cex/orm/mapping/BillOfLading.hbm.xml</value>
+				<value>classpath:vn/co/cex/orm/mapping/CarrierAuction.hbm.xml
+				</value>
+				<value>classpath:vn/co/cex/orm/mapping/PaymentDetail.hbm.xml</value>
+
+				<value>classpath:vn/co/cex/orm/mapping/GoodsType.hbm.xml</value>
+				<value>classpath:vn/co/cex/orm/mapping/PackagedForm.hbm.xml</value>
+				<value>classpath:vn/co/cex/orm/mapping/Users.hbm.xml</value>
+				<value>classpath:vn/co/cex/orm/mapping/UsersAccount.hbm.xml</value>
+				<value>classpath:vn/co/cex/orm/mapping/Company.hbm.xml
+				</value>
+
+				<value>classpath:vn/co/cex/orm/mapping/OperationFee.hbm.xml</value>
+
+				<value>classpath:vn/co/cex/orm/mapping/Province.hbm.xml</value>
+				<value>classpath:vn/co/cex/orm/mapping/District.hbm.xml</value>
+				<value>classpath:vn/co/cex/orm/mapping/Report.hbm.xml</value>
+
+				<value>classpath:vn/co/cex/orm/mapping/Comment.hbm.xml</value>
+				<value>classpath:vn/co/cex/orm/mapping/AnswerComment.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!-- Transaction configuration -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Beans configuration -->
+	<bean id="billOfLadingDAO" class="vn.co.cex.dao.impl.BillOfLadingDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="billOfLadingBO" class="vn.co.cex.bo.impl.BillOfLadingBOImpl">
+		<property name="billOfLadingDAO" ref="billOfLadingDAO" />
+	</bean>
+	<bean id="goodsTypeDAO" class="vn.co.cex.dao.impl.GoodsTypeDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="goodsTypeBO" class="vn.co.cex.bo.impl.GoodsTypeBOImpl">
+		<property name="goodsTypeDAO" ref="goodsTypeDAO" />
+	</bean>
+	<bean id="packagedFormDAO" class="vn.co.cex.dao.impl.PackagedFormDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="packagedFormBO" class="vn.co.cex.bo.impl.PackagedFormBOImpl">
+		<property name="packagedFormDAO" ref="packagedFormDAO" />
+	</bean>
+	<bean id="provinceDAO" class="vn.co.cex.dao.impl.ProvinceDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="provinceBO" class="vn.co.cex.bo.impl.ProvinceBOImpl">
+		<property name="provinceDAO" ref="provinceDAO" />
+	</bean>
+
+	<bean id="districtDAO" class="vn.co.cex.dao.impl.DistrictDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="districtBO" class="vn.co.cex.bo.impl.DistrictBOImpl">
+		<property name="districtDAO" ref="districtDAO" />
+	</bean>
+	<bean id="operationFeeDAO" class="vn.co.cex.dao.impl.OperationFeeDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="operationFeeBO" class="vn.co.cex.bo.impl.OperationFeeBOImpl">
+		<property name="operationFeeDAO" ref="operationFeeDAO" />
+	</bean>
+	<bean id="carrierAuctionDAO" class="vn.co.cex.dao.impl.CarrierAuctionDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="carrierAuctionBO" class="vn.co.cex.bo.impl.CarrierAuctionBOImpl">
+		<property name="carrierAuctionDAO" ref="carrierAuctionDAO" />
+	</bean>
+	<bean id="reportDAO" class="vn.co.cex.dao.impl.ReportDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="reportBO" class="vn.co.cex.bo.impl.ReportBOImpl">
+		<property name="reportDAO" ref="reportDAO" />
+	</bean>
+	<bean id="usersDAO" class="vn.co.cex.dao.impl.UsersDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="usersBO" class="vn.co.cex.bo.impl.UsersBOImpl">
+		<property name="usersDAO" ref="usersDAO" />
+	</bean>
+	<bean id="commentDAO" class="vn.co.cex.dao.impl.CommentDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentBO" class="vn.co.cex.bo.impl.CommentBOImpl">
+		<property name="commentDAO" ref="commentDAO" />
+	</bean>
+	<bean id="springContext" class="vn.co.cex.bo.impl.SpringContext" />
+	<bean id="usersAccountDAO" class="vn.co.cex.dao.impl.UsersAccountDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="usersAccountBO" class="vn.co.cex.bo.impl.UsersAccountBOImpl">
+		<property name="usersAccountDAO" ref="usersAccountDAO" />
+	</bean>
+	<bean id="paymentDetailDAO" class="vn.co.cex.dao.impl.PaymentDetailDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="paymentDetailBO" class="vn.co.cex.bo.impl.PaymentDetailBOImpl">
+		<property name="paymentDetailDAO" ref="paymentDetailDAO" />
+	</bean>
+	<bean id="companyDAO" class="vn.co.cex.dao.impl.CompanyDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="companyBO" class="vn.co.cex.bo.impl.CompanyBOImpl">
+		<property name="companyDAO" ref="companyDAO" />
+	</bean>
+</beans>

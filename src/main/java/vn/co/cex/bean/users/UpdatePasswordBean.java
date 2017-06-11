@@ -1,0 +1,156 @@
+package vn.co.cex.bean.users;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import vn.co.cex.bean.BaseBean;
+import vn.co.cex.bo.UsersBO;
+import vn.co.cex.orm.Users;
+import vn.co.cex.utils.SessionUtils;
+
+@SuppressWarnings("restriction")
+@ManagedBean(name = "updatePasswordBean", eager = true)
+@SessionScoped
+public class UpdatePasswordBean extends BaseBean {
+
+	private static final Logger log = LogManager.getLogger(UpdatePasswordBean.class);
+	@ManagedProperty(value = "#{usersBO}")
+	private UsersBO usersBO;
+
+	private Users user;
+	private boolean isSuccess;
+	private String oldPassword;
+	private String password;
+
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public boolean isSuccess() {
+		return isSuccess;
+	}
+
+	public void setSuccess(boolean isSuccess) {
+		this.isSuccess = isSuccess;
+	}
+
+	/**
+	 * @return the usersBO
+	 */
+	public UsersBO getUsersBO() {
+		return usersBO;
+	}
+
+	/**
+	 * @param usersBO
+	 *            the usersBO to set
+	 */
+	public void setUsersBO(UsersBO usersBO) {
+		this.usersBO = usersBO;
+	}
+
+	/**
+	 * @return the user
+	 */
+	public Users getUser() {
+		return user;
+	}
+
+	/**
+	 * @param user
+	 *            the user to set
+	 */
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	@PostConstruct
+	public void init() {
+		try {
+			// Authentication
+			user = SessionUtils.getUser();
+			HttpServletRequest request = super.getHTTPRequest();
+			HttpServletResponse response = super.getHTTPResponse();
+			if (user == null) {
+				response.sendRedirect(request.getContextPath() + "/xhtml/Users/Login.xhtml");
+				return;
+			}
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * UpdatePassword
+	 */
+	public void updatePassword() {
+
+		try {
+			String encryptPassword = encryptPassword(oldPassword);
+			String passwordUser = user.getPassword();
+			if (encryptPassword.equalsIgnoreCase(passwordUser)) {
+				String passwordMD5 = encryptPassword(password);
+				if (passwordUser.equalsIgnoreCase(passwordMD5)) {
+					FacesMessage facesMessage = new FacesMessage("Mật khẩu mới không được trùng với mật khẩu cũ gần nhất!");
+					FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+				} else {
+					user.setPassword(passwordMD5);
+					usersBO.updateUsers(user);
+					FacesMessage facesMessage = new FacesMessage("Thay đổi mật khẩu thành công!");
+					FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+				}
+			} else {
+				FacesMessage facesMessage = new FacesMessage("Mật khẩu cũ bạn nhập chưa chính xác!");
+				FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+			}
+
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * encrypt Password
+	 * 
+	 * @param passwords
+	 * @return
+	 */
+	private String encryptPassword(String passwords) {
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			byte[] bufor = passwords.getBytes();
+			md5.update(bufor, 0, bufor.length);
+			BigInteger hash = new BigInteger(1, md5.digest());
+			String passwordMD5 = String.format("%1$032X", hash);
+			return passwordMD5;
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return null;
+	}
+
+}

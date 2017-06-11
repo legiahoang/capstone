@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+	<title>Sàn giao dịch vận tải</title>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="report_form" styleClass="report_form">
+				<h:outputStylesheet library="css" name="report.css" />
+				<h2 align="center">#{msg['report.title']}</h2>
+				<br></br>
+				<p:panel header="Hỗ trợ tìm kiếm" toggleable="true"
+					styleClass="report_form_header" toggleSpeed="500" widgetVar="panel"
+					style="margin-bottom: 20px; margin-left: 10px; margin-right: 5px">
+					<h:panelGrid style="margin: 0 auto" cellpadding="10">
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Tên tài khoản" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:inputText placeholder="Từ khóa" id="username"
+									value="#{reportBean.userName}" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:outputLabel value="Tiêu đề báo cáo" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:inputText placeholder="Từ khóa" id="reportTitle"
+									value="#{reportBean.reportTitle}" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:outputLabel value="Từ ngày" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:calendar placeholder="Chọn ngày bắt đầu" pattern="dd/MM/yyyy"
+									label="Thời gian" value="#{reportBean.reportDateBegin}"
+									converterMessage="Ngày cấp không đúng!">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:calendar>
+							</p:column>&nbsp;
+							<p:column>
+								<p:outputLabel value="Đến ngày" />
+							</p:column>&nbsp;
+							<p:column>
+								<p:calendar placeholder="Chọn ngày kết thúc"
+									pattern="dd/MM/yyyy" label="Thời gian"
+									value="#{reportBean.reportDateEnd}"
+									converterMessage="Ngày cấp không đúng!">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:calendar>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<div align="right">
+									<p:commandButton icon="fa fa-search" styleClass="btn_search"
+										actionListener="#{reportBean.searchReportForAdmin}"
+										update="table_report" value="Tìm kiếm" />
+								</div>
+							</p:column>
+						</p:row>
+					</h:panelGrid>
+				</p:panel>
+				<br />
+				<div class="table_form">
+					<div class="table_content">
+						<p:dataTable id="table_report" value="#{reportBean.reportList}"
+							var="report" border="1" binding="#{table}" rowIndexVar="row"
+							paginator="true" rows="10" paginatorPosition="bottom" lazy="true"
+							emptyMessage="Không có dữ liệu"
+							currentPageReportTemplate="#{msg['label.data.table.footer']} {startRecord} #{msg['label.data.table.footer2']} {endRecord} #{msg['label.data.table.footer3']} {totalRecords} #{msg['label.data.table.footer4']} "
+							rowKey="#{report.id}"
+							rowsPerPageTemplate="#{msg['rowsPerPageTemplate']}"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+							<p:column width="7.5%">
+								<f:facet name="header">STT</f:facet>
+								<div align="right">#{table.rowIndex + 1}</div>
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Tài khoản</f:facet>
+								<div align="left">#{report.userName}</div>
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Tên</f:facet>
+								<div align="left">#{report.fullName}</div>
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Thời gian gửi</f:facet>
+								<div align="left">#{report.reportDate}</div>
+							</p:column>
+							<p:column>
+								<f:facet name="header">Tiêu đề báo cáo</f:facet>
+								<div align="left">
+									<h:outputLink
+										value="/../CEX/faces/xhtml/Report/DetailReportAdmin.xhtml">
+										<f:param name="id" value="#{report.id}" />
+										<h:outputText value="#{report.reportTitle}" />
+									</h:outputLink>
+								</div>
+							</p:column>
+							<p:column width="6%" style="text-align: center">
+								<f:facet name="header">Trả lời</f:facet>
+								<p:commandButton style="border: none" icon="fa fa-check"
+									rendered="#{report.reportReply != null}" />
+							</p:column>
+						</p:dataTable>
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

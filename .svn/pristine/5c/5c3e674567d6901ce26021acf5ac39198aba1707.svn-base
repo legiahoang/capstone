@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="report_form">
+				<h:outputStylesheet library="css" name="report.css" />
+				<h2 align="center">#{msg['report.title']}</h2>
+				<br />
+				<div class="search_user_form">
+					<table align="center"
+						style="border-collapse: separate; border-spacing: 10px">
+						<tbody>
+							<tr>
+								<td>Tiêu đề báo cáo</td>
+								<td><p:inputText placeholder="Chọn tiêu đề báo cáo"
+										id="reportTitle" value="#{reportBean.reportTitle}" /></td>
+								<td colspan="1">Thời gian gửi báo cáo</td>
+								<td colspan="1"><p:calendar placeholder="Chọn ngày và giờ"
+										pattern="dd/MM/yyyy HH:mm:ss" label="Thời gian gửi báo cáo"
+										id="reportDate" maxlength="10"
+										value="#{reportBean.reportDate}" /></td>
+								<td><p:commandButton icon="fa fa-search"
+										styleClass="btn_search"
+										actionListener="#{reportBean.searchReportForUser}"
+										update="table_report" value="Tìm kiếm" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br />
+				<div class="table_form">
+					<div class="table_content">
+						<p:row dir="rtl">
+							<p:column>
+								<div align="right" dir="ltr">
+									<h:outputLink value="AddNewReport.xhtml"
+										styleClass="add-new-button">
+										<f:param name="id" value="0" />
+										<h:outputText value="Tạo báo cáo mới" />
+									</h:outputLink>
+								</div>
+							</p:column>
+						</p:row>
+						<br />
+						<p:dataTable id="table_report" value="#{reportBean.reportList}"
+							var="report" border="1" binding="#{table}" paginator="true"
+							rows="10" paginatorPosition="bottom" lazy="true"
+							emptyMessage="Không có dữ liệu"
+							currentPageReportTemplate="#{msg['label.data.table.footer']} {startRecord} #{msg['label.data.table.footer2']} {endRecord} #{msg['label.data.table.footer3']} {totalRecords} #{msg['label.data.table.footer4']} "
+							rowKey="#{report.id}"
+							rowsPerPageTemplate="#{msg['rowsPerPageTemplate']}"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+							<p:growl id="message" showDetail="true" />
+							<p:column width="5%">
+								<f:facet name="header">STT</f:facet>
+								#{table.rowIndex + 1}
+							</p:column>
+							<p:column>
+								<f:facet name="header">Tiêu đề báo cáo</f:facet>
+								<h:outputLink value="DetailReportUser.xhtml">
+									<f:param name="id" value="#{report.id}" />
+									<h:outputText value="#{report.reportTitle}" />
+								</h:outputLink>
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Thời gian gửi</f:facet>
+								#{report.reportDate}
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Phản hồi</f:facet>
+								<h:outputLink value="DetailReportUser.xhtml">
+									<f:param name="id" value="#{report.id}" />
+									<h:outputText value="Có phản hồi"
+										rendered="#{report.reportReply != null}" />
+								</h:outputLink>
+								<h:outputLink value="DetailReportUser.xhtml" disabled="true"
+									rendered="#{report.reportReply == null}">
+									<f:param name="id" value="#{report.id}" />
+									<h:outputText value="Chưa có phản hồi" />
+								</h:outputLink>
+							</p:column>
+							<p:column width="7.5%">
+								<f:facet name="header">Hủy bỏ</f:facet>
+								<p:commandButton actionListener="#{reportBean.deleteReport}"
+									icon="fa fa-trash-o" update="table_report message">
+									<p:confirm header="Thông báo"
+										message="Bạn có chắc chắn muốn xóa báo cáo này không?"
+										icon="ui-icon-alert" />
+									<f:param name="report_id" value="#{report.id}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton style="left:30%" value="OK" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton style="left:30%" value="Cancel" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

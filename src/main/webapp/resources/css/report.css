@@ -1,0 +1,144 @@
+@CHARSET "ISO-8859-1";
+
+.title-report {
+	font-size: xx-large; 
+	font-weight: bold; 
+	font-family: monospace; 
+	color: #888888;
+}
+
+.question-report {
+	text-align: left;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.input-report {
+	width: 500px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 10%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit] :hover {
+    background-color: #45a049;
+}
+
+.add-new-button {
+    width: 10%;
+    background-color: #0080c0;
+    text-decoration: none;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-new-button :active, .add-new-button :hover {
+    background-color: #0080ff;
+}
+
+.goBackButton {
+	width: 20%;
+	background-color: #FF4500;
+	color: #ffffff;
+	text-decoration: none;
+    padding: 8px 12px;
+    margin: 8px 0;
+    border: medium;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.goBackButton1 {
+	width: 120px;
+	heigh: 40px;
+	background-color: #FF4500;
+	color: #ffffff;
+	text-decoration: none;
+    padding: 8px 12px;
+    margin: 8px 0;
+    border-radius: 2px;
+    border: medium;
+    cursor: pointer;
+}
+
+.goBackButton :hover {
+	background-color: #45a049;
+}
+
+.buttons .responseButton {
+	width: 60%;
+	height: 60%;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px 14px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.buttons .responseButton :hover {
+    background-color: #cc3600;
+}
+
+.table_form {
+	margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.search_form {
+	border-radius: 12px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.search_user_form {
+	margin-left: 80px;
+	margin-right: 80px;
+    border-radius: 5px;
+    border-left: 6px solid #0000ff;
+    background-color: #80ffff;
+    padding: 20px;
+}
+
+.table_form1 {
+	margin-top: 0px;
+    margin-bottom: 300px;
+    margin-right: 0px;
+    margin-left: 280px;
+}
+
+.search_user_form1 {
+	position: absolute;
+	left: 0%;
+	margin-top: 40px;
+	height: 360px;
+	width: 230px;
+    border-radius: 5px;
+    border-left: 6px solid #0000ff;
+    background-color: #80ffff;
+    padding: 20px;
+}
+
+.list_user .ui-selectonemenu.ui-widget {
+	width: 168px !important;
+}

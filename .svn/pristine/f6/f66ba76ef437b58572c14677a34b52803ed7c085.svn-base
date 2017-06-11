@@ -1,0 +1,355 @@
+.slidershow * {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+    height: 100%;
+}
+
+.slidershow body {
+	background-color: #000;
+}
+
+.
+slidershow .trs {
+	-webkit-transition: all ease-out .5s;
+	transition: all ease-out .5s;
+}
+
+.slidershow #slider {
+	position: relative;
+	z-index: 1;
+}
+
+.slidershow #slider a {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+}
+
+.slidershow .ativo {
+	opacity: 1 !important;
+}
+
+.slidershow span {
+	background-color: #0190ef;
+	cursor: point;
+	border-radius: 50%;
+	opacity: 1;
+	position: absolute;
+	bottom: 40%;
+	width: 43px;
+	height: 43px;
+	z-index: 5;
+}
+
+.slidershow .next {
+	right: 10px;
+}
+
+.slidershow .next:before, .next:after {
+	left: 21px;
+}
+
+.slidershow .next:before {
+	-webkit-transform: rotate(-42deg);
+	transform: rotate(-42deg);
+	top: 5px;
+}
+
+.slidershow .next:after {
+	-webkit-transform: rotate(-132deg);
+	transform: rotate(-132deg);
+	top: 19px;
+}
+
+.slidershow .next:before, .next:after, .prev:before, .prev:after {
+	content: "";
+	height: 20px;
+	background: #fff;
+	width: 1px;
+	position: absolute;
+}
+
+.slidershow .prev {
+	left: 10px;
+}
+
+.prev:before, .prev:after {
+	left: 18px;
+}
+
+.slidershow .prev:before {
+	-webkit-transform: rotate(42deg);
+	transform: rotate(42deg);
+	top: 5px;
+}
+
+.slidershow .prev:after {
+	-webkit-transform: rotate(132deg);
+	top: 19px;
+}
+
+.slidershow figure:hover span {
+	opacity: .76;
+}
+
+.slidershow figure {
+	height: 450px;
+	position: relative;
+	overflow: hidden;
+}
+
+.slidershow figcaption {
+	padding-left: 20px;
+	color: #fff;
+	font-family: "Kaushan Script", "Lato", "arial";
+	font-size: 22px;
+	background: rgba(1, 144, 238, 0.76);
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	line-height: 55px;
+	height: 55px;
+	z-index: 5
+}
+
+/* ============================ home ================================== */
+#home_table {
+	margin-bottom: 200px;
+}
+
+#home_table table {
+	margin: 0px auto;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td {
+	text-align: center;
+	padding: 20px;
+	width: 350px;
+	display: table-cell;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td img {
+	border-top: 1px solid #dfdfdf;
+	border-right: 1px solid #dfdfdf;
+	width: 100%;
+	height: 250px;
+	float: left;
+	vertical-align: top;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td .contentImage1 {
+	z-index: 1;
+	position: relative;
+	margin-top: 40%;
+	margin-left: 20px;
+	height: 0px;
+	width: 0px;
+	border-bottom: 50px solid #fff;
+	border-left: 387px solid transparent;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td .contentImage2 {
+	z-index: 2;
+	height: 210px;
+	position: absolute;
+	margin-left: 20px;
+	background: #fff;
+	width: 385.5px;
+	border-bottom: 2px solid #CACACA;
+	border-left: 1px solid #CACACA;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td .contentImage3 {
+	margin: 10px 20px 0px 30px;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td .contentImage2 .title {
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td .contentImage2 .text {
+	text-align: justify;
+	font-size: 13px;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td .contentImage4 {
+	width: 322.5px;
+	z-index: 3;
+	position: absolute;
+	margin: 170px 0px 0px 20px;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td .button {
+	color: #0390df;
+	font-weight: bold;
+	display: inline-block;
+	text-decoration: none;
+	border: 0;
+	outline: 0;
+	margin: 0 1px 10px 0;
+	padding: 10px 30px;
+	background: solid transparent;
+	position: relative;
+	right: 0px;
+	bottom: 0px;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td .button:before, .button:after
+	{
+	border-right: 2px solid;
+	content: '';
+	display: block;
+	height: 8px;
+	margin-top: -6px;
+	position: absolute;
+	transform: rotate(135deg);
+	right: 10px;
+	top: 50%;
+	width: 0;
+}
+
+#home_table>table>tbody>tr:nth-child(1)>td .button:after {
+	margin-top: -1px;
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+/* ============================ end home ================================== */
+
+/* ============================ Auction Content ================================== */
+
+.home_content_auction {
+    width: 100%;
+}
+
+.home_content_auction .titleSafety2 {
+    z-index: 3;
+    position: relative;
+    height: 0px;
+    width: 360px;
+    border-bottom: 10px solid #0390df;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+}
+
+.home_content_auction .titleSafety {
+    z-index: 3;
+    position: relative;
+    height: 0px;
+    width: 300px;
+    margin-top: -10px;
+    border-top: 60px solid #292929;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+}
+
+.home_content_auction .titleSafety h2 {
+    z-index: 3;
+    font-size: 25px;
+    margin: -40px 0px 0px 0px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #0390df;
+}
+
+.home_content_auction .wrapper5 {
+    z-index: 1;
+    width: 100%;
+    height: 450px;
+    position: absolute;
+    background: url('/CEX/resources/images/Safety.png') no-repeat 00px center;
+    background-size: cover;
+    border-top: 3px solid #0390df;
+    margin-top: -50px;
+}
+
+.home_content_auction .wrapper6 {
+    z-index: 2;
+    width: 100%;
+    height: 453px;
+    position: absolute;
+    background-color: #0390df;
+    opacity: 0.3;
+    margin-top: -50px;
+}
+
+.home_content_auction .wrapper7 {
+    z-index: 3;
+    width: 100%;
+    height: 453px;
+    position: relative;
+    margin-top: -50px;
+}
+
+.home_content_auction #wrapper3 {
+    margin-left: 7%;
+    margin-right: 7%;
+}
+
+.home_content_auction .contentSafety1 {
+    z-index: 4;
+    position: relative;
+    font-size: 20px;
+    margin-bottom: 10px;
+    line-height: 23px;
+    font-weight: normal;
+    color: #fff;
+}
+
+.home_content_auction .contentSafety2 {
+    z-index: 4;
+    position: relative;
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    line-height: 23px;
+    font-weight: normal;
+    color: #fff;
+}
+
+.home_content_auction .button {
+    color: #FFFFFF;
+    font-weight: bold;
+    display: inline-block;
+    text-decoration: none;
+    border: 0;
+    outline: 0;
+    padding: 10px 40px;
+    background: #0082bb;
+    border-right: 5px solid #20affe;
+    /* box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.5); */
+    position: relative;
+    text-transform: uppercase;
+}
+
+.home_content_auction .button:before,
+.home_content_auction .button:after {
+    border-right: 2px solid;
+    content: '';
+    display: block;
+    height: 8px;
+    margin-top: -6px;
+    position: absolute;
+    transform: rotate(135deg);
+    right: 10px;
+    top: 50%;
+    width: 0;
+}
+
+.home_content_auction .button:after {
+    margin-top: -1px;
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+
+/* ============================ End Auction Content ================================== */

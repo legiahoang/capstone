@@ -1,0 +1,429 @@
+package vn.co.cex.bean.users;
+
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+
+import vn.co.cex.bean.BaseBean;
+import vn.co.cex.bean.GetImageBean;
+import vn.co.cex.bo.CompanyBO;
+import vn.co.cex.bo.DistrictBO;
+import vn.co.cex.bo.PaymentDetailBO;
+import vn.co.cex.bo.ProvinceBO;
+import vn.co.cex.bo.UsersAccountBO;
+import vn.co.cex.bo.UsersBO;
+import vn.co.cex.orm.Company;
+import vn.co.cex.orm.PaymentDetail;
+import vn.co.cex.orm.Users;
+import vn.co.cex.orm.UsersAccount;
+import vn.co.cex.utils.ConstantUtils;
+import vn.co.cex.utils.FileUtils;
+import vn.co.cex.utils.SessionUtils;
+
+@SuppressWarnings("restriction")
+@ManagedBean(name = "usersDetailBean", eager = true)
+@ViewScoped
+public class UsersDetailBean extends BaseBean {
+
+	private static final Logger log = LogManager.getLogger(GetImageBean.class);
+	@ManagedProperty(value = "#{usersBO}")
+	private UsersBO usersBO;
+	@ManagedProperty(value = "#{usersAccountBO}")
+	private UsersAccountBO usersAccountBO;
+	@ManagedProperty(value = "#{paymentDetailBO}")
+	private PaymentDetailBO paymentDetailBO;
+	@ManagedProperty(value = "#{companyBO}")
+	private CompanyBO companyBO;
+	@ManagedProperty(value = "#{provinceBO}")
+	private ProvinceBO provinceBO;
+	@ManagedProperty(value = "#{districtBO}")
+	private DistrictBO districtBO;
+
+	private Company company;
+	private UsersAccount usersAccount;
+	private Users user;
+	private String name;
+	private String taxCode;
+	private String email;
+	private String phoneNumber;
+	private String fax;
+	private String fileName;
+
+	private String provinceName;
+	private String districtName;
+	private String provinceCode;
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getProvinceCode() {
+		return provinceCode;
+	}
+
+	public void setProvinceCode(String provinceCode) {
+		this.provinceCode = provinceCode;
+	}
+
+	public DistrictBO getDistrictBO() {
+		return districtBO;
+	}
+
+	public void setDistrictBO(DistrictBO districtBO) {
+		this.districtBO = districtBO;
+	}
+
+	public String getProvinceName() {
+		return provinceName;
+	}
+
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTaxCode() {
+		return taxCode;
+	}
+
+	public void setTaxCode(String taxCode) {
+		this.taxCode = taxCode;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	private String address;
+
+	public ProvinceBO getProvinceBO() {
+		return provinceBO;
+	}
+
+	public void setProvinceBO(ProvinceBO provinceBO) {
+		this.provinceBO = provinceBO;
+	}
+
+	public CompanyBO getCompanyBO() {
+		return companyBO;
+	}
+
+	public void setCompanyBO(CompanyBO companyBO) {
+		this.companyBO = companyBO;
+	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	private boolean isSuccess;
+
+	public UsersAccount getUsersAccount() {
+		return usersAccount;
+	}
+
+	public void setUsersAccount(UsersAccount usersAccount) {
+		this.usersAccount = usersAccount;
+	}
+
+	public boolean isSuccess() {
+		return isSuccess;
+	}
+
+	public void setSuccess(boolean isSuccess) {
+		this.isSuccess = isSuccess;
+	}
+
+	private UploadedFile file;
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
+	private Float amount;
+
+	/**
+	 * @return the usersBO
+	 */
+	public UsersBO getUsersBO() {
+		return usersBO;
+	}
+
+	/**
+	 * @param usersBO
+	 *            the usersBO to set
+	 */
+	public void setUsersBO(UsersBO usersBO) {
+		this.usersBO = usersBO;
+	}
+
+	/**
+	 * @return the user
+	 */
+
+	public Users getUser() {
+		return user;
+	}
+
+	/**
+	 * @param user
+	 *            the user to set
+	 */
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	public UsersAccountBO getUsersAccountBO() {
+		return usersAccountBO;
+	}
+
+	public void setUsersAccountBO(UsersAccountBO usersAccountBO) {
+		this.usersAccountBO = usersAccountBO;
+	}
+
+	public PaymentDetailBO getPaymentDetailBO() {
+		return paymentDetailBO;
+	}
+
+	public void setPaymentDetailBO(PaymentDetailBO paymentDetailBO) {
+		this.paymentDetailBO = paymentDetailBO;
+	}
+
+	public Float getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Float amount) {
+		this.amount = amount;
+	}
+
+	@PostConstruct
+	public void init() {
+		try {
+			// Authentication
+			Users userDetail = SessionUtils.getUser();
+			HttpServletRequest request = super.getHTTPRequest();
+			HttpServletResponse response = super.getHTTPResponse();
+			if (userDetail == null) {
+				response.sendRedirect(request.getContextPath() + "/xhtml/Users/Login.xhtml");
+				return;
+			}
+			// Get user
+			FacesContext context = FacesContext.getCurrentInstance();
+			ExternalContext extContext = context.getExternalContext();
+			Map<String, String> params = extContext.getRequestParameterMap();
+			String id = params.get("id");
+			if (id != null) {
+				user = usersBO.getUserById(Integer.parseInt(id));
+				// Validate data
+
+				if (user == null) {
+					response.sendRedirect(request.getContextPath() + "/xhtml/Home.xhtml");
+					return;
+				}
+			} else {
+				user = userDetail;
+			}
+			int userId = user.getId();
+			districtName = user.getDistrict() != null ? user.getDistrict().getName() : "";
+			provinceCode = user.getDistrict() != null
+					? (user.getDistrict().getProvince() != null ? user.getDistrict().getProvince().getCode() : "") : "";
+			provinceName = user.getDistrict() != null
+					? (user.getDistrict().getProvince() != null ? user.getDistrict().getProvince().getName() : "") : "";
+			usersAccount = usersAccountBO.getAccountByUserId(userId);
+
+			if (user.getCompanyId() != null) {
+				int companyId = user.getCompanyId();
+				company = companyBO.getCompanyById(companyId);
+			}
+			fileName = user.getUserAvatar();
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * update users information
+	 */
+	public void updateUsersInfo() {
+		try {
+			if (fileName != null) {
+				user.setUserAvatar(fileName);
+			}
+			isSuccess = usersBO.updateUsers(user);
+			districtName = user.getDistrict() != null ? user.getDistrict().getName() : "";
+			provinceCode = user.getDistrict() != null
+					? (user.getDistrict().getProvince() != null ? user.getDistrict().getProvince().getCode() : "") : "";
+			provinceName = user.getDistrict() != null
+					? (user.getDistrict().getProvince() != null ? user.getDistrict().getProvince().getName() : "") : "";
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * Upload file image
+	 * 
+	 * @param event
+	 */
+	public void uploadUserAvatar(FileUploadEvent event) {
+		try {
+			UploadedFile file = event.getFile();
+			if (file != null) {
+				fileName = System.currentTimeMillis() + "_" + file.getFileName();
+				FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
+				FacesContext.getCurrentInstance().addMessage(null, message);
+				byte[] contents = file.getContents();
+				String filePath = "UserAvatar\\" + fileName;
+				FileUtils.saveFile(filePath, contents);
+			}
+		} catch (Exception e) {
+			log.debug(e);
+		}
+	}
+
+	/**
+	 * UpdatePassword
+	 */
+	public void updatePassword() {
+		try {
+			usersBO.updateUsers(user);
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * Re charge User Account
+	 */
+	public void rechargeUserAccount() {
+		try {
+			if (user != null && usersAccount != null) {
+				if (amount != null) {
+					usersAccountBO.plusMoneyAccount(user.getId(), amount);
+
+					// Add payment detail
+					PaymentDetail paymentDetail = new PaymentDetail();
+					paymentDetail.setAmounts(amount);
+					paymentDetail.setUserId(user.getId());
+					paymentDetail.setType(ConstantUtils.PAYMENT_PLUS);
+					paymentDetail.setDescription("Admin nạp tiền tài khoản.");
+
+					paymentDetailBO.addPaymentDetail(paymentDetail);
+				}
+				usersAccount = usersAccountBO.getAccountByUserId(user.getId());
+			}
+		} catch (Exception e) {
+			log.debug(e);
+		}
+	}
+
+	/**
+	 * Redirect to Users Account Information page
+	 * 
+	 * @return
+	 */
+	public String redirectUsersAccountInformation() {
+		return ConstantUtils.USERS_ACCOUNT_INFORMATION;
+	}
+
+	/**
+	 * Update Company Information
+	 */
+	public void updateCompany() {
+		try {
+			companyBO.updateCompany(company);
+			FacesMessage facesMessage = new FacesMessage("Lưu thông tin thành công!");
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * Add Company Information
+	 */
+	public String addCompany() {
+		try {
+			Company com = new Company(name, taxCode, email, phoneNumber, fax, address);
+			boolean insertCompanyFlag = companyBO.InsertCompany(com);
+
+			if (insertCompanyFlag == true) {
+				int companyId = companyBO.getCompanyByEmail(email).getId();
+				user.setCompanyId(companyId);
+				usersBO.updateUsers(user);
+				company = com;
+			}
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return null;
+	}
+}

@@ -1,0 +1,164 @@
+package vn.co.cex.bean.login;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import vn.co.cex.bean.BaseBean;
+import vn.co.cex.bo.UsersBO;
+import vn.co.cex.dao.impl.UsersDAOImpl;
+import vn.co.cex.orm.Users;
+import vn.co.cex.utils.ConstantUtils;
+import vn.co.cex.utils.SessionUtils;
+
+/**
+ * @author QuyetVu
+ *
+ */
+@SuppressWarnings("restriction")
+@ManagedBean(name = "loginBean", eager = true)
+@SessionScoped
+public class LoginBean extends BaseBean {
+
+	private static final Logger log = LogManager.getLogger(LoginBean.class);
+
+	@ManagedProperty(value = "#{usersBO}")
+	private UsersBO usersBO;
+
+	private Users user;
+	private int role;
+	private String email;
+	private String password;
+	private String fullName;
+	private int status;
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public int getRole() {
+		return role;
+	}
+
+	public void setRole(int role) {
+		this.role = role;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public UsersBO getUsersBO() {
+		return usersBO;
+	}
+
+	public void setUsersBO(UsersBO usersBO) {
+		this.usersBO = usersBO;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@PostConstruct
+	public void init() {
+		try {
+
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * Check Login
+	 * 
+	 * @return
+	 */
+	public void checkLogin() {
+		try {
+			user = usersBO.checkLogin(email, password);
+			if (user != null) {
+				HttpSession session = SessionUtils.getSession();
+				session.setAttribute(ConstantUtils.USER_LOGIN, user);
+				// role
+				role = user.getRole();
+				// status
+				status = user.getStatus();
+				fullName = user.getFullName();
+				if (status == 1) {
+					// redirect to HomePage page
+					FacesContext.getCurrentInstance().getExternalContext().redirect("/CEX/xhtml/Home.xhtml");
+
+				} else {
+					FacesMessage facesMessage = new FacesMessage("Tài khoản email chưa được kích hoạt!");
+					FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+				}
+			} else {
+				FacesMessage facesMessage = new FacesMessage("Email và mật khẩu chưa đúng!",
+						"Hãy nhập đúng thông tin đăng nhập!");
+				FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+			}
+		} catch (Exception ex) {
+			log.error(ex);
+		}
+	}
+
+	// kill session, completed logout
+	public String logoutProcess() {
+		HttpSession session = SessionUtils.getSession();
+		if (session != null) {
+			session.invalidate();
+		}
+		return ConstantUtils.HOME;
+	}
+
+	// return login page
+	public String loginProcess() {
+		return ConstantUtils.LOGIN;
+	}
+
+	// return login page
+	public String userDetail() {
+		return ConstantUtils.USERVIEW;
+	}
+
+	// return register page
+	public String registerProcess() {
+		return ConstantUtils.REGISTER;
+	}
+}

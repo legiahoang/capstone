@@ -1,0 +1,147 @@
+package vn.co.cex.bo.impl;
+
+import java.util.Date;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import vn.co.cex.bo.BillOfLadingBO;
+import vn.co.cex.dto.BillOfLadingDTO;
+import vn.co.cex.dto.BillOfLadingNotificationDTO;
+import vn.co.cex.dto.BillOfLadingSummaryDTO;
+import vn.co.cex.dto.ChartViewDTO;
+import vn.co.cex.orm.BillOfLading;
+
+public class BillOfLadingBOImpl extends BaseBOImpl implements BillOfLadingBO {
+
+	private static final Logger log = LogManager.getLogger(BillOfLadingBOImpl.class);
+
+	/**
+	 * Count total bill of lading
+	 */
+	public int countTotalBillOfLading(int status) {
+		return billOfLadingDAO.countTotalBillOfLading(status);
+	}
+
+	/**
+	 * Get bill of lading summary
+	 */
+	public BillOfLadingSummaryDTO getBillOfLadingSummary() {
+		return billOfLadingDAO.getBillOfLadingSummary();
+	}
+
+	/**
+	 * Search bill of lading by condition
+	 */
+	public List<BillOfLadingDTO> searchBillOfLading(Integer goodsTypeId, Integer packagedFormId, Float weight,
+			Float volume, String departureProvince, String arrivalProvince, Date departureDate, Date arrivalDate,
+			Integer status, int pageSize, int pageIndex) {
+		return billOfLadingDAO.searchBillOfLading(goodsTypeId, packagedFormId, weight, volume, departureProvince,
+				arrivalProvince, departureDate, arrivalDate, status, pageSize, pageIndex);
+	}
+
+	/**
+	 * Add new bill of lading
+	 */
+	public boolean addNewBillOfLading(BillOfLading data) {
+		return billOfLadingDAO.addNewBillOfLading(data);
+	}
+
+	/**
+	 * Update bill of lading
+	 */
+	public boolean updateBillOfLading(BillOfLading data) {
+		return billOfLadingDAO.updateBillOfLading(data);
+	}
+
+	/**
+	 * Get bill of lading by id
+	 */
+	public BillOfLading getBillOfLadingById(int id) {
+		return billOfLadingDAO.getBillOfLadingById(id);
+	}
+
+	/**
+	 * Get bill of lading by id
+	 */
+	public BillOfLadingDTO getBillOfLadingDTOById(int id) {
+		return billOfLadingDAO.getBillOfLadingDTOById(id);
+	}
+
+	/**
+	 * Search bill of lading of goods owner by condition
+	 */
+	public List<BillOfLadingDTO> searchBillOfLadingOfGoodsOwner(Integer goodsTypeId, Integer packagedFormId,
+			Float weight, Float volume, String departureProvince, String arrivalProvince, Date departureDate,
+			Date arrivalDate, int userId, int pageSize, int pageIndex) {
+		return billOfLadingDAO.searchBillOfLadingOfGoodsOwner(goodsTypeId, packagedFormId, weight, volume,
+				departureProvince, arrivalProvince, departureDate, arrivalDate, userId, pageSize, pageIndex);
+	}
+
+	/**
+	 * Count bill of lading of goods owner
+	 */
+	public int countBillOfLadingOfGoodsOwner(Integer goodsTypeId, Integer packagedFormId, Float weight, Float volume,
+			String departureProvince, String arrivalProvince, Date departureDate, Date arrivalDate, int userId) {
+		return billOfLadingDAO.countBillOfLadingOfGoodsOwner(goodsTypeId, packagedFormId, weight, volume,
+				departureProvince, arrivalProvince, departureDate, arrivalDate, userId);
+	}
+
+	/**
+	 * Search bill of lading by carrier
+	 */
+	public List<BillOfLadingDTO> searchBillOfLadingByCarrier(Integer goodsTypeId, Integer packagedFormId, Float weight,
+			Float volume, String departureProvince, String arrivalProvince, Date departureDate, Date arrivalDate,
+			int carrierId, int pageSize, int pageIndex) {
+		return billOfLadingDAO.searchBillOfLadingByCarrier(goodsTypeId, packagedFormId, weight, volume,
+				departureProvince, arrivalProvince, departureDate, arrivalDate, carrierId, pageSize, pageIndex);
+	}
+
+	/**
+	 * Count bill of lading of carrier
+	 */
+	public int countBillOfLadingOfCarrier(Integer goodsTypeId, Integer packagedFormId, Float weight, Float volume,
+			String departureProvince, String arrivalProvince, Date departureDate, Date arrivalDate, int carrierId) {
+		return billOfLadingDAO.countBillOfLadingOfCarrier(goodsTypeId, packagedFormId, weight, volume,
+				departureProvince, arrivalProvince, departureDate, arrivalDate, carrierId);
+	}
+
+	/**
+	 * Search bill of lading summary
+	 */
+	public BillOfLadingSummaryDTO searchBillOfLadingSummary(Integer goodsTypeId, Integer packFormId, Float weight, Float volume,
+			String departureProvince, String arrivalProvince, Date departureDate, Date arrivalDate) {
+		return billOfLadingDAO.searchBillOfLadingSummary(goodsTypeId, packFormId, weight, volume, departureProvince,
+				arrivalProvince, departureDate, arrivalDate);
+	}
+
+	/**
+	 * Bill of lading process
+	 */
+	public void billOfLadingProcess() {
+		billOfLadingDAO.billOfLadingProcess();
+	}
+
+	/**
+	 * Count bill of lading
+	 */
+	public int countBillOfLading(Integer goodsTypeId, Integer packagedFormId, Float weight, Float volume,
+			String departureProvince, String arrivalProvince, Date departureDate, Date arrivalDate, Integer status) {
+		return billOfLadingDAO.countBillOfLading(goodsTypeId, packagedFormId, weight, volume, departureProvince,
+				arrivalProvince, departureDate, arrivalDate, status);
+	}
+
+	/**
+	 * Get chart view
+	 */
+	public List<ChartViewDTO> getChartView() {
+		return billOfLadingDAO.getChartView();
+	}
+
+	/**
+	 * Get bill of lading notification
+	 */
+	public List<BillOfLadingNotificationDTO> getBillOfLadingNotification() {
+		return billOfLadingDAO.getBillOfLadingNotification();
+	}
+}

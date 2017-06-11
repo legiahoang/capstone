@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Sàn giao dịch vận tải</title>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Đăng ký tài khoản</ui:define>
+		<ui:define name="content">
+			<center>
+				<h:form id="registerForm" enctype="multipart/form-data">
+					<p:growl id="msgs" showDetail="false" />
+					<p:panel header="Đăng Ký" style="width: 500px; margin: 0 auto">
+						<h:panelGrid columnClasses="ui-grid-col-5, ui-grid-col-7" columns="2">
+
+							<h:outputText style="font-weight:bold" value="Tên đầy đủ:" />
+							<p:inputText id="fullName" value="#{registerBean.fullName}"
+								required="true" requiredMessage="Tên không được để trống!"
+								validatorMessage="Tên không hợp lệ!">
+								<f:validateLength minimum="2" maximum="50" />
+							</p:inputText>
+							<p:watermark for="fullName" value="* Họ và tên" />
+							<p:message for="fullName"></p:message>
+
+							<h:outputText style="font-weight:bold" value="Địa chỉ Email:" />
+							<p:inputText id="email" value="#{registerBean.email}"
+								required="true" requiredMessage="Email không được để trống!"
+								validatorMessage="Email cần có mẫu characters@characters.domain">
+								<!--must be in form characters@characters.domain-->
+								<f:validateRegex
+									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></f:validateRegex>
+							</p:inputText>
+							<p:watermark for="email" value="* Email" />
+							<p:message for="email"></p:message>
+
+							<h:outputText style="font-weight:bold" value="Số điện thoại:" />
+							<p:inputText id="phoneNumber" value="#{registerBean.phoneNumber}"
+								required="true"
+								requiredMessage="Số điện thoại không được để trống!"
+								validatorMessage="Số điện thoại không đúng!">
+								<f:validateRegex pattern="^[0-9]{9,12}$" />
+							</p:inputText>
+							<p:watermark for="phoneNumber" value="* Số điện thoại" />
+							<p:message for="phoneNumber"></p:message>
+
+							<h:outputText style="font-weight:bold" value="Địa chỉ:" />
+							<p:inputText id="address" value="#{registerBean.address}"
+								required="true" requiredMessage="Địa chỉ không được để trống!"
+								validatorMessage="Địa chỉ không đúng!">
+								<f:validateLength minimum="2" maximum="100" />
+							</p:inputText>
+							<p:watermark for="address" value="* Địa chỉ" />
+							<p:message for="address"></p:message>
+
+							<h:outputLabel style="font-weight:bold" for="province" value="Tỉnh/Thành phố: " />
+							<p:selectOneMenu id="province" required="true"
+								requiredMessage="Tỉnh/Thành phố không được để trống!"
+								label="City" value="#{registerBean.province}">
+								<f:selectItem itemValue="" itemLabel="--Chọn--" />
+								<f:selectItems value="#{provinceBean.provinceList}"
+									var="provinceValue" itemLabel="#{provinceValue.name}"
+									itemValue="#{provinceValue.code}" />
+								<p:ajax
+									listener="#{districtBean.getDistrictByProvinceCode(registerBean.province)}"
+									global="false" update="district" event="change" />
+							</p:selectOneMenu>
+							<p:outputLabel style="font-weight:bold" for="district" value="Quận/Huyện: " />
+							<p:selectOneMenu id="district" label="District" required="true"
+								requiredMessage="Quận/Huyện không được để trống!"
+								value="#{registerBean.district}">
+								<f:selectItem itemValue="" itemLabel="--Chọn--" />
+								<f:selectItems value="#{districtBean.districtList}"
+									var="districtValue" itemLabel="#{districtValue.name}"
+									itemValue="#{districtValue.code}" />
+							</p:selectOneMenu>
+
+							<h:outputText style="font-weight:bold" value="Chứng minh thư:" />
+							<p:inputText id="identityCard"
+								value="#{registerBean.identityCard}" required="true"
+								requiredMessage="Số chứng minh thư không được để trống!"
+								validatorMessage="Số chứng minh thư không hợp lệ!">
+								<f:validateRegex pattern="[0-9]{9,12}"></f:validateRegex>
+							</p:inputText>
+							<p:watermark for="identityCard" value="* Số chứng minh thư" />
+							<p:message for="identityCard"></p:message>
+
+							<h:outputText style="font-weight:bold" value="Nơi cấp:" />
+							<p:inputText id="identityCardPlace"
+								value="#{registerBean.identityCardPlace}" required="true"
+								validatorMessage="Nơi cấp không đúng!"
+								requiredMessage="Nơi cấp không được để trống!">
+								<f:validateLength minimum="2" maximum="100" />
+							</p:inputText>
+							<p:watermark for="identityCardPlace" value="* Nơi cấp" />
+							<p:message for="identityCardPlace"></p:message>
+
+							<h:outputText style="font-weight:bold" for="identityCardDate" value="Ngày cấp:" />
+							<p:calendar id="identityCardDate" locale="de" navigator="true"
+								showOn="button" value="#{registerBean.identityCardDate}"
+								effect="fold" pattern="dd/mm/yyyy" required="true"
+								requiredMessage="Ngày cấp không được để trống!"
+								converterMessage="Ngày cấp không đúng!">
+								<f:convertDateTime pattern="MM/dd/yyyy" />
+							</p:calendar>
+							<p:watermark for="identityCardDate" value="* Ngày cấp" />
+							<p:message for="identityCardDate"></p:message>
+
+							<h:outputText style="font-weight:bold" value="Ảnh chứng minh thư:" />
+							<p:fileUpload id="identityCardImage" value="#{registerBean.file}"
+								mode="simple" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+								multiple="false" label="Chọn ảnh" required="true" skinSimple="true"
+								requiredMessage="Ảnh chứng minh thư không được để trống!">
+							</p:fileUpload>
+							<p:watermark for="identityCardImage" value="* Ảnh Chứng minh thư" />
+							<p:message for="identityCardImage"></p:message>
+
+							<h:outputText style="font-weight:bold" for="pwd1" value="Mật khẩu:" />
+							<p:password id="pwd1" value="#{registerBean.password}"
+								match="pwd2" label="Password" required="true"
+								validatorMessage="Xác nhận mật khẩu thất bại!"
+								requiredMessage="Mật khẩu không được để trống">
+							</p:password>
+							<h:outputText></h:outputText>
+							<p:outputLabel>Mật khẩu phải có từ 6 đến 20 ký tự, có ít nhất 1 chữ số, 1 chữ cái viết hoa và một trong các ký tự (?, !, #, @, *, %).</p:outputLabel>
+							<p:watermark for="pwd1" value="* Mật khẩu" />
+							<p:message for="pwd1"></p:message>
+
+							<h:outputText style="font-weight:bold" for="pwd2" value="Xác nhận mật khẩu:" />
+							<p:password id="pwd2" value="#{registerBean.password}"
+								label="Password 2" required="true"
+								requiredMessage="Xác nhận mật khẩu không được để trống!"
+								validatorMessage="Mật khẩu chưa đạt yêu cầu!">
+								<f:validateRegex
+									pattern="^.*(?=.{6,20})(?=..*[0-9])(?=.*[A-Z])(?=.*[?!#@*%$]).*$"></f:validateRegex>
+							</p:password>
+							<p:watermark for="pwd2" value="* Xác nhận mật khẩu" />
+							<p:message for="pwd2"></p:message>
+
+							<h:outputText style="font-weight:bold" for="myRadio" value="Loại người dùng:" />
+							<p:selectOneRadio id="myRadio" value="#{registerBean.role}"
+								required="true" requiredMessage="Bạn là chủ xe/chủ hàng ?">
+								<f:selectItem itemValue="2" itemLabel="Chủ hàng" />
+								<f:selectItem itemValue="3" itemLabel="Chủ xe" />
+							</p:selectOneRadio>
+						</h:panelGrid>
+						<br></br>
+						<p:commandButton action="#{registerBean.registerUser}"
+							value="Đăng ký" update="registerForm" ajax="false"
+							validateClient="true">
+						</p:commandButton>
+						<br></br>
+						<br></br>
+						<p:outputLabel>Bằng việc lựa chọn 'Đăng Ký', bạn đồng ý với chúng tôi về <a
+								href="#" class="ui-link ui-widget" target="_blank">Điều
+								Khoản Sử Dụng</a>
+										và <a href="#" class="ui-link ui-widget" target="_blank">Bảo
+								Mật</a>
+						</p:outputLabel>
+					</p:panel>
+					<br></br>
+				</h:form>
+			</center>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

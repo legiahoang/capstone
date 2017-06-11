@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 28, 2015 9:41:06 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+	<class name="vn.co.cex.orm.Company" table="company">
+		<id name="id" type="int">
+			<column name="Id" />
+			<generator class="identity" />
+		</id>
+		<property name="name" type="string">
+			<column name="Name" length="100" not-null="true" />
+		</property>
+		<property name="taxCode" type="string">
+			<column name="TaxCode" length="20" not-null="true" />
+		</property>
+		<property name="email" type="string">
+			<column name="Email" length="50" not-null="false" />
+		</property>
+		<property name="phoneNumber" type="string">
+			<column name="PhoneNumber" length="11" not-null="false" />
+		</property>
+		<property name="fax" type="string">
+			<column name="Fax" length="20" not-null="false" />
+		</property>
+		<property name="address" type="string">
+			<column name="Address" length="100" not-null="true" />
+		</property>
+		<set name="users" table="users" inverse="true" lazy="true" fetch="select">
+			<key>
+				<column name="Id" not-null="true" />
+			</key>
+			<one-to-many class="vn.co.cex.orm.Company" />
+		</set>
+	</class>
+</hibernate-mapping>

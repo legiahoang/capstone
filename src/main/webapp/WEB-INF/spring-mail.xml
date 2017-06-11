@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:security="http://www.springframework.org/schema/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+	
+		<!-- Config email server -->
+		<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+			<property name="host" value="smtp.gmail.com" />
+			<property name="port" value="587" />
+			<property name="username" value="carriertradingcenter@gmail.com" />
+			<property name="password" value="123456a@" />
+			<property name="javaMailProperties">
+				<props>
+		           	<prop key="mail.smtp.auth">true</prop>
+		           	<prop key="mail.debug">true</prop>
+		           	<prop key="mail.smtp.connectiontimeout">4000</prop>
+		           	<prop key="mail.smtp.timeout">90000</prop>
+		           	<prop key="mail.smtp.starttls.enable">true</prop>
+		       	</props>
+			</property>
+		</bean>
+
+	<bean id="mailerBean" class="vn.co.cex.utils.mail.MailerBean">
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+	<bean id="notificationMessage" class="org.springframework.mail.SimpleMailMessage">
+		<property name="from" value="noreply@ctc.com" />
+		<property name="to" value="ctc@gmail.com" />
+		<property name="subject" value="[CTC] Notification: your account has been changed" />
+		<property name="text">
+		<value>
+			<![CDATA[
+				Dear %s,
+					
+				The password of your account has been changed. If you have not changed, please check the security and let us know immediately.
+					
+				Sincerely,
+				TNET Vietnam team.
+			]]>
+		</value>
+	    </property>
+	</bean>		
+</beans>

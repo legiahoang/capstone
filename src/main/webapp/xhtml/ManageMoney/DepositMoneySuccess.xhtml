@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<f:metadata>
+				<f:viewParam name="order_code" value="#{nganLuongBean.order_code}" />
+				<f:viewParam name="token_code" value="#{nganLuongBean.token_code}" />
+				<f:viewAction action="#{nganLuongBean.onPlusMoneyAccount}" />
+			</f:metadata>
+			<div align="center">
+				<h1>Bạn đã nạp tiền tài khoản thành công</h1>
+				<p:panelGrid styleClass="ui-noborder">
+					<p:row>
+						<p:column>
+							<h:outputText value="Tên chủ tài khoản: " />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{nganLuongBean.fullname}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="Email: " />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{nganLuongBean.email}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<h:outputText value="Số dư (VNĐ): " />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{nganLuongBean.balance}" >
+								<f:convertNumber pattern="###,###"/>
+							</h:outputText>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+				<br />
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

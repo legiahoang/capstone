@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<br />
+			<h1 align="left" style="color: #1E90FF">BÁO CÁO CHI TIẾT</h1>
+			<h:outputStylesheet library="css" name="report.css"></h:outputStylesheet>
+			<h:form>
+				<div class="row">
+					<table align="center"
+						style="border-collapse: separate; border-spacing: 20px">
+						<tbody>
+							<tr>
+								<c:set var="reportDetail" value="#{reportDetailBean.data}" />
+								<td><h:outputLabel value="Nguời gửi: "
+										style="font-weight:bold; text-decoration: underline; color: #1E90FF" /></td>
+								<td><h:outputLabel value="#{reportDetail.fullName}" /></td>
+							</tr>
+							<tr>
+								<td><h:outputText value="Tài khoản người gửi: "
+										style="font-weight:bold; text-decoration: underline; color: #1E90FF" /></td>
+								<td><h:outputLabel value="#{reportDetail.userName}" /></td>
+							</tr>
+							<tr>
+								<td><h:outputText value="Người nhận: "
+										style="font-weight:bold; text-decoration: underline; color: #1E90FF" /></td>
+								<td><h:outputText
+										value="Ban Quản trị trang web Carrier Trading Center" /></td>
+							</tr>
+							<tr>
+								<td><h:outputText value="Ngày gửi: "
+										style="font-weight:bold; text-decoration: underline; color: #1E90FF" /></td>
+								<td><h:outputLabel value="#{reportDetail.reportDate}" /></td>
+							</tr>
+							<tr>
+								<td><h:outputText value="Câu hỏi từ người dùng: "
+										style="font-weight:bold; text-decoration: underline; color: #1E90FF" /></td>
+								<td><h:outputLabel value="#{reportDetail.reportQuestion}" /></td>
+							</tr>
+							<tr>
+								<td><h:outputText value="Mong muốn xử lý: "
+										style="font-weight:bold; text-decoration: underline; color: #1E90FF" /></td>
+								<td><h:outputLabel value="#{reportDetail.reportSolution}" /></td>
+							</tr>
+							<tr>
+								<td valign="top"><h:outputText value="Nội dung:"
+										style="font-weight:bold; text-decoration: underline; color: #1E90FF" /></td>
+								<td><h:outputLabel value="#{reportDetail.reportReply}" /></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td align="center"><h:outputLink styleClass="goBackButton"
+										value="ListReportUser.xhtml">
+										<h:outputText value="Quay lại" />
+									</h:outputLink></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Sàn giao dịch vận tải</title>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Đăng nhập</ui:define>
+		<ui:define name="content">
+			<center>
+				<h:form id="loginForm">
+					<p:growl id="msg" showDetail="false" />
+					<h:inputHidden id="hdpassword" value="#{loginBean.password}" />
+					<p:panel header="Đăng Nhập" style="width: 360px;">
+						<h:panelGrid id="loginPanel" columns="2">
+							<h:outputText value="Email" />
+							<p:inputText id="email" value="#{loginBean.email}"
+								required="true" requiredMessage="Bạn chưa nhập Email!"></p:inputText>
+							<p:watermark for="email" value="Email" />
+							<p:message for="email"></p:message>
+							<h:outputText value="Mật khẩu" />
+							<p:password id="password" feedback="false" onchange="encrypt()"
+								required="true" requiredMessage="Bạn chưa nhập Mật khẩu!"></p:password>
+							<p:watermark for="password" value="Mật khẩu" />
+							<p:message for="password"></p:message>
+							<p:spacer></p:spacer>
+							<p:commandButton action="#{loginBean.validateUsernamePassword}"
+								value="Đăng nhập" update="loginForm" ajax="true"></p:commandButton>
+						</h:panelGrid>
+						<div class="login-help">
+							<a href="./RegisterUsers.xhtml">Đăng ký</a> • <a
+								href="./ForgotPassword.xhtml">Quên mật khẩu</a>
+						</div>
+					</p:panel>
+				</h:form>
+			</center>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

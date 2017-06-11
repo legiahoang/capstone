@@ -1,0 +1,10 @@
+package vn.co.cex.bo;
+
+import java.util.List;
+
+import vn.co.cex.orm.GoodsType;
+
+
+public interface GoodsTypeBO extends BaseBO{
+	public List<GoodsType> getAllGoodsType();
+}

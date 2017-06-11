@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="vn.co.cex.orm.OperationFee" table="operationfee"
+		catalog="cex_dev">
+		<id name="id" type="java.lang.Integer">
+			<column name="Id" />
+			<generator class="identity" />
+		</id>
+		<property name="code" type="string">
+			<column name="Code" length="10" not-null="true" />
+		</property>
+		<property name="feeName" type="string">
+			<column name="FeeName" length="50" not-null="true" />
+		</property>
+		<property name="type" type="boolean">
+			<column name="Type" not-null="true" />
+		</property>
+		<property name="fee" type="float">
+			<column name="Fee" not-null="false"/>
+		</property>
+		<property name="percent" type="float">
+			<column name="Percent" not-null="false"/>
+		</property>
+		<property name="description" type="string">
+			<column name="Description" length="300" not-null="false" />
+		</property>
+		<property name="status" type="int">
+			<column name="Status" not-null="true" />
+		</property>
+		<property name="modified" type="timestamp">
+			<column name="Modified" not-null="false" />
+		</property>
+		<property name="created" type="timestamp">
+			<column name="Created" not-null="false" />
+		</property>
+	</class>
+</hibernate-mapping>

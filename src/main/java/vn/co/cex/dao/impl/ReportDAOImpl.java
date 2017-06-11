@@ -1,0 +1,294 @@
+package vn.co.cex.dao.impl;
+
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.transaction.annotation.Transactional;
+
+import vn.co.cex.dao.ReportDAO;
+import vn.co.cex.dto.ReportDTO;
+import vn.co.cex.orm.Report;
+import vn.co.cex.orm.Users;
+
+/**
+ * @author TuanDL
+ *
+ */
+public class ReportDAOImpl extends BaseDAOImpl implements ReportDAO {
+
+	private static final Logger log = LogManager.getLogger(ReportDAOImpl.class);
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8665733281397292743L;
+
+	/**
+	 * get all report
+	 */
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public List<Report> getAllReport() {
+		List<Report> result = null;
+		try {
+			Session session = getSessionFactory().getCurrentSession();
+			String sqlSelect = "select ur.Email as 'UserName', ur.FullName as 'FullName', rp.* "
+					+ "from report rp join users ur on rp.UserId = ur.Id ";
+			SQLQuery query = session.createSQLQuery(sqlSelect);
+			query.setResultTransformer(new AliasToBeanResultTransformer(ReportDTO.class));
+			result = query.list();
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return result;
+	}
+
+	/**
+	 * search report
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Report> searchReportByAdmin(String userName, Date reportDateBegin, Date reportDateEnd,
+			String reportTitle, String reportReply, int pageSize, int pageIndex) {
+
+		List<Report> result = new ArrayList<Report>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			StringBuilder sqlQueryString = new StringBuilder();
+			sqlQueryString.append("SELECT ur.Email AS 'UserName', ur.FullName AS 'FullName', rp.* ");
+			sqlQueryString.append("FROM report rp ");
+			sqlQueryString.append("JOIN users ur ON rp.UserId = ur.Id ");
+			sqlQueryString.append("WHERE rp.Status = 1 ");
+			if (userName != null && !userName.equals("")) {
+				sqlQueryString.append("AND ur.Email LIKE '%" + searchStringFormat(userName) + "%' ");
+			}
+			if (reportTitle != null && !reportTitle.equals("")) {
+				sqlQueryString.append("AND rp.reportTitle LIKE '%" + searchStringFormat(reportTitle) + "%' ");
+			}
+			if (reportDateBegin != null && !reportDateBegin.equals("")) {
+				String formattedReportDateBegin = dateFormat.format(reportDateBegin);
+
+				sqlQueryString.append(String.format(" AND rp.reportDate >= '" + formattedReportDateBegin + "' "));
+			}
+			if (reportDateEnd != null && !reportDateEnd.equals("")) {
+				String formattedReportDateEnd = dateFormat.format(reportDateEnd);
+				sqlQueryString.append(String.format(" AND rp.reportDate <= '" + formattedReportDateEnd + "' "));
+			}
+			Session session = getSessionFactory().getCurrentSession();
+			SQLQuery query = session.createSQLQuery(sqlQueryString.toString());
+			query.setFirstResult(pageIndex);
+			query.setMaxResults(pageSize);
+			query.setResultTransformer(new AliasToBeanResultTransformer(ReportDTO.class));
+
+			result = query.list();
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return result;
+	}
+
+	public int countReportByAdmin(String userName, Date reportDateBegin, Date reportDateEnd, String reportTitle,
+			String reportReply) {
+
+		BigInteger result = new BigInteger("0");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			StringBuilder sqlQueryString = new StringBuilder();
+			sqlQueryString.append("SELECT COUNT(*) FROM report rp ");
+			sqlQueryString.append("JOIN users ur ON rp.UserId = ur.Id ");
+			sqlQueryString.append("WHERE rp.Status = 1 ");
+			if (userName != null && !userName.equals("")) {
+				sqlQueryString.append("AND ur.Email LIKE '%" + searchStringFormat(userName) + "%' ");
+			}
+			if (reportTitle != null && !reportTitle.equals("")) {
+				sqlQueryString.append("AND rp.reportTitle LIKE '%" + searchStringFormat(reportTitle) + "%' ");
+			}
+			if (reportDateBegin != null && !reportDateBegin.equals("")) {
+				String formattedReportDateBegin = dateFormat.format(reportDateBegin);
+
+				sqlQueryString.append(String.format(" AND rp.reportDate >= '" + formattedReportDateBegin + "' "));
+			}
+			if (reportDateEnd != null && !reportDateEnd.equals("")) {
+				String formattedReportDateEnd = dateFormat.format(reportDateEnd);
+				sqlQueryString.append(String.format(" AND rp.reportDate <= '" + formattedReportDateEnd + "' "));
+			}
+			Session session = getSessionFactory().getCurrentSession();
+			SQLQuery query = session.createSQLQuery(sqlQueryString.toString());
+
+			result = (BigInteger) query.uniqueResult();
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return result.intValue();
+	}
+
+	/**
+	 * get report by id
+	 */
+	public ReportDTO getReportById(int id) {
+		ReportDTO result = null;
+		try {
+			Session session = getSessionFactory().getCurrentSession();
+
+			String sqlSelect = "select ur.Email as 'UserName', ur.FullName as 'FullName', rp.* "
+					+ "from report rp join users ur on rp.UserId = ur.Id " + "where rp.Id = ? ";
+			SQLQuery query = session.createSQLQuery(sqlSelect);
+			query.setParameter(0, id);
+			query.setResultTransformer(new AliasToBeanResultTransformer(ReportDTO.class));
+			result = (ReportDTO) query.uniqueResult();
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return result;
+	}
+
+	/**
+	 * update report reply
+	 */
+	public boolean updateReport(Report data) {
+		try {
+			Session session = getSessionFactory().getCurrentSession();
+			data.setUser(new Users(data.getUserId()));
+			session.saveOrUpdate(data);
+			return true;
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return false;
+	}
+
+	/**
+	 * search report by user
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Report> searchReportByUser(int uid, Date reportDateBegin, Date reportDateEnd, String reportTitle,
+			boolean status, int pageSize, int pageIndex) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		List<Report> result = new ArrayList<Report>();
+
+		try {
+			StringBuilder sqlQueryString = new StringBuilder();
+			sqlQueryString.append("SELECT ur.Email AS 'UserName', ur.FullName AS 'FullName', rp.* ");
+			sqlQueryString.append("FROM report rp ");
+			sqlQueryString.append("JOIN users ur ON rp.UserId = ur.Id ");
+			sqlQueryString.append("WHERE ur.Id = ? AND ur.Status = 1 AND rp.Status = 1 ");
+			if (reportTitle != null && !reportTitle.equals("")) {
+				sqlQueryString.append("AND rp.reportTitle LIKE '%" + searchStringFormat(reportTitle) + "%' ");
+			}
+			if (reportDateBegin != null && !reportDateBegin.equals("")) {
+				String formattedReportDateBegin = dateFormat.format(reportDateBegin);
+
+				sqlQueryString.append(String.format(" AND rp.reportDate >= '" + formattedReportDateBegin + "' "));
+			}
+			if (reportDateEnd != null && !reportDateEnd.equals("")) {
+				String formattedReportDateEnd = dateFormat.format(reportDateEnd);
+				sqlQueryString.append(String.format(" AND rp.reportDate <= '" + formattedReportDateEnd + "' "));
+			}
+			Session session = getSessionFactory().getCurrentSession();
+			SQLQuery query = session.createSQLQuery(sqlQueryString.toString());
+			query.setParameter(0, uid);
+			query.setResultTransformer(new AliasToBeanResultTransformer(ReportDTO.class));
+			query.setFirstResult(pageIndex);
+			query.setMaxResults(pageSize);
+
+			result = query.list();
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return result;
+	}
+
+	/**
+	 * Count report by user
+	 */
+	public int countReportByUser(int uid, Date reportDateBegin, Date reportDateEnd, String reportTitle,
+			boolean status) {
+		BigInteger result = new BigInteger("0");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			StringBuilder sqlQueryString = new StringBuilder();
+			sqlQueryString.append("SELECT COUNT(*) FROM report rp ");
+			sqlQueryString.append("JOIN users ur ON rp.UserId = ur.Id ");
+			sqlQueryString.append("WHERE ur.Id = ? AND ur.Status = 1 AND rp.Status = 1 ");
+			if (reportTitle != null && !reportTitle.equals("")) {
+				sqlQueryString.append("AND rp.reportTitle LIKE '%" + searchStringFormat(reportTitle) + "%' ");
+			}
+			if (reportDateBegin != null && !reportDateBegin.equals("")) {
+				String formattedReportDateBegin = dateFormat.format(reportDateBegin);
+
+				sqlQueryString.append(String.format(" AND rp.reportDate >= '" + formattedReportDateBegin + "' "));
+			}
+			if (reportDateEnd != null && !reportDateEnd.equals("")) {
+				String formattedReportDateEnd = dateFormat.format(reportDateEnd);
+				sqlQueryString.append(String.format(" AND rp.reportDate <= '" + formattedReportDateEnd + "' "));
+			}
+			Session session = getSessionFactory().getCurrentSession();
+			SQLQuery query = session.createSQLQuery(sqlQueryString.toString());
+			query.setParameter(0, uid);
+			result = (BigInteger) query.uniqueResult();
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return result.intValue();
+	}
+
+	/**
+	 * add new report to db
+	 */
+	public boolean addNewReport(Report report) {
+		try {
+			Session session = getSessionFactory().getCurrentSession();
+			report.setUser(new Users(report.getUserId()));
+			session.save(report);
+			return true;
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return false;
+	}
+
+	/**
+	 * get all report by user id
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Report> getAllReportByUserId(int id) {
+		List<Report> result = null;
+		try {
+			Session session = getSessionFactory().getCurrentSession();
+			StringBuilder sqlQueryString = new StringBuilder();
+			sqlQueryString.append("select ur.Email as 'UserName', ur.FullName as 'FullName', rp.* ");
+			sqlQueryString.append("from report rp ");
+			sqlQueryString.append("join users ur on rp.UserId = ur.Id ");
+			sqlQueryString.append("where rp.UserId = ?");
+			SQLQuery query = session.createSQLQuery(sqlQueryString.toString());
+			query.setParameter(0, id);
+			query.setResultTransformer(new AliasToBeanResultTransformer(ReportDTO.class));
+			result = query.list();
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return result;
+	}
+
+	/**
+	 * delete report
+	 */
+	public void deleteReport(int report_id) {
+		try {
+			Session session = getSessionFactory().getCurrentSession();
+			SQLQuery query = session.createSQLQuery("update report set status = 0 where id = ?");
+			query.setParameter(0, report_id);
+			// execute update query
+			query.executeUpdate();
+		} catch (Exception e) {
+			log.debug(e);
+		}
+	}
+}

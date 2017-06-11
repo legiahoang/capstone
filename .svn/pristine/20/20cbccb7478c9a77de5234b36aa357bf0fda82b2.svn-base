@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Thông tin tài khoản</ui:define>
+		<ui:define name="content">
+			<center>
+				<h:form id="users_Account_Information" enctype="multipart/form-data">
+					<p:growl id="msgs" showDetail="false" />
+					<div align="center">
+						<h3>THÔNG TIN VỀ TÀI KHOẢN</h3>
+						<br></br>
+						<p:dataTable id="table_users_1" value="#{paymentDetailBean}"
+							var="users_Account" border="1"
+							style="width:600px;text-align:center;">
+							<p:growl id="message" showDetail="true" />
+							<p:column width="30%">
+								<f:facet name="header">Tên người dùng</f:facet>
+								<div align="left">
+									<p:outputLabel value="#{users_Account.user.fullName}" />
+								</div>
+							</p:column>
+							<p:column width="30%">
+								<f:facet name="header">Số dư tài khoản</f:facet>
+								<div align="right">
+									<p:outputLabel value="#{users_Account.usersAccount.balance}">
+										<f:convertNumber pattern="###,###" />
+									</p:outputLabel>
+								</div>
+							</p:column>
+							<p:column width="30%">
+								<f:facet name="header">Tiền tệ</f:facet>
+								<div align="left">
+									<p:outputLabel value="VNĐ" />
+								</div>
+							</p:column>
+						</p:dataTable>
+						<br></br>
+					</div>
+					<br></br>
+					<h3>LIỆT KÊ GIAO DỊCH</h3>
+					<br></br>
+					<div align="left">
+						<p:panel header="Hỗ trợ lọc thông tin" toggleable="true"
+							toggleSpeed="500" widgetVar="panel"
+							style="margin-bottom: 20px; margin-left: 160px; margin-right: 160px">
+							<h:panelGrid style="margin: 0 auto" columns="8" cellpadding="10">
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Ngày bắt đầu" />
+									</p:column>&nbsp;
+								<p:column>
+										<p:calendar id="departureDate"
+											value="#{paymentDetailBean.beginPaymentDate}"
+											pattern="dd/MM/yyyy" maxlength="10" required="true"
+											requiredMessage="Hãy nhập ngày bắt đầu!">
+											<f:convertDateTime pattern="dd/MM/yyyy">
+											</f:convertDateTime>
+										</p:calendar>
+									</p:column>
+								&nbsp;
+								<p:column>
+										<p:outputLabel value="Ngày kết thúc" />
+									</p:column>&nbsp;
+								<p:column>
+										<p:calendar id="arrivalDate"
+											value="#{paymentDetailBean.endPaymentDate}"
+											pattern="dd/MM/yyyy" maxlength="10" required="true"
+											requiredMessage="Hãy nhập ngày kết thúc!">
+											<f:convertDateTime pattern="dd/MM/yyyy">
+											</f:convertDateTime>
+										</p:calendar>
+									</p:column>
+								</p:row>
+								<p:commandButton icon="fa fa-search" styleClass="btn_search"
+									action="#{paymentDetailBean.searchPaymentDetailUser}"
+									update="table_users" value="Tìm kiếm" />
+							</h:panelGrid>
+						</p:panel>
+					</div>
+
+					<div class="table_payment_detail" align="center">
+						<div class="table_content">
+							<p:dataTable id="table_users"
+								value="#{paymentDetailBean.paymentDetailList}"
+								var="paymentDetail" border="1" binding="#{table}"
+								paginator="true" rows="10" paginatorPosition="bottom"
+								lazy="true" rowIndexVar="row" emptyMessage="Không có dữ liệu"
+								currentPageReportTemplate="#{msg['label.data.table.footer']} {startRecord} #{msg['label.data.table.footer2']} {endRecord} #{msg['label.data.table.footer3']} {totalRecords} #{msg['label.data.table.footer4']} "
+								rowKey="#{paymentDetail.id}"
+								rowsPerPageTemplate="#{msg['rowsPerPageTemplate']}"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+								<p:growl id="message" showDetail="true" />
+								<p:column width="25%" style="text-align: left;">
+									<f:facet name="header">Thời gian</f:facet>
+									<p:outputLabel value="#{paymentDetail.paymentDate}">
+										<f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+									</p:outputLabel>
+								</p:column>
+								<p:column>
+									<f:facet name="header">Mô tả giao dịch</f:facet>
+									<div align="left">
+										<p:outputLabel value="#{paymentDetail.description}" />
+									</div>
+								</p:column>
+								<p:column width="20%">
+									<div align="right">
+										<f:facet name="header">Số tiền (VNĐ)</f:facet>
+										<h:outputText value="(+) " style="color:blue"
+											rendered="#{paymentDetail.type == true}"></h:outputText>
+
+										<h:outputText value="(-) " style="color:red"
+											rendered="#{paymentDetail.type == false}"></h:outputText>
+
+
+										<p:outputLabel value="#{paymentDetail.amounts}">
+											<f:convertNumber pattern="###,###" />
+										</p:outputLabel>
+									</div>
+								</p:column>
+								<p:column width="20%">
+									<f:facet name="header">Số dư (VNĐ)</f:facet>
+									<div align="right">
+										<p:outputLabel value="#{paymentDetail.balance}">
+											<f:convertNumber pattern="###,###" />
+										</p:outputLabel>
+									</div>
+								</p:column>
+							</p:dataTable>
+						</div>
+					</div>
+				</h:form>
+			</center>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

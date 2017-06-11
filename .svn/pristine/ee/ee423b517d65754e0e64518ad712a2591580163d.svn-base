@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Giới thiệu</ui:define>
+		<ui:define name="content">
+			<div class="introduce_content">
+				<h1>GIỚI THIỆU SÀN GIAO DỊCH VẬN TẢI VIỆT NAM</h1>
+				<h3>(CarrierTradingCenter.Com)</h3>
+
+				<div>
+					<h2>I. GIỚI THIỆU VỀ SÀN GIAO DỊCH VẬN TẢI VIỆT NAM -
+						CarierTradingCenter</h2>
+					<div>Được phát triển bởi đơn vị trẻ trung, năng động và tâm
+						huyết đến từ trường đại học danh tiếng hàng đầu Việt Nam – Đại Học
+						FPT. Với sự cộng tác bới các chuyên gia hàng đầu trong ngành với
+						chuyên môn cao cùng công nghệ hàng đầu thế giới. Chúng tôi không
+						chỉ mang đến lợi ích cho khách hàng mà còn mang đến trải nghiệm
+						với những dịch vụ chuyên nghiệp. Carrier Trading Center cung cấp
+						thông tin nhanh, uy tín, nhiều chức năng tiện ích, giao diện thân
+						thiện với người dùng chắc chắn sẽ mang lại sự hài lòng cho tất cả
+						các khách hàng. Đội ngũ tư vấn thân thiện, nhiệt tình, sẵn sàng
+						giúp đỡ và giải đáp mọi thắc mắc về quy chế, quy trình cũng như
+						các hình thức thanh toán, chúng tôi cũng sẵn sàng tiếp nhận những
+						ý kiến đóng góp của khách hàng để nâng cấp hệ thống dịch vụ được
+						hoàn thiện nhất. Bạn sẽ hài lòng khi trở thành khách hàng của
+						Carrier Trading Center.</div>
+					<h2>II. Chuyển hàng nhanh chóng, đảm bảo, tối ưu lợi nhuận</h2>
+					<div>Bạn là người có hàng hóa cần được vận chuyển? Bạn đang
+						có một lô hàng muốn được vận chuyển đi? Bạn đang phân vân không
+						biết nên chọn xe nào để vận chuyển, bạn không biết giá phải bỏ ra
+						để vận chuyển là bao nhiêu? Hãy đến với chúng tôi để giải quyết
+						tất cả những vẫn đề đó của một cách tối ưu nhất. Công ty sàn vận
+						tải Carrier Trading Center của chúng tôi tập trung đông đảo các
+						nhà xe trên khắp cả nước. Khai thác chủ yếu xe trở lượt về và xe
+						ghép dựa trên hình thức đấu giá trực tiếp. Đảm bảo vận chuyển hàng
+						hóa nhanh chóng với mức giá thấp nhất. Ngoài ra bạn có thể kiểm
+						tra lộ trình hàng hóa của mình chỉ với một thao tác nhỏ. Đảm bảo
+						độ an toàn tuyệt đối khi sử dụng dịch vụ vận chuyển.</div>
+					<h2>III. Tìm hàng chuyển nhanh chóng, tiện lợi, nâng cao lợi
+						nhuận</h2>
+					<div>Bạn là người có xe, bạn đang lo nghĩ về việc xe có quá
+						ít hàng để vận chuyển so với tải trọng của xe, bạn đang lo rằng
+						lượt về của xe không có hàng để vận chuyển, bạn đang đau đầu vì
+						tìm khách hàng vận tải. Việc đấy làm ảnh hưởng tầm trọng tới thu
+						nhập của bạn. Hãy đến với chúng tôi, Carrier Trading Center sẽ
+						giải quyết tất cả những vấn đề đó trong một cú click chuột. Công
+						ty sàn vận tải Carrier Trading Center là một trong những đơn vị
+						dẫn đầu trong việc kết nối trực tuyến giữa đơn vị có hàng hóa và
+						đơn vị vận tải tại Việt Nam. Với lượng người dùng lớn.đảm bảo cung
+						cấp lượng khách hàng rồi rào. Và việc nâng cao lợi nhuận cho
+						chuyến đi sẽ chỉ phụ thuộc một click chuột của bạn.</div>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

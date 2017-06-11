@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Thông tin liên hệ</ui:define>
+		<ui:define name="content">
+			<div class="contact_content">
+				<h1>LIÊN HỆ SÀN GIAO DỊCH VẬN TẢI VIỆT NAM</h1>
+				<h3>(CarrierTradingCenter.Com)</h3>
+				<table>
+					<tr>
+						<td><p:graphicImage
+								value="/resources/images/ctc-map-contact.jpg" height="700"
+								width="700" /></td>
+						<td style="text-align: center; padding-right: 10px">
+							<h2>LIÊN HỆ VỚI CHÚNG TÔI:</h2>
+							<div>
+								<p>Địa chỉ: Khu Công nghệ cao Hòa Lạc, Hà Nội, Việt Nam</p>
+								<p>Điện thoại: (+84-4)-8888 8888</p>
+								<p>Fax: (+84-4)-9999 9999</p>
+								<p>Email: ADMIN@CarrierTradingCenter.Com</p>
+								<p>Được xây dựng và phát triển bởi nhóm sinh viên Đại Học
+									FPT</p>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

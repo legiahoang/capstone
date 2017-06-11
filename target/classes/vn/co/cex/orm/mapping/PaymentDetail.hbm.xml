@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 28, 2015 9:41:06 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+	<class name="vn.co.cex.orm.PaymentDetail" table="paymentdetail">
+		<id name="id" type="java.lang.Integer">
+			<column name="Id" />
+			<generator class="identity" />
+		</id>
+		<property name="amounts" type="float">
+			<column name="Amounts" not-null="true" />
+		</property>
+		<property name="paymentDate" type="timestamp">
+			<column name="PaymentDate" not-null="false" />
+		</property>
+		<property name="Type" type="boolean">
+			<column name="Type" not-null="false" />
+		</property>
+		<property name="description" type="string">
+			<column name="Description" length="100" not-null="false" />
+		</property>
+		<property name="balance" type="float">
+			<column name="Balance" not-null="false" />
+		</property>
+		<property name="billOfLadingId" type="int">
+			<column name="BillOfLadingId" not-null="false" />
+		</property>
+		<many-to-one name="usersAccount" class="vn.co.cex.orm.UsersAccount"
+			lazy="false" fetch="select">
+			<column name="UserId" not-null="true" />
+		</many-to-one>
+		<property name="userId" type="int" insert="false" update="false">
+			<column name="UserId" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>

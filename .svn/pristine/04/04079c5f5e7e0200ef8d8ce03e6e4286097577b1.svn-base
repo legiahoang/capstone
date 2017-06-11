@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Sàn giao dịch vận tải</title>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:outputStylesheet name="home.css" library="css" />
+			<h:outputScript library="js" name="home.js" />
+			<div class="slidershow">
+				<figure> <span class="trs next"></span> <span
+					class="trs prev"></span>
+				<div id="slider">
+					<a href="#" class="trs"><img
+						src="./../resources/images/ctc-slider-5.jpg"
+						alt="PHÁT TRIỂN CÙNG NGÀNH VẬN TẢI" width="100%" height="auto"/></a> <a href="#"
+						class="trs"><img src="./../resources/images/ctc-slider-6.jpg"
+						alt="GIÚP BẠN TĂNG THU NHẬP" width="100%" height="auto" /></a> <a href="#" class="trs"><img
+						src="./../resources/images/ctc-slider-7.jpg"
+						alt="VẬN CHUYỂN HÀNG CHỈ BẰNG MỘT CLICK" width="100%" height="auto"/></a> <a href="#"
+						class="trs"><img src="./../resources/images/ctc-slider-8.jpg"
+						alt="TỐI ƯU HÓA CHI PHÍ VẬN CHUYỂN" width="100%" height="auto"/></a>
+				</div>
+				<figcaption></figcaption> </figure>
+			</div>
+			<div>
+				<h1>SÀN GIAO DỊCH VẬN TẢI VIỆT NAM</h1>
+			</div>
+			<div id="home_table">
+				<table>
+					<tr>
+						<td><p:graphicImage
+								value="./../resources/images/ctc-content-1.jpg" height="200"
+								width="400" />
+							<div class="contentImage1" style="margin-left: 5%;"></div>
+							<div class="contentImage2">
+								<div class="contentImage3">
+									<div class="title">CHÚNG TÔI HỖ TRỢ BẠN TĂNG LỢI NHUẬN</div>
+									<br></br>
+									<div class="text">Để giải quyết vấn đề xe trống ở chiều
+										quay về hay bạn muốn chở thêm hàng khi xe đang còn trống,
+										chúng tôi giúp bạn kết nối đến những chủ hàng có nhu cầu vận
+										tải phù hợp với chuyến đi của bạn. Thật dễ dàng để tăng thu
+										nhập, tránh lãng phí khả năng vận tải của bạn.</div>
+								</div>
+							</div>
+							<div align="right" class="contentImage4">
+								<a href="#" class="link">Đăng kí thành viên chủ xe ngay hôm
+									nay!</a>
+							</div></td>
+						<td><p:graphicImage
+								value="./../resources/images/ctc-content-2.jpg" height="200"
+								width="400" />
+							<div class="contentImage1" style="margin-left: 5%;"></div>
+							<div class="contentImage2">
+								<div class="contentImage3">
+									<div class="title">VẬN CHUYỂN HÀNG HÓA CHỈ BẰNG MỘT CLICK</div>
+									<br></br>
+									<div class="text">Bạn phân vân về vấn đề vận tải hàng
+										hóa, hãy đến với chúng tôi, bạn sẽ được cung cấp nhu cầu vận
+										tải một cách nhanh chóng và phù hợp với yêu cầu của bạn. Chi
+										phí vận tải của bạn sẽ được tối ưu hóa một cách tốt nhất.</div>
+								</div>
+							</div>
+							<div align="right" class="contentImage4">
+								<a href="#" class="link">Đăng kí thành viên chủ hàng ngay
+									hôm nay!</a>
+							</div></td>
+						<td><p:graphicImage
+								value="./../resources/images/ctc-content-3.jpg" height="200"
+								width="400" />
+							<div class="contentImage1" style="margin-left: 5%;"></div>
+							<div class="contentImage2">
+								<div class="contentImage3">
+									<div class="title">GIAO DỊCH LUÔN ĐƯỢC ĐẢM BẢO</div>
+									<br></br>
+									<div class="text">Các đơn vị tham gia
+										CarrierTradingCenter đều được kiểm chứng về năng lực, uy tín
+										cam kết về vận chuyển hàng hóa cho chủ hàng. Chủ hàng sẽ luôn
+										được cập nhật thông tin liên tục về quá trình vận tải hàng
+										hóa. Với chính sách đảm bảo an toàn trong giao dịch của chúng
+										tôi, bạn sẽ luôn cảm thấy an toàn.</div>
+								</div>
+							</div>
+							<div align="right" class="contentImage4">
+								<a href="#" class="link">Bắt đầu đấu thầu ngay hôm nay!</a>
+							</div></td>
+					</tr>
+				</table>
+			</div>
+			<!-- <div class="home_content_auction" style="background-image:url('/CEX/resources/images/Safety.png'); background-repeat: no-repeat; background-size: cover;">
+				<h4>ĐẤU THẦU</h4>
+				<p>Giải pháp tối ưu hóa chi phí vận tải</p>
+				<div>CarrierTradingCenter.VN là sàn giao dịch thương mại điện
+					tử dành cho các đơn vị vận tải hàng hóa (chủ xe) và các khách hàng
+					có nhu cầu vận chuyển hàng hóa (chủ hàng) thông qua hình thức đấu
+					thầu. Môi trường cạnh tranh công bằng cho các chủ xe. Chủ hàng sẽ
+					tiết kiệm được tối đa chi phí vận chuyển.</div>
+				<div>HÃY VẬN CHUYỂN HÀNG HÓA CỦA BẠN CHỈ BẰNG MỘT CLICK!</div>
+			</div> -->
+			<div id="wrapper2" align="center" class="home_content_auction">
+					<br/> <br/> <br/> <br/>
+					<div style="background-color: none;">
+						<div class="titleSafety2" align="center"></div>
+						<div class="titleSafety" align="center">
+							<h2>ĐẤU THẦU</h2>
+						</div>
+					</div>
+					<div class="wrapper5"></div>
+					<div class="wrapper6"></div>
+					<div class="wrapper7">
+						<div id="wrapper3">
+							<br/> <br/> <br/> <br/> <br/> <br/> <br/>
+							<br/> <br/> <br/>
+							<div class="contentSafety1">Giải pháp tối ưu hóa chi phí vận tải</div>
+							<br/>
+							<div class="contentSafety2">CarrierTradingCenter.Com là sàn giao dịch thương mại điện
+								tử dành cho các đơn vị vận tải hàng hóa (chủ xe) và các khách hàng
+								có nhu cầu vận chuyển hàng hóa (chủ hàng) thông qua hình thức đấu
+								thầu. Môi trường cạnh tranh công bằng cho các chủ xe. Chủ hàng sẽ
+								tiết kiệm được tối đa chi phí vận chuyển.</div>
+							<br/> <br/> <br/> <a href="#" class="button">HÃY VẬN CHUYỂN HÀNG HÓA CỦA BẠN CHỈ BẰNG MỘT CLICK!</a> <br/> <br/> <br/>
+						</div>
+					</div>
+				</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

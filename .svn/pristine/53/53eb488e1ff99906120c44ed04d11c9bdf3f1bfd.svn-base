@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Privacy</title>
+</h:head>
+<h:body>
+	 <ui:composition template="/WEB-INF/xhtml/templates/MainLayout.xhtml">
+         <ui:define name="header">
+            <ui:include src="/pages/en/PrivacyAndTermsHeader.xhtml" />
+         </ui:define>			
+         <ui:define name="content">
+         	<ui:include src="/pages/en/PrivacyAndTerms.xhtml" />
+         </ui:define>
+         <ui:define name="subfooter">
+             <ui:include src="/WEB-INF/xhtml/common/SubFooter.xhtml" />
+         </ui:define>	
+         <ui:define name="footer">
+             <ui:include src="/WEB-INF/xhtml/common/MainFooter.xhtml" />
+         </ui:define>			
+      </ui:composition> 
+</h:body>
+</html>

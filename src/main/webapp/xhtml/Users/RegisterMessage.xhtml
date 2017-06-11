@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Sàn giao dịch vận tải</title>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Thống báo đăng ký thành công</ui:define>
+		<ui:define name="content">
+			<center>
+				<h:form id="registerMessage">
+					<p:growl id="msgs" showDetail="false" />
+					<p:panel header="Notification!" style="width: 800px;">
+						<div class="message-popup">
+							Đăng ký thành công! <br></br> Để hoàn thành quá trình đăng ký,
+							vui lòng click vào email xác nhận. Mở <a target="_blank"
+								href="http://mail.google.com">mail</a> của tôi.
+						</div>
+					</p:panel>
+				</h:form>
+			</center>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

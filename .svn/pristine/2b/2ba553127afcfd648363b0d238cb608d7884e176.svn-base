@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head>
+	<title>Sàn giao dịch vận tải</title>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="report_form">
+				<h:outputStylesheet library="css" name="report.css" />
+				<h2 align="center">#{msg['report.title']}</h2>
+				<p align="center">Liệt kê các báo cáo từ người dùng của trang
+					web, được hiển thị dưới dạng 1 danh sách</p>
+				<br></br>
+				<div class="search_user_form">
+					<table align="center" style="border-collapse: separate; border-spacing: 10px">
+						<tbody>
+							<tr>
+								<td>Tên tài khoản</td>
+								<td><p:inputText placeholder="Chọn tên tài khoản" id="username"
+										value="#{reportBean.userName}" /></td>
+								<td colspan="1">Tên người dùng</td>
+								<td><p:inputText placeholder="Chọn tên người dùng" id="fullname"
+										value="#{reportBean.fullName}" /></td>
+								<td colspan="1">Tiêu đề báo cáo</td>
+								<td><p:inputText placeholder="Chọn tiêu đề báo cáo" id="reportTitle"
+										value="#{reportBean.reportTitle}" /></td>
+								<td colspan="1"><p:commandButton icon="fa fa-search" styleClass="btn_search"
+										actionListener="#{reportBean.searchReportForAdmin}"
+										update="table_report" value="Tìm kiếm" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br />
+				<div class="table_form">
+					<div class="table_content">
+						<p:dataTable id="table_report" value="#{reportBean.reportList}"
+							var="report" border="1" binding="#{table}" rowIndexVar="row"
+							paginator="true" rows="10" paginatorPosition="bottom" lazy="true"
+							emptyMessage="Không có dữ liệu"
+							currentPageReportTemplate="#{msg['label.data.table.footer']} {startRecord} #{msg['label.data.table.footer2']} {endRecord} #{msg['label.data.table.footer3']} {totalRecords} #{msg['label.data.table.footer4']} "
+							rowKey="#{report.id}"
+							rowsPerPageTemplate="#{msg['rowsPerPageTemplate']}"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+							<p:column width="7.5%">
+								<f:facet name="header">STT</f:facet>
+								#{table.rowIndex + 1}
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Tài khoản</f:facet>
+								#{report.userName}
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Tên</f:facet>
+								#{report.fullName}
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Thời gian gửi</f:facet>
+								#{report.reportDate}
+							</p:column>
+							<p:column>
+								<f:facet name="header">Tiêu đề báo cáo</f:facet>
+								<h:outputLink
+									value="/../CEX/faces/xhtml/Report/DetailReportAdmin.xhtml">
+									<f:param name="id" value="#{report.id}" />
+									<h:outputText value="#{report.reportTitle}" />
+								</h:outputLink>
+							</p:column>
+							<p:column width="5%">
+								<f:facet name="header">Trả lời</f:facet>
+								<p:commandButton style="border: none" icon="fa fa-check" rendered="#{report.reportReply != null}" />
+							</p:column>
+						</p:dataTable>
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<br />
+			<h1 align="left" style="color: #1E90FF">BÁO CÁO CHI TIẾT</h1>
+			<h:outputStylesheet library="css" name="report.css"></h:outputStylesheet>
+			<h:form>
+				<div class="row">
+					<p:panel header="#{reportDetailBean.data.reportTitle}" style="margin-bottom: 20px; margin-left:280px; margin-right: 280px">
+						<div align="center">
+							<p:panelGrid>
+								<c:set var="reportDetail" value="#{reportDetailBean.data}" />
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<h:outputLabel value="Người gửi: " style="font-weight: bold"/>
+									</p:column>
+									<p:column style="border: none">
+										<h:outputLabel value="#{reportDetail.fullName}" />
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<h:outputText value="Tài khoản người gửi: " style="font-weight: bold"/>
+									</p:column>
+									<p:column style="border: none">
+										<h:outputLabel value="#{reportDetail.userName}" />
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<h:outputText value="Người nhận: " style="font-weight: bold"/>
+									</p:column>
+									<p:column style="border: none">
+										<h:outputText
+												value="Ban Quản trị trang web Carrier Trading Center" />
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<h:outputText value="Ngày gửi: " style="font-weight: bold"/>
+									</p:column>
+									<p:column style="border: none">
+										<h:outputLabel value="#{reportDetail.reportDate}" />
+									</p:column>
+								</p:row>
+								<p:row style="border: none"> 
+									<p:column style="border: none">
+										<h:outputText value="Câu hỏi từ người dùng: " style="font-weight: bold"/>
+									</p:column>
+									<p:column style="border: none">
+										<h:outputLabel value="#{reportDetail.reportQuestion}" />
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<h:outputText value="Mong muốn xử lý: " style="font-weight: bold"/>
+									</p:column>
+									<p:column style="border: none">
+										<h:outputLabel value="#{reportDetail.reportSolution}" />
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<h:outputText value="Nội dung: " style="font-weight: bold"/>
+									</p:column>
+									<p:column style="border: none">
+										<h:outputLabel value="#{reportDetail.reportContent}" />
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<h:outputText value="Trả lời từ Admin:" style="font-weight: bold"/>
+									</p:column>
+									<c:choose>
+										<c:when test="${not empty reportDetailBean.data.reportReply}">
+											<p:column style="border: none"><h:outputLabel value="#{reportDetail.reportReply}" /></p:column>
+										</c:when>
+										<c:otherwise>
+											<p:column style="border: none"><h:outputLabel value="Chưa có phản hồi" /></p:column>
+										</c:otherwise>
+									</c:choose>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<p:spacer width="10px" height="5px" />
+									</p:column>		
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none"></p:column>
+									<p:column style="border: none">
+									<div align="right">
+										<h:outputLink styleClass="goBackButton"
+												value="ListReportUser.xhtml">
+												<h:outputText value="Quay lại" />
+											</h:outputLink>
+									</div>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</div>
+					</p:panel>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

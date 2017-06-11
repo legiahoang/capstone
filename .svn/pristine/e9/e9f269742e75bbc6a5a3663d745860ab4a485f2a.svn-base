@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="vn.co.cex.orm.BillOfLading" table="billoflading">
+		<id name="id" type="java.lang.Integer">
+			<column name="Id" />
+			<generator class="identity" />
+		</id>
+		<property name="code" type="string">
+			<column name="Code" length="20" not-null="false" />
+		</property>
+		<many-to-one name="goodsType" class="vn.co.cex.orm.GoodsType"
+			lazy="false" fetch="select">
+			<column name="GoodsTypeId" not-null="true" />
+		</many-to-one>
+		<property name="goodsTypeId" type="int" insert="false"
+			update="false">
+			<column name="GoodsTypeId" not-null="true" />
+		</property>
+		<many-to-one name="packagedForm" class="vn.co.cex.orm.PackagedForm"
+			lazy="false" fetch="select">
+			<column name="PackagedFormId" not-null="false" />
+		</many-to-one>
+		<property name="packagedFormId" type="int" insert="false"
+			update="false">
+			<column name="PackagedFormId" not-null="false" />
+		</property>
+		<property name="goodsImage" type="string">
+			<column name="GoodsImage" not-null="false" />
+		</property>
+		<property name="weight" type="float">
+			<column name="Weight" not-null="true" />
+		</property>
+		<property name="volume" type="float">
+			<column name="Volume" not-null="true" />
+		</property>
+		<property name="quantity" type="int">
+			<column name="quantity" not-null="false" />
+		</property>
+		<property name="length" type="float">
+			<column name="Length" not-null="true" />
+		</property>
+		<property name="width" type="float">
+			<column name="Width" not-null="true" />
+		</property>
+		<property name="height" type="float">
+			<column name="Height" not-null="true" />
+		</property>
+		<property name="description" type="string">
+			<column name="Description" length="200" not-null="false" />
+		</property>
+		<property name="isFrozen" type="boolean">
+			<column name="IsFrozen" not-null="false" />
+		</property>
+		<property name="isFragile" type="boolean">
+			<column name="IsFragile" not-null="false" />
+		</property>
+		<property name="sender" type="string">
+			<column name="Sender" length="50" not-null="false" />
+		</property>
+		<property name="senderPhoneNumber" type="string">
+			<column name="SenderPhoneNumber" length="12" not-null="false" />
+		</property>
+		<property name="departureProvince" type="string">
+			<column name="DepartureProvince" length="50" not-null="true" />
+		</property>
+		<property name="departureDistrict" type="string">
+			<column name="DepartureDistrict" length="50" not-null="true" />
+		</property>
+		<property name="departureAddress" type="string">
+			<column name="DepartureAddress" length="100" not-null="true" />
+		</property>
+		<property name="departureCharacteristicPlace" type="string">
+			<column name="DepartureCharacteristicPlace" length="100" not-null="false" />
+		</property>
+		<property name="departureDate" type="timestamp">
+			<column name="DepartureDate" not-null="true" />
+		</property>
+		<property name="receiver" type="string">
+			<column name="Receiver" length="50" not-null="false" />
+		</property>
+		<property name="receiverPhoneNumber" type="string">
+			<column name="ReceiverPhoneNumber" length="12" not-null="false" />
+		</property>
+		<property name="arrivalProvince" type="string">
+			<column name="ArrivalProvince" length="50" not-null="true" />
+		</property>
+		<property name="arrivalDistrict" type="string">
+			<column name="ArrivalDistrict" length="50" not-null="true" />
+		</property>
+		<property name="arrivalAddress" type="string">
+			<column name="ArrivalAddress" length="100" not-null="true" />
+		</property>
+		<property name="arrivalCharacteristicPlace" type="string">
+			<column name="ArrivalCharacteristicPlace" length="100" not-null="false" />
+		</property>
+		<property name="arrivalDate" type="timestamp">
+			<column name="ArrivalDate" not-null="true" />
+		</property>
+		<property name="distance" type="float">
+			<column name="Distance" not-null="true" />
+		</property>
+		<property name="price" type="float">
+			<column name="Price" not-null="true" />
+		</property>
+		<property name="auctionPeriod" type="timestamp">
+			<column name="AuctionPeriod" not-null="true" />
+		</property>
+		<property name="status" type="int">
+			<column name="Status" not-null="true" />
+		</property>
+		<property name="notification" type="boolean">
+			<column name="Notification" default="false" not-null="true" />
+		</property>
+		<many-to-one name="user" class="vn.co.cex.orm.Users"
+			lazy="false" fetch="select">
+			<column name="CreatedUserId" not-null="false" />
+		</many-to-one>
+		<property name="createdUserId" type="int" insert="false"
+			update="false">
+			<column name="CreatedUserId" not-null="true" />
+		</property>
+		<property name="created" type="timestamp">
+			<column name="Created" not-null="false" />
+		</property>
+		<property name="modified" type="timestamp">
+			<column name="Modified" not-null="false" />
+		</property>
+		<set name="carrierAuction" table="carrierauction" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Id" not-null="true" />
+            </key>
+            <one-to-many class="vn.co.cex.orm.BillOfLading" />
+        </set>
+		<set name="comment" table="comment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Id" not-null="true" />
+            </key>
+            <one-to-many class="vn.co.cex.orm.BillOfLading" />
+        </set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Đăng hàng cần chuyển</ui:define>
+		<ui:define name="content">
+			<div class="post_billoflading">
+				<h2>ĐĂNG HÀNG CẦN CHUYỂN</h2>
+				<h:form id="post_billoflading_form" enctype="multipart/form-data">
+					<p:panelGrid styleClass="ui-noborder input_content"
+						id="input_content">
+						<p:row>
+							<p:column styleClass="label" colspan="2">
+								<h:outputLabel class="number" value="1" />
+								<h:outputLabel class="text" value="TỔNG QUAN" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:outputLabel value="Mã vận đơn" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:inputText value="#{postBillOfLadingBean.code}" maxlength="20" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Loại hàng (*):" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="Hình thức đóng gói (*):" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:selectOneMenu id="goodsTypeId" required="true"
+									requiredMessage="Chưa chọn loại hàng hóa." label="Loại hàng"
+									value="#{postBillOfLadingBean.goodsTypeId}">
+									<f:selectItem itemValue="" itemLabel="--select--" />
+									<f:selectItems value="#{goodsTypeBean.goodsTypeList}"
+										var="goodsTypeValue" itemLabel="#{goodsTypeValue.name}"
+										itemValue="#{goodsTypeValue.id}" />
+								</h:selectOneMenu>
+							</p:column>
+							<p:column>
+								<h:selectOneMenu id="packagedFormId" required="true"
+									requiredMessage="Chưa chọn hình thức đóng gói."
+									label="Hình thức đóng gói"
+									value="#{postBillOfLadingBean.packagedFormId}">
+									<f:selectItem itemValue="" itemLabel="--select--" />
+									<f:selectItems value="#{packagedFormBean.packagedFormList}"
+										var="packagedFormValue" itemLabel="#{packagedFormValue.name}"
+										itemValue="#{packagedFormValue.id}" />
+								</h:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:message for="goodsTypeId" style="color:red" />
+							</p:column>
+							<p:column>
+								<h:message for="packagedFormId" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="label" colspan="2">
+								<h:outputLabel class="number" value="2" />
+								<h:outputLabel class="text" value="THÔNG TIN LIÊN HỆ" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Họ và tên người gửi (*):" />
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Số điện thoại (*):" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:inputText id="senderId" required="true" maxlength="50"
+									requiredMessage="Chưa nhập tên người gửi."
+									value="#{postBillOfLadingBean.sender}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="senderPhoneNumberId" required="true"
+									maxlength="12"
+									requiredMessage="Chưa nhập số điện thoại người gửi."
+									validatorMessage="Số điện thoại người gửi không đúng."
+									value="#{postBillOfLadingBean.senderPhoneNumber}">
+									<f:validateRegex pattern="#{msg['pattern.regex.phone']}" />
+								</p:inputText>
+								<p:watermark for="senderPhoneNumberId" value="Phone number" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:message for="senderId" style="color:red" />
+							</p:column>
+							<p:column>
+								<h:message for="senderPhoneNumberId" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Họ và tên người nhận (*):" />
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Số điện thoại (*):" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:inputText id="receiverId" maxlength="50"
+									requiredMessage="Chưa nhập tên người nhận."
+									value="#{postBillOfLadingBean.receiver}" required="true" />
+							</p:column>
+							<p:column>
+								<p:inputText id="receiverPhoneNumberId" maxlength="12"
+									requiredMessage="Chưa nhập số điện thoại người nhận."
+									validatorMessage="Số điện thoại người nhận không đúng."
+									value="#{postBillOfLadingBean.receiverPhoneNumber}"
+									required="true">
+									<f:validateRegex pattern="#{msg['pattern.regex.phone']}" />
+								</p:inputText>
+								<p:watermark for="receiverPhoneNumberId" value="Phone number" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:message for="receiverId" style="color:red" />
+							</p:column>
+							<p:column>
+								<h:message for="receiverPhoneNumberId" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<!-- <div>
+									<p:gmap id="gmap" widgetVar="gmap" center="21.027823, 105.852298" zoom="5" 
+										type="ROADMAP" style="width:831px;height:400px">
+									</p:gmap>
+								</div> -->
+								<div id="map" style="width: 831px; height: 400px"></div>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="label" colspan="2">
+								<h:outputLabel class="number" value="3" />
+								<h:outputLabel class="text" value="THÔNG TIN VẬN CHUYỂN" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Địa điểm gửi (*):" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="Địa điểm nhận (*):" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:selectOneMenu id="departureProvince" required="true"
+									label="Địa điểm gửi" requiredMessage="Chưa chọn địa điểm gửi."
+									value="#{postBillOfLadingBean.departureProvince}">
+									<f:selectItem itemValue="" itemLabel="--select--" />
+									<f:selectItems value="#{provinceBean.provinceList}"
+										var="provinceValue" itemLabel="#{provinceValue.name}"
+										itemValue="#{provinceValue.code}" />
+									<p:ajax
+										listener="#{districtBean.getDistrictByProvinceCode(postBillOfLadingBean.departureProvince)}"
+										global="false" update="departureDistrict" event="change" />
+								</h:selectOneMenu>
+							</p:column>
+							<p:column>
+								<h:selectOneMenu id="arrivalProvince" required="true"
+									label="Địa điểm nhận"
+									requiredMessage="Chưa chọn địa điểm nhận."
+									value="#{postBillOfLadingBean.arrivalProvince}">
+									<f:selectItem itemValue="" itemLabel="--select--" />
+									<f:selectItems value="#{provinceBean.provinceList}"
+										var="provinceValue" itemLabel="#{provinceValue.name}"
+										itemValue="#{provinceValue.code}" />
+									<p:ajax
+										listener="#{districtBean.getDistrict2ByProvinceCode(postBillOfLadingBean.arrivalProvince)}"
+										global="false" update="arrivalDistrict" event="change" />
+								</h:selectOneMenu>
+								<script>
+									function initMap() {
+										var directionsService = new google.maps.DirectionsService;
+										var directionsDisplay = new google.maps.DirectionsRenderer;
+										var map = new google.maps.Map(document
+												.getElementById('map'), {
+											zoom : 7,
+											center : {
+												lat : 21.027823,
+												lng : 105.852298
+											}
+										});
+										directionsDisplay.setMap(map);
+
+										var onChangeHandler = function() {
+											calculateAndDisplayRoute(
+													directionsService,
+													directionsDisplay);
+										};
+										document
+												.getElementById(
+														'post_billoflading_form:departureProvince')
+												.addEventListener('change',
+														onChangeHandler);
+										document
+												.getElementById(
+														'post_billoflading_form:arrivalProvince')
+												.addEventListener('change',
+														onChangeHandler);
+									}
+
+									function calculateAndDisplayRoute(
+											directionsService,
+											directionsDisplay) {
+										directionsService
+												.route(
+														{
+															origin : $(
+																	'#post_billoflading_form\\:departureProvince option:selected')
+																	.text(),
+															destination : $(
+																	'#post_billoflading_form\\:arrivalProvince option:selected')
+																	.text(),
+															travelMode : 'DRIVING'
+														},
+														function(response,
+																status) {
+															if (status === 'OK') {
+																directionsDisplay
+																		.setDirections(response);
+															} else {
+																//window.alert('Directions request failed due to ' + status);
+															}
+														});
+									}
+								</script>
+								<script
+									src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEl3Raenpjz-dxTCiLS3LWewPMgKfRU0w=&amp;callback=initMap">
+									
+								</script>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:message for="departureProvince" style="color:red" />
+							</p:column>
+							<p:column>
+								<h:message for="arrivalProvince" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Đi từ quận/huyện (*):" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="Đến quận/huyện (*):" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:selectOneMenu id="departureDistrict" label="Quận/huyện"
+									requiredMessage="Chưa chọn Quận/huyện nơi gửi."
+									value="#{postBillOfLadingBean.departureDistrict}">
+									<f:selectItem itemValue="" itemLabel="--select--" />
+									<f:selectItems value="#{districtBean.districtList}"
+										var="districtValue" itemLabel="#{districtValue.name}"
+										itemValue="#{districtValue.name}" />
+								</h:selectOneMenu>
+							</p:column>
+							<p:column>
+								<h:selectOneMenu id="arrivalDistrict" label="Quận/huyện"
+									requiredMessage="Chưa chọn Quận/huyện nơi gửi."
+									value="#{postBillOfLadingBean.arrivalDistrict}">
+									<f:selectItem itemValue="" itemLabel="--select--" />
+									<f:selectItems value="#{districtBean.districtList2}"
+										var="districtValue2" itemLabel="#{districtValue2.name}"
+										itemValue="#{districtValue2.name}" />
+								</h:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:message for="departureDistrict" style="color:red" />
+							</p:column>
+							<p:column>
+								<h:message for="arrivalDistrict" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Địa chỉ nơi gửi (*):" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="Địa chỉ nơi nhận (*):" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:inputText maxlength="100" id="departureAddress"
+									required="true" label="Địa chỉ nơi gửi"
+									requiredMessage="Chưa nhập địa chỉ nơi gửi."
+									value="#{postBillOfLadingBean.departureAddress}" />
+							</p:column>
+							<p:column>
+								<p:inputText maxlength="100" id="arrivalAddress" required="true"
+									label="Địa chỉ nơi nhận"
+									requiredMessage="Chưa nhập địa chỉ nơi nhận."
+									value="#{postBillOfLadingBean.arrivalAddress}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:message for="departureAddress" style="color:red" />
+							</p:column>
+							<p:column>
+								<h:message for="arrivalAddress" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Đặc điểm nơi gửi:" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="Đặc điểm nơi nhận:" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:inputText maxlength="100" id="departureCharacteristicPlace"
+									label="Đặc điểm nơi gửi"
+									value="#{postBillOfLadingBean.departureCharacteristicPlace}" />
+							</p:column>
+							<p:column>
+								<p:inputText maxlength="100" id="arrivalCharacteristicPlace"
+									label="Đặc điểm nơi nhận"
+									value="#{postBillOfLadingBean.arrivalCharacteristicPlace}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:message for="departureCharacteristicPlace" style="color:red" />
+							</p:column>
+							<p:column>
+								<h:message for="arrivalCharacteristicPlace" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Ngày gửi (*):" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="Ngày nhận (*):" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:calendar pattern="dd/MM/yyyy HH:mm:ss" label="Ngày đi"
+									id="departureDate" required="true"
+									requiredMessage="Chưa nhập ngày gửi."
+									validatorMessage="Thời gian không hợp lệ."
+									value="#{postBillOfLadingBean.departureDate}"
+									mindate="#{postBillOfLadingBean.currentDate}" />
+							</p:column>
+							<p:column>
+								<p:calendar pattern="dd/MM/yyyy HH:mm:ss" label="Ngày đến"
+									requiredMessage="Chưa nhập ngày nhận." 
+									validatorMessage="Thời gian không hợp lệ." id="arrivalDate"
+									required="true" value="#{postBillOfLadingBean.arrivalDate}"
+									mindate="#{postBillOfLadingBean.currentDate}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:message for="departureDate" style="color:red" />
+							</p:column>
+							<p:column>
+								<h:message for="arrivalDate" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:outputLabel value="Quảng đường (km) (*): " />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<pe:inputNumber maxlength="10" id="distance" label="Quảng đường"
+									required="true" requiredMessage="Chưa nhập quảng đường."
+									value="#{postBillOfLadingBean.distance}">
+								</pe:inputNumber>
+								<p:watermark for="distance" value="(km)" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:message for="distance" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="label" colspan="2">
+								<h:outputLabel class="number" value="4" />
+								<h:outputLabel class="text" value="THÔNG TIN HÀNG HÓA" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Khối lượng (kg) (*):" />
+							</p:column>
+							<p:column>
+								<h:outputLabel value="Số lượng: " />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<pe:inputNumber maxlength="10" id="weight" required="true"
+									label="Khối lượng" requiredMessage="Chưa nhập khối lượng."
+									value="#{postBillOfLadingBean.weight}" />
+								<p:watermark for="weight" value="(kg)" />
+							</p:column>
+							<p:column>
+								<pe:inputNumber maxlength="10" id="quantity" label="Số lượng"
+									value="#{postBillOfLadingBean.quantity}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:message for="weight" style="color:red" />
+							</p:column>
+							<p:column>
+								<h:message for="quantity" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<div class="info">
+									<h:outputLabel value="Dài (*): " />
+									<pe:inputNumber maxlength="10" styleClass="volume_input"
+										id="length" value="#{postBillOfLadingBean.length}"
+										required="true" requiredMessage="Chưa nhập chiều dài." />
+									<p:watermark for="length" value="(m)" />
+								</div>
+								<div class="info">
+									<h:outputLabel value="Rộng (*): " />
+									<pe:inputNumber maxlength="10" styleClass="volume_input"
+										id="width" value="#{postBillOfLadingBean.width}"
+										required="true" requiredMessage="Chưa nhập chiều rộng." />
+									<p:watermark for="width" value="(m)" />
+								</div>
+								<div class="info">
+									<h:outputLabel value=" Cao(*): " />
+									<pe:inputNumber maxlength="10" styleClass="volume_input"
+										id="height" value="#{postBillOfLadingBean.height}"
+										required="true" requiredMessage="Chưa nhập chiều cao." />
+									<p:watermark for="height" value="(m)" />
+								</div>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:message for="length" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:message for="width" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:message for="height" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row styleClass="input_frozen">
+							<p:column>
+								<h:outputLabel value="Hàng đông lạnh" />
+								<h:selectBooleanCheckbox
+									value="#{postBillOfLadingBean.isFrozen}" />
+							</p:column>
+						</p:row>
+						<p:row styleClass="input_fragile">
+							<p:column>
+								<h:outputLabel value="Hàng dễ vỡ" />
+								<h:selectBooleanCheckbox
+									value="#{postBillOfLadingBean.isFragile}" />
+							</p:column>
+						</p:row>
+						<p:row id="uploaded_file_image">
+							<p:column>
+								<p:outputLabel value="Hình ảnh: " />
+								<p:fileUpload id="upload_file"
+									value="#{postBillOfLadingBean.file}"
+									fileUploadListener="#{postBillOfLadingBean.uploadGoodsImage}"
+									mode="advanced" skinSimple="true" auto="true"
+									allowTypes="/(\.|\/)(gif|jpe?g|png)$/" multiple="false"
+									sizeLimit="1000000" update="uploaded_file_image">
+									<p:graphicImage value="#{getGoodsImagesBean.goodsImage}"
+										height="80" width="80"
+										rendered="#{postBillOfLadingBean.fileName != null}">
+										<f:param name="goodsImageId"
+											value="#{postBillOfLadingBean.fileName}" />
+									</p:graphicImage>
+								</p:fileUpload>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:growl id="messages" showDetail="false" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:outputLabel value="Mô tả" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:editor id="editor" widgetVar="editorWidget" width="825"
+									maxlength="200" value="#{postBillOfLadingBean.description}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="label" colspan="2">
+								<h:outputLabel class="number" value="5" />
+								<h:outputLabel class="text" value="THÔNG TIN ĐẤU GIÁ" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:outputLabel value="Giá đề xuất (*) (VNĐ):" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<pe:inputNumber maxlength="10" id="price" required="true"
+									requiredMessage="Chưa nhập giá đề xuất." label="Giá đề xuất"
+									value="#{postBillOfLadingBean.price}" />
+								<p:watermark for="price" value="(VNĐ)" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:message for="price" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:outputLabel value="Thời gian kết thúc đấu giá (*):" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:calendar pattern="dd/MM/yyyy HH:mm:ss" id="auctionPeriod"
+									required="true" mindate="#{postBillOfLadingBean.currentDate}"
+									requiredMessage="Chưa nhập thời gian kết thúc đấu giá."
+									validatorMessage="Thời gian không hợp lệ."
+									label="Thời gian kết thúc đấu giá"
+									value="#{postBillOfLadingBean.auctionPeriod}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<h:message for="auctionPeriod" style="color:red" />
+							</p:column>
+						</p:row>
+						<p:row styleClass="btn_control_post">
+							<p:column colspan="2">
+								<p:commandButton value="Đăng kí" icon="ui-icon-disk"
+									action="#{postBillOfLadingBean.postBillOfLading}"
+									update="post_billoflading_form"
+									oncomplete="if(!args.validationFailed) PF('post_message_dlg').show()" />
+
+								<p:commandButton value="Hủy bỏ" icon="ui-icon-close"
+									onclick="history.go(-1); return false;" />
+
+								<p:dialog header="Thông báo" widgetVar="post_message_dlg"
+									id="post_message_dlg" resizable="false" modal="true">
+									<p:panelGrid styleClass="ui-noborder">
+										<p:row>
+											<p:column>
+												<h:outputText value="Đăng hàng thành công!"
+													rendered="#{postBillOfLadingBean.postStatus == 1}" />
+												<h:outputText value="Đăng hàng thất bại!"
+													rendered="#{postBillOfLadingBean.postStatus == 0}" />
+												<h:outputText value="Số dư tài khoản của bạn không đủ!"
+													rendered="#{postBillOfLadingBean.postStatus == -1}" />
+											</p:column>
+										</p:row>
+										<p:row rendered="#{postBillOfLadingBean.postStatus != -1}">
+											<p:column style="text-align: center">
+												<p:commandButton value="OK" immediate="true"
+													action="#{postBillOfLadingBean.gotoListBillOfLading}" />
+											</p:column>
+										</p:row>
+										<p:row rendered="#{postBillOfLadingBean.postStatus == -1}">
+											<p:column style="text-align: center">
+												<p:commandButton value="Tiếp tục" immediate="true"
+													onclick="PF('post_message_dlg').hide();" />
+												<p:commandButton value="Hủy bỏ" immediate="true"
+													action="#{postBillOfLadingBean.gotoListBillOfLading}" />
+												<p:commandButton value="Nạp tiền"
+													action="#{nganLuongBean.sentRequest}">
+												</p:commandButton>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+								</p:dialog>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<br />
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

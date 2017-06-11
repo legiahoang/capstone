@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Chi tiết vận đơn</ui:define>
+		<ui:define name="content">
+			<meta http-equiv="refresh" content="180" />
+			<c:set var="billoflading" value="#{billOfLadingDetailBean.data}" />
+			<c:set var="user" value="#{billOfLadingDetailBean.user}" />
+			<h:form id="auction_form">
+				<div>
+					<div>
+						<div class="right">
+							<div id="map" style="width: 100%; height: 700px"></div>
+							<script>
+								      function initMap() {
+								        var directionsService = new google.maps.DirectionsService;
+								        var directionsDisplay = new google.maps.DirectionsRenderer;
+								        var map = new google.maps.Map(document.getElementById('map'), {
+								          zoom: 7,
+								          center: {lat: 41.381542, lng: 2.122893}
+								        });
+								        directionsDisplay.setMap(map);
+								        
+								        directionsService.route({
+									          origin: '#{billoflading.departureProvince}',
+									          destination: '#{billoflading.arrivalProvince}',
+									          travelMode: 'DRIVING'
+									        }, function(response, status) {
+									          if (status === 'OK') {
+									            directionsDisplay.setDirections(response);
+									          } else {
+									            window.alert('Directions request failed due to ' + status);
+									          }
+									        });
+								      }
+    							</script>
+							<script
+								src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEl3Raenpjz-dxTCiLS3LWewPMgKfRU0w=&amp;callback=initMap">
+							    </script>
+						</div>
+						<div class="left">
+							<h1>CHI TIẾT ĐƠN HÀNG</h1>
+							<p:panelGrid styleClass="goods_information">
+								<p:row style="background: cornflowerblue">
+									<p:column colspan="2">
+										<p:outputLabel value="THÔNG TIN HÀNG HÓA CẦN VẬN CHUYỂN" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column colspan="2">
+										<p:outputLabel
+											value="Khởi hành: #{billoflading.departureDistrict}, 
+												#{billoflading.departureProvince}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column colspan="2">
+										<p:outputLabel
+											value="Đích đến: #{billoflading.arrivalDistrict}, 
+												#{billoflading.arrivalProvince}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Mã vận đơn" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.code}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Người gửi:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.sender}"
+											rendered="#{billOfLadingDetailBean.isViewShipment}" />
+										<p:outputLabel value="Thông tin này tạm ẩn"
+											style="color: orange"
+											rendered="#{billOfLadingDetailBean.isViewShipment == false}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Điện thoại người gửi:" />
+
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.senderPhoneNumber}"
+											rendered="#{billOfLadingDetailBean.isViewShipment}" />
+										<p:outputLabel value="Thông tin này tạm ẩn"
+											style="color: orange"
+											rendered="#{billOfLadingDetailBean.isViewShipment == false}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Ngày đăng:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.created}">
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+										</p:outputLabel>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Hạn gửi hàng:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.departureDate}">
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+										</p:outputLabel>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Đặc điểm nơi gửi:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel
+											value="#{billoflading.departureCharacteristicPlace}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Người nhận:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.receiver}"
+											rendered="#{billOfLadingDetailBean.isViewShipment}" />
+										<p:outputLabel value="Thông tin này tạm ẩn"
+											style="color: orange"
+											rendered="#{billOfLadingDetailBean.isViewShipment == false}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Điện thoại người nhận:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.receiverPhoneNumber}"
+											rendered="#{billOfLadingDetailBean.isViewShipment}" />
+										<p:outputLabel value="Thông tin này tạm ẩn"
+											style="color: orange"
+											rendered="#{billOfLadingDetailBean.isViewShipment == false}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Hạn nhận hàng:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.arrivalDate}">
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+										</p:outputLabel>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Đặc điểm nơi nhận:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel
+											value="#{billoflading.arrivalCharacteristicPlace}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Loại hàng:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.goodsTypeName}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Cách đóng gói:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.packagedFormName}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Khối lượng (kg):" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.weight}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Số lượng:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.quantity}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Kích thước (m):" />
+									</p:column>
+									<p:column>
+										<p:outputLabel
+											value="#{billoflading.length} x 
+											#{billoflading.width} x #{billoflading.height} " />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Ghi chú:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.description}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Hạn đấu thầu:" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.auctionPeriod}">
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+										</p:outputLabel>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Giá tham chiếu (VNĐ):" />
+									</p:column>
+									<p:column>
+										<p:outputLabel value="#{billoflading.price}">
+											<f:convertNumber pattern="###,###" />
+										</p:outputLabel>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<p:outputLabel value="Trạng thái:" />
+									</p:column>
+									<p:column>
+										<c:choose>
+											<c:when test="#{billoflading.status == 1}">
+												<p:outputLabel value="ĐANG ĐẤU THẦU" style="color: orange" />
+											</c:when>
+											<c:when test="#{billoflading.status == 2}">
+												<p:outputLabel value="ĐẤU THẦU THÀNH CÔNG"
+													style="color: green" />
+											</c:when>
+											<c:when test="#{billoflading.status == 3}">
+												<p:outputLabel value="HOÀN TẤT GIAO DỊCH"
+													style="color: blue" />
+											</c:when>
+											<c:when test="#{billoflading.status == 4}">
+												<p:outputLabel value="ĐẤU THẦU THẤT BẠI" style="color: red" />
+											</c:when>
+											<c:when test="#{billoflading.status == 5}">
+												<p:outputLabel value="CHỦ HÀNG HỦY GIAO DỊCH"
+													style="color: red" />
+											</c:when>
+											<c:when test="#{billoflading.status == 6}">
+												<p:outputLabel value="CHỦ XE HỦY GIAO DỊCH"
+													style="color: red" />
+											</c:when>
+										</c:choose>
+									</p:column>
+								</p:row>
+								<c:choose>
+									<c:when
+										test="#{user.role == 2 and billOfLadingDetailBean.isGoodsOwner}">
+										<c:choose>
+											<c:when
+												test="#{billoflading.status == 1 or billoflading.status == 2}">
+												<p:row>
+													<p:column colspan="2">
+														<p:commandButton value="HỦY GIAO DỊCH"
+															style="width: 100%; color: red"
+															action="#{billOfLadingDetailBean.goodsOwnerCancelAuction}"
+															update="auction_form">
+															<p:confirm header="Xác nhận"
+																message="Hủy giao dịch bạn sẽ bị mất tiền phí?"
+																icon="fa fa-question-circle" />
+														</p:commandButton>
+													</p:column>
+												</p:row>
+											</c:when>
+										</c:choose>
+									</c:when>
+									<c:when test="#{user.role == 3}">
+										<c:choose>
+											<c:when
+												test="#{billOfLadingDetailBean.auctionData == null and billoflading.status == 1}">
+												<p:row>
+													<p:column colspan="2">
+														<p:commandButton value="ĐẤU THẦU"
+															onclick="PF('dlg').show();" type="button"
+															style="width: 100%" />
+														<p:dialog header="Đấu giá" widgetVar="dlg" dynamic="true"
+															resizable="false" modal="true">
+															<p:panelGrid>
+																<p:row>
+																	<p:column>
+																		<p:outputLabel value="Giá trần (VNĐ): " />
+																	</p:column>
+																	<p:column>
+																		<p:outputLabel value="#{billoflading.price}">
+																			<f:convertNumber pattern="###,###" />
+																		</p:outputLabel>
+																	</p:column>
+																</p:row>
+																<p:row>
+																	<p:column>
+																		<p:outputLabel value="Phí dịch vụ (VNĐ): " />
+																	</p:column>
+																	<p:column>
+																		<p:outputLabel value="10,000" />
+																	</p:column>
+																</p:row>
+																<p:row>
+																	<p:column>
+																		<p:outputLabel value="Tiền đặt cọc (VNĐ): " />
+																	</p:column>
+																	<p:column>
+																		<p:outputLabel value="10% Giá đấu thầu" />
+																	</p:column>
+																</p:row>
+																<p:row>
+																	<p:column>
+																		<p:outputLabel value="GIÁ ĐẤU THẦU: " />
+																	</p:column>
+																	<p:column>
+																		<pe:inputNumber required="true" id="auctionPrice"
+																			value="#{billOfLadingDetailBean.auctionPrice}"
+																			maxValue="#{billoflading.price}"
+																			requiredMessage="Chưa nhập giá đấu thầu" />
+																		<h:message for="auctionPrice" style="color:red" />
+																	</p:column>
+																</p:row>
+																<p:row>
+																	<p:column colspan="2">
+																		<p:commandButton value="XÁC NHẬN"
+																			onclick="PF('dlg').hide();"
+																			actionListener="#{billOfLadingDetailBean.auction(billoflading.id)}"
+																			update="auction_form" style="width: 49%" />
+																		<p:commandButton value="HỦY BỎ" style="width: 49%"
+																			onclick="PF('dlg').hide();" />
+																	</p:column>
+																</p:row>
+															</p:panelGrid>
+														</p:dialog>
+														<p:dialog header="Thông báo"
+															widgetVar="auction_message_dlg" resizable="false"
+															modal="true">
+															<p:panelGrid styleClass="ui-noborder">
+																<p:row>
+																	<p:column>
+																		<h:outputText
+																			value="Số dư tài khoản của bạn không đủ!" />
+																	</p:column>
+																</p:row>
+																<p:row>
+																	<p:column style="text-align: center">
+																		<p:commandButton value="Tiếp tục" immediate="true"
+																			onclick="PF('auction_message_dlg').hide();" />
+																		<p:commandButton value="Nạp tiền"
+																			action="#{nganLuongBean.sentRequest}">
+																		</p:commandButton>
+																	</p:column>
+																</p:row>
+															</p:panelGrid>
+														</p:dialog>
+													</p:column>
+												</p:row>
+											</c:when>
+											<c:when
+												test="#{billOfLadingDetailBean.auctionData != null and (billOfLadingDetailBean.auctionData.status == 1 or billOfLadingDetailBean.auctionData.status == 2)}">
+												<p:row>
+													<p:column colspan="2">
+														<p:commandButton value="HỦY ĐẤU THẦU"
+															styleClass="carrier_cancel"
+															action="#{billOfLadingDetailBean.carrierCancelAuction}"
+															update="auction_form" style="width: 100%; background:red">
+															<p:confirm header="Xác nhận"
+																message="Hủy đấu thầu bạn sẽ bị mất tiền phí?"
+																icon="fa fa-question-circle" />
+														</p:commandButton>
+													</p:column>
+												</p:row>
+											</c:when>
+										</c:choose>
+									</c:when>
+								</c:choose>
+							</p:panelGrid>
+						</div>
+					</div>
+
+					<!-- CarrierAuction Information -->
+					<c:choose>
+						<c:when test="#{user.role == 1}">
+							<div id="admin_view_carrier_auction">
+								<h1>DANH SÁCH CHỦ XE ĐẤU THẦU</h1>
+								<p:dataTable binding="#{table_carrier_auction_list}"
+									value="#{billOfLadingDetailBean.auctionDataList}"
+									var="item_auction" styleClass="admin_view_carrier_auction">
+									<p:column headerText="STT" width="5%">
+										<h:outputText
+											value="#{table_carrier_auction_list.rowIndex + 1}"
+											title="STT" />
+									</p:column>
+									<p:column headerText="Tên Chủ xe">
+										<h:outputText value="#{item_auction.carrierFullName}" />
+									</p:column>
+									<p:column headerText="Email">
+										<h:outputText value="#{item_auction.carrierEmail}" />
+									</p:column>
+									<p:column headerText="Điện thoại">
+										<h:outputText value="#{item_auction.carrierPhoneNumber}" />
+									</p:column>
+									<p:column headerText="Ngày đấu thầu">
+										<p:outputLabel value="#{item_auction.auctionDate}">
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+										</p:outputLabel>
+									</p:column>
+									<p:column headerText="Giá thầu">
+										<p:outputLabel value="#{item_auction.auctionPrice}">
+											<f:convertNumber pattern="###,###" />
+										</p:outputLabel>
+										<h:outputText value="(VNĐ)" />
+									</p:column>
+									<p:column headerText="Trạng thái">
+										<p:outputLabel value="ĐANG ĐẤU THẦU" style="color: orange"
+											rendered="#{item_auction.status == 1}" />
+										<p:outputLabel value="ĐẤU THẦU THÀNH CÔNG"
+											style="color: green" rendered="#{item_auction.status == 2}" />
+										<p:outputLabel value="HOÀN TẤT GIAO DỊCH" style="color: blue"
+											rendered="#{item_auction.status == 3}" />
+										<p:outputLabel value="ĐẤU THẦU THẤT BẠI" style="color: red"
+											rendered="#{item_auction.status == 4}" />
+										<p:outputLabel value="CHỦ HÀNG HỦY GIAO DỊCH"
+											style="color: red" rendered="#{item_auction.status == 5}" />
+										<p:outputLabel value="CHỦ XE HỦY GIAO DỊCH" style="color: red"
+											rendered="#{item_auction.status == 6}" />
+									</p:column>
+								</p:dataTable>
+							</div>
+						</c:when>
+						<c:when
+							test="#{user.role == 2 and billOfLadingDetailBean.auctionDataSuccess != null and billOfLadingDetailBean.isGoodsOwner}">
+							<div id="carrier_info">
+								<p:panelGrid styleClass="carrier_info">
+									<p:row style="background: cornflowerblue">
+										<p:column colspan="2">
+											<p:outputLabel value="THÔNG TIN NHÀ THẦU" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel value="Tên nhà thầu: " />
+										</p:column>
+										<p:column>
+											<p:outputLabel
+												value="#{billOfLadingDetailBean.auctionDataSuccess.carrierFullName}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel value="Email: " />
+										</p:column>
+										<p:column>
+											<p:outputLabel
+												value="#{billOfLadingDetailBean.auctionDataSuccess.carrierEmail}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel value="Số điện thoại: " />
+										</p:column>
+										<p:column>
+											<p:outputLabel
+												value="#{billOfLadingDetailBean.auctionDataSuccess.carrierPhoneNumber}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel value="Giá đấu thầu (VNĐ)" />
+										</p:column>
+										<p:column>
+											<p:outputLabel
+												value="#{billOfLadingDetailBean.auctionDataSuccess.auctionPrice}">
+												<f:convertNumber pattern="###,###" />
+											</p:outputLabel>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+								<p:commandButton value="ĐÃ NHẬN HÀNG"
+									styleClass="confirm_delivery"
+									action="#{billOfLadingDetailBean.confirmCompleted}"
+									update="auction_form"
+									rendered="#{billoflading.status == 2 and billOfLadingDetailBean.auctionDataSuccess.status == 3}">
+									<p:confirm header="Xác nhận" message="Xác nhận đã nhận hàng?"
+										icon="fa fa-question-circle" />
+								</p:commandButton>
+							</div>
+						</c:when>
+						<c:when
+							test="#{user.role == 3 and billOfLadingDetailBean.auctionData != null}">
+							<c:set value="#{billOfLadingDetailBean.auctionData}"
+								var="auction_data" />
+							<div id="your_auction_info">
+								<p:panelGrid styleClass="your_auction_info">
+									<p:row style="background: cornflowerblue">
+										<p:column colspan="2">
+											<p:outputLabel value="THÔNG TIN ĐẤU THẦU CỦA BẠN" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel value="Giá đấu thầu (VNĐ)" />
+										</p:column>
+										<p:column>
+											<p:outputLabel value="#{auction_data.auctionPrice}">
+												<f:convertNumber pattern="###,###" />
+											</p:outputLabel>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel value="Thời gian đấu thầu" />
+										</p:column>
+										<p:column>
+											<p:outputLabel value="#{auction_data.auctionDate}">
+												<f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+											</p:outputLabel>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column>
+											<p:outputLabel value="Trạng thái: " />
+										</p:column>
+										<p:column>
+											<c:choose>
+												<c:when test="#{auction_data.status == 1}">
+													<p:outputLabel value="ĐANG ĐẤU THẦU" style="color: orange" />
+												</c:when>
+												<c:when test="#{auction_data.status == 2}">
+													<p:outputLabel value="ĐẤU THẦU THÀNH CÔNG"
+														style="color: green" />
+												</c:when>
+												<c:when test="#{auction_data.status == 3}">
+													<p:outputLabel value="HOÀN TẤT GIAO DỊCH"
+														style="color: blue" />
+												</c:when>
+												<c:when test="#{auction_data.status == 4}">
+													<p:outputLabel value="ĐẤU THẦU THẤT BẠI" style="color: red" />
+												</c:when>
+												<c:when test="#{auction_data.status == 5}">
+													<p:outputLabel value="CHỦ HÀNG HỦY GIAO DỊCH"
+														style="color: red" />
+												</c:when>
+												<c:when test="#{auction_data.status == 6}">
+													<p:outputLabel value="CHỦ XE HỦY GIAO DỊCH"
+														style="color: red" />
+												</c:when>
+											</c:choose>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+								<p:commandButton value="ĐÃ GIAO HÀNG"
+									styleClass="confirm_delivery"
+									action="#{billOfLadingDetailBean.confirmCompleted}"
+									update="auction_form" rendered="#{auction_data.status == 2}">
+									<p:confirm header="Xác nhận" message="Xác nhận đã giao hàng?"
+										icon="fa fa-question-circle" />
+								</p:commandButton>
+							</div>
+						</c:when>
+					</c:choose>
+				</div>
+				<!-- End CarrierAuction Information -->
+				<!-- <p:poll interval="5"
+					listener="#{billOfLadingDetailBean.updateComment}" 
+					update="refresh_question_answer"/> -->
+				<h:panelGroup id="refresh_question_answer"
+					rendered="#{billOfLadingDetailBean.isViewShipment}">
+					<div class="question_answer">
+
+						<div class="question_answer_title">
+							<div class="question_answer_title_name">HỎI ĐÁP
+								(#{billOfLadingDetailBean.comments.size()})</div>
+						</div>
+						<h:inputHidden
+							value="#{billOfLadingDetailBean.contentAnswerComment}"
+							id="hd_content_answer_comment" />
+						<div class="question_answer_content">
+							<c:forEach items="#{billOfLadingDetailBean.comments}" var="cmt">
+								<div class="comment_item">
+									<div class="question_answer_content_comment">
+										<p>
+											<p:graphicImage value="#{getUserAvatarBean.userAvatar}"
+												height="20" width="20">
+												<f:param name="userAvatarId"
+													value="#{billOfLadingDetailBean.user.userAvatar}" />
+											</p:graphicImage>
+											<p:outputLabel value="#{cmt.userFullName}"
+												styleClass="comment_user_name" />
+											<p:outputLabel value="#{cmt.created}"
+												styleClass="comment_time">
+												<f:convertDateTime pattern="HH:mm:ss dd.MM.yyyy" />
+											</p:outputLabel>
+										</p>
+										<p>
+											<p:outputLabel value="#{cmt.content}"
+												styleClass="comment_content" />
+										</p>
+									</div>
+									<div class="answer_comment">
+										<c:forEach items="#{cmt.answerComment}" var="ans_cmt">
+											<div>
+												<p>
+													<p:graphicImage value="#{getUserAvatarBean.userAvatar}"
+														height="20" width="20">
+														<f:param name="userAvatarId"
+															value="#{billOfLadingDetailBean.user.userAvatar}" />
+													</p:graphicImage>
+													<p:outputLabel value="#{ans_cmt.userFullName}"
+														styleClass="answer_comment_user_name" />
+													<p:outputLabel value="#{ans_cmt.created}"
+														styleClass="answer_comment_time">
+														<f:convertDateTime pattern="HH:mm:ss dd.MM.yyyy" />
+													</p:outputLabel>
+												</p>
+												<p>
+													<p:outputLabel value="#{ans_cmt.content}"
+														styleClass="answer_comment_content" />
+												</p>
+											</div>
+										</c:forEach>
+										<div class="reply_btn">
+											<i class="fa fa-comments">&nbsp;</i><a
+												href="javascript: void(0)"
+												onclick="showReplyCommentBox(#{cmt.id});">Trả lời</a>
+										</div>
+										<div id="reply_comment_box#{cmt.id}" class="reply_comment_box"
+											style="display: none">
+											<div class="image">
+												<p:graphicImage value="#{getUserAvatarBean.userAvatar}">
+													<f:param name="userAvatarId"
+														value="#{billOfLadingDetailBean.user.userAvatar}" />
+												</p:graphicImage>
+											</div>
+											<div class="input">
+												<div>
+													<h:inputText onchange="answerComment(this)" />
+												</div>
+											</div>
+
+											<p:commandButton icon="fa fa-paper-plane"
+												styleClass="btn_answer_comment"
+												actionListener="#{billOfLadingDetailBean.writeAnswerComment(cmt.id)}"
+												update="auction_form" />
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+						<div class="question_answer_comment_input">
+							<div class="image">
+								<p:graphicImage value="#{getUserAvatarBean.userAvatar}">
+									<f:param name="userAvatarId"
+										value="#{billOfLadingDetailBean.user.userAvatar}" />
+								</p:graphicImage>
+							</div>
+							<div class="input">
+								<p:inputText styleClass="input_comment"
+									value="#{billOfLadingDetailBean.contentComment}" />
+							</div>
+							<p:commandButton icon="fa fa-paper-plane"
+								actionListener="#{billOfLadingDetailBean.writeComment}"
+								update="auction_form" />
+						</div>
+					</div>
+				</h:panelGroup>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="XÁC NHẬN" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="HỦY BỎ" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

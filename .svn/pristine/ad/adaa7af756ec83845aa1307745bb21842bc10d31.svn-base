@@ -1,0 +1,31 @@
+package vn.co.cex.bean;
+
+import java.io.IOException;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
+import vn.co.cex.utils.FileUtils;
+
+@ManagedBean(name = "getGoodsImagesBean")
+public class GetGoodsImagesBean extends BaseBean {
+
+	public StreamedContent getGoodsImage() throws IOException {
+
+		FacesContext context = FacesContext.getCurrentInstance();
+		if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+			return new DefaultStreamedContent();
+		} else {
+			String imageFile = context.getExternalContext().getRequestParameterMap().get("goodsImageId");
+			String filePath = "C:\\root\\goodsimages\\";
+			if (imageFile != null && !imageFile.equals("")) {
+				filePath += imageFile;
+			} else {
+				filePath += "no-goods-image.PNG";
+			}
+			return FileUtils.downloadFileImg(filePath);
+		}
+	}
+}

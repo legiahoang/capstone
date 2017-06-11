@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 28, 2015 9:41:06 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+	<class name="vn.co.cex.orm.Province" table="province">
+		<id name="id" type="java.lang.Integer">
+			<column name="Id" />
+			<generator class="identity" />
+		</id>
+		<property name="code" type="string">
+			<column name="Code" length="10" unique="true" index="PROVINCE_CODE_INDEX"
+				not-null="true" />
+		</property>
+		<property name="name" type="string">
+			<column name="Name" length="50" not-null="true" />
+		</property>
+		<property name="type" type="string">
+			<column name="Type" length="20" not-null="false" />
+		</property>
+		<set name="district" table="district" inverse="true" lazy="true"
+			fetch="select">
+			<key>
+				<column name="Code" not-null="true" />
+			</key>
+			<one-to-many class="vn.co.cex.orm.Province" />
+		</set>
+	</class>
+</hibernate-mapping>

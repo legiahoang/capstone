@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+	<ui:define name="title">Bảng chi phí thực hiện giao dịch</ui:define>
+
+	<ui:define name="content">
+		<div align="center">
+			<h:form id="form">
+				<p:growl id="msgs" showDetail="true" />
+				<h1 align="center">BẢNG GIÁ THAM CHIẾU CHI PHÍ VẬN CHUYỂN</h1>
+				<div class="table_content">
+					<p:dataTable value="#{referencePriceBean.goodsTypeList}"
+						var="goodsType" binding="#{table}" paginator="true"
+						paginatorPosition="bottom" rowIndexVar="index">
+						<p:column headerText="STT" width="5%">#{index + 1}</p:column>
+						<p:column headerText="Loại hàng">
+							<h:outputText value="#{goodsType.name}" />
+						</p:column>
+						<p:column headerText="Khối lượng">
+							<h:outputText value="100 (kg)" />
+						</p:column>
+						<p:column headerText="Quảng đường">
+							<h:outputText value="10 (km)" />
+						</p:column>
+						<p:column headerText="Giá tham chiếu (VNĐ)">
+							<h:outputText value="#{goodsType.referencePrice}">
+								<f:convertNumber pattern="###,###" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="EDIT" width="5%"
+								rendered="#{loginBean.role == 1}">
+								<h:outputLink value="EditReferencePrice.xhtml">
+									<f:param name="id" value="#{goodsType.id}" />
+									<i class="fa fa-edit" style="color: red"/>
+								</h:outputLink>
+							</p:column>
+					</p:dataTable>
+				</div>
+				<div class="row">
+					<div class="table_content">
+						<p>Dưới đây là bảng giá cước tham khảo theo mặt bằng chung của
+							các đơn vị vận tải hàng hóa tham gia trên hệ thống sàn giao dịch
+							vận tải.</p>
+						<h3 align="center">Bảng giá cước vận chuyển hàng hóa đường bộ
+							từ TP.HCM đi các tỉnh</h3>
+
+						<p:graphicImage library="images" name="feefromhcm.png" />
+						<br /> <br /> <br />
+						<h3 align="center">Bảng giá cước vận chuyển hàng hóa đường bộ
+							từ Hà Nội đi các tỉnh</h3>
+						<p:graphicImage library="images" name="feefromhanoi.png" />
+						<p>Lưu ý:2 Bảng giá trên mang tính chất tham khảo</p>
+					</div>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

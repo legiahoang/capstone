@@ -1,0 +1,62 @@
+package vn.co.cex.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.springframework.transaction.annotation.Transactional;
+
+import vn.co.cex.dao.GoodsTypeDAO;
+import vn.co.cex.orm.GoodsType;
+
+/**
+ * @author DUONGLV
+ *
+ */
+public class GoodsTypeDAOImpl extends BaseDAOImpl implements GoodsTypeDAO {
+
+	private static final Logger log = LogManager.getLogger(GoodsTypeDAOImpl.class);
+	
+	/**	
+	 * Get all goods type item
+	 */
+	@Transactional
+	public List<GoodsType> getAllGoodsType() {
+		List<GoodsType> result = null;
+		try{
+			Session session = getSessionFactory().getCurrentSession();
+			Query query = session.createQuery(" from GoodsType");
+			result = query.list();
+		}
+		catch (Exception e) {
+			log.debug(e);
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@Transactional
+	public GoodsType getGoodsType(int id){
+		GoodsType result = null;
+		try{
+			Session session = getSessionFactory().getCurrentSession();
+			SQLQuery query = session.createSQLQuery("select * from GoodsType where id = ?");
+			query.setParameter(0, id);
+			result = (GoodsType)query.uniqueResult();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+}

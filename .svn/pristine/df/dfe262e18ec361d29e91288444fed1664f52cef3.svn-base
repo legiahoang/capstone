@@ -1,0 +1,211 @@
+package vn.co.cex.bean.login;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import vn.co.cex.bean.BaseBean;
+import vn.co.cex.bo.UsersBO;
+import vn.co.cex.dao.impl.UsersDAOImpl;
+import vn.co.cex.orm.Users;
+import vn.co.cex.utils.ConstantUtils;
+import vn.co.cex.utils.mail.MailerBean;
+import vn.co.cex.utils.mail.TNMailMessage;
+
+@SuppressWarnings("restriction")
+@ManagedBean(name = "forgotPasswordBean", eager = true)
+@ViewScoped
+public class ForgotPasswordBean extends BaseBean {
+
+	private static final Logger log = LogManager.getLogger(ForgotPasswordBean.class);
+
+	@ManagedProperty(value = "#{mailerBean}")
+	private MailerBean mailerBean;
+
+	@ManagedProperty(value = "#{usersBO}")
+	private UsersBO usersBO;
+
+	private String email;
+	private String password;
+	private int state;
+	private String oldPassword;
+	private String passwordGenerated;
+
+	public String getPasswordGenerated() {
+		return passwordGenerated;
+	}
+
+	public void setPasswordGenerated(String passwordGenerated) {
+		this.passwordGenerated = passwordGenerated;
+	}
+
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public MailerBean getMailerBean() {
+		return mailerBean;
+	}
+
+	public void setMailerBean(MailerBean mailerBean) {
+		this.mailerBean = mailerBean;
+	}
+
+	public UsersBO getUsersBO() {
+		return usersBO;
+	}
+
+	public void setUsersBO(UsersBO usersBO) {
+		this.usersBO = usersBO;
+	}
+
+	@PostConstruct
+	public void init() {
+	}
+
+	public void getUserToReset() {
+		try {
+			Users userByEmail = usersBO.getUserByEmail(email);
+			// generate random password
+			char[] possibleCharacters = (new String(
+					"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?"))
+							.toCharArray();
+			passwordGenerated = RandomStringUtils.random(8, 0, possibleCharacters.length - 1, false, false,
+					possibleCharacters, new SecureRandom());
+			
+			if (userByEmail != null) {
+				state = 1;
+				userByEmail.setPassword(encryptPassword(passwordGenerated));
+				usersBO.updateUsers(userByEmail);
+				sendMailResetPassword(userByEmail);
+
+				// return "ResetMessageSuccess";
+				return;
+			}
+		} catch (Exception e) {
+			// handle exception
+			log.error(e);
+		}
+		// return "ResetMessageFailed";
+		state = 2;
+	}
+
+	/**
+	 * Reset Password
+	 */
+	public void resetPassword() {
+		try {
+			// Check if email exited
+			if (!usersBO.checkEmail(email)) {
+				Users user = usersBO.getUserByEmail(email);
+				if (encryptPassword(oldPassword).equals(user.getPassword())) {
+					// hash password to MD5
+					user.setPassword(encryptPassword(password));
+					usersBO.updateUsers(user);
+					FacesMessage facesMessage = new FacesMessage("Thay đổi mật khẩu thành công!");
+					FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+				} else {
+					FacesMessage facesMessage = new FacesMessage("Mật khẩu cũ bạn nhập chưa chính xác!");
+					FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+				}
+			} else {
+				FacesMessage facesMessage = new FacesMessage("Thông tin email bạn nhập chưa chính xác!");
+				FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+			}
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * Send mail reset password
+	 * 
+	 * @param user
+	 */
+	public void sendMailResetPassword(Users user) {
+		try {
+			// send mail
+			TNMailMessage mail = new TNMailMessage();
+			mail.setContent("Sàn Giao Dịch Vận Tải");
+			mail.setFrom("carriertradingcenter@gmail.com");
+			mail.setToList(new String[] { user.getEmail() });
+			mail.setSubject("Thay đổi mật khẩu");
+			mail.setSignature("Sàn Giao Dịch Vận Tải.");
+			StringBuilder content = new StringBuilder();
+			String linkChangePassword = new StringBuilder(ConstantUtils.HOST_URL)
+					.append("CEX/faces/xhtml/Users/ResetPasswod.xhtml").toString();
+			String linkWebsite = "http://carriertradingcenter.com/CEX/faces/xhtml/Home.xhtml";
+			content.append("Chào bạn " + user.getFullName() + "!" + "<br/><br/>");
+			content.append("<i> Đây là email tự động được gửi từ website:</i>" + "<a href=\"" + linkWebsite
+					+ "\">http://carriertradingcenter.com</a>" + "<br/>");
+			content.append("Mật khẩu mới của bạn là: " + "<b>" + passwordGenerated + "</b>" + " <br/>");
+			content.append("Hãy click vào link dưới đây để thay đổi mật khẩu của mình:" + " <br/>");
+			content.append("<h4><a href=\"" + linkChangePassword
+					+ "\">http://carriertradingcenter.com/changepassword</a></h4>" + "<br/>");
+			content.append("Cảm ơn bạn đã quan tâm tới dịch vụ của chúng tôi! <br/><br/>");
+			mail.setContent(content.toString());
+			mailerBean.sendMail(mail);
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
+	/**
+	 * encrypt Password
+	 * 
+	 * @param passwords
+	 * @return
+	 */
+	private String encryptPassword(String passwords) {
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			byte[] bufor = passwords.getBytes();
+			md5.update(bufor, 0, bufor.length);
+			BigInteger hash = new BigInteger(1, md5.digest());
+			String passwordMD5 = String.format("%1$032X", hash);
+			return passwordMD5;
+		} catch (Exception e) {
+			log.error(e);
+		}
+		return null;
+	}
+}

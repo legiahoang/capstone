@@ -1,0 +1,240 @@
+package vn.co.cex.bean;
+
+import java.util.Date;
+import java.util.Hashtable;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.primefaces.context.RequestContext;
+
+import vn.co.cex.bo.PaymentDetailBO;
+import vn.co.cex.bo.UsersAccountBO;
+import vn.co.cex.orm.UsersAccount;
+import vn.co.cex.orm.PaymentDetail;
+import vn.co.cex.orm.Users;
+import vn.co.cex.utils.ConstantUtils;
+import vn.co.cex.utils.NganLuongController;
+import vn.co.cex.utils.SessionUtils;
+
+@ManagedBean(name = "nganLuongBean")
+@SessionScoped
+public class NganLuongBean extends BaseBean {
+	private static final Logger log = LogManager.getLogger(NganLuongBean.class);
+
+	private NganLuongController nganLuongController;
+	private String link_checkout;
+	private String order_code;
+	private String token_code;
+
+	@ManagedProperty(value = "#{paymentDetailBO}")
+	private PaymentDetailBO paymentDetailBO;
+	
+	@ManagedProperty(value = "#{usersAccountBO}")
+	private UsersAccountBO usersAccountBO;
+	private UsersAccount usersAccount;
+	private Users user;
+	private boolean result;
+	private float balance;
+	private String fullname;
+	private String email;
+
+	public void init() {
+		try {
+			// Authentication
+			user = SessionUtils.getUser();
+			HttpServletRequest request = super.getHTTPRequest();
+			HttpServletResponse response = super.getHTTPResponse();
+			if (user == null) {
+				response.sendRedirect(request.getContextPath() + "/xhtml/Users/Login.xhtml");
+				return;
+			}
+		} catch (Exception e) {
+			log.debug(e);
+		}
+	}
+
+	/**
+	 * Plus money account
+	 */
+	public void onPlusMoneyAccount() {
+		try {
+			user = SessionUtils.getUser();
+			HttpServletRequest request = super.getHTTPRequest();
+			HttpServletResponse response = super.getHTTPResponse();
+			if (user == null) {
+				response.sendRedirect(request.getContextPath() + "/xhtml/Users/Login.xhtml");
+				return;
+			}
+			fullname = user.getFullName();
+			email = user.getEmail();
+			// if NganLuong redirect to return_url,token will be provided in
+			// return_url as parameter
+			if (token_code != null) {
+				HttpSession session = SessionUtils.getSession();
+				String token = (String) session.getAttribute("token");
+				if (token != null && token_code.equals(token)) {
+					result = GetExpressCheckout(token);
+				}
+				usersAccount = usersAccountBO.getAccountByUserId(user.getId());
+				if (usersAccount != null) {
+					balance = usersAccount.getBalance();
+				}
+			}
+		} catch (Exception e) {
+			log.debug(e);
+		}
+	}
+
+	/**
+	 * Send deposit request
+	 */
+	public void sentRequest() {
+		try {
+			String linkError = ConstantUtils.HOST_URL + "CEX/faces/xhtml/ManageMoney/DepositMoneyError.xhtml";
+			String linkSuccess = ConstantUtils.HOST_URL + "CEX/faces/xhtml/ManageMoney/DepositMoneySuccess.xhtml";
+			nganLuongController = new NganLuongController("45304", "sandbox", "legiahoang94@gmail.com", 
+					linkError, linkSuccess, "5fbd12e4d1d638ba7f986e3c69614b32");
+
+			// Create deposit request
+			Hashtable hashtableDeposit = nganLuongController.SetExpressCheckoutDeposit("OrderCode");
+			String token = (String) hashtableDeposit.get("token");
+			// Save token to session
+			HttpSession session = SessionUtils.getSession();
+			session.setAttribute("token", token);
+			// Go to checkout page with link_checkout provided by NganLuong
+			link_checkout = hashtableDeposit.get("link_checkout").toString();
+			RequestContext.getCurrentInstance()
+					.execute("window.open('" + link_checkout + "', 'CarrierTradingCenter',750,450)");
+		} catch (Exception e) {
+			log.debug(e);
+		}
+	}
+
+	/**
+	 * Check result when user make payment
+	 */
+	public boolean GetExpressCheckout(String token) {
+		try {
+			Hashtable hashtable = nganLuongController.GetExpressCheckout(token);
+			// Get information of payment
+			String amountParam = (String) hashtable.get("amount");
+			float amount = 0;
+			if (amountParam != null && !amountParam.equals("")) {
+				amount = Float.parseFloat(amountParam);
+			}
+			// Insert information into database
+			if (user != null) {
+				boolean result = usersAccountBO.plusMoneyAccount(user.getId(), amount);
+				//Add payment history
+				if(result){
+					PaymentDetail paymentDetail1 = new PaymentDetail();
+					paymentDetail1.setAmounts(amount);
+					paymentDetail1.setPaymentDate(new Date());
+					paymentDetail1.setType(ConstantUtils.PAYMENT_PLUS);
+					paymentDetail1.setDescription("Nạp tiền thông qua Ngân Lượng.");
+					paymentDetail1.setUserId(user.getId());
+					paymentDetailBO.addPaymentDetail(paymentDetail1);
+				}
+				return result;
+			}
+		} catch (Exception e) {
+			log.debug(e);
+		}
+		return false;
+	}
+
+	public String getLink_checkout() {
+		return link_checkout;
+	}
+
+	public void setLink_checkout(String link_checkout) {
+		this.link_checkout = link_checkout;
+	}
+
+	public String getOrder_code() {
+		return order_code;
+	}
+
+	public void setOrder_code(String order_code) {
+		this.order_code = order_code;
+	}
+
+	public String getToken_code() {
+		return token_code;
+	}
+
+	public void setToken_code(String token_code) {
+		this.token_code = token_code;
+	}
+
+	public PaymentDetailBO getPaymentDetailBO() {
+		return paymentDetailBO;
+	}
+
+	public void setPaymentDetailBO(PaymentDetailBO paymentDetailBO) {
+		this.paymentDetailBO = paymentDetailBO;
+	}
+	
+	public UsersAccountBO getUsersAccountBO() {
+		return usersAccountBO;
+	}
+
+	public void setUsersAccountBO(UsersAccountBO usersAccountBO) {
+		this.usersAccountBO = usersAccountBO;
+	}
+
+	public UsersAccount getUsersAccount() {
+		return usersAccount;
+	}
+
+	public void setUsersAccount(UsersAccount usersAccount) {
+		this.usersAccount = usersAccount;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	public boolean isResult() {
+		return result;
+	}
+
+	public void setResult(boolean result) {
+		this.result = result;
+	}
+
+	public float getBalance() {
+		return balance;
+	}
+
+	public void setBalance(float balance) {
+		this.balance = balance;
+	}
+
+	public String getFullname() {
+		return fullname;
+	}
+
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+}

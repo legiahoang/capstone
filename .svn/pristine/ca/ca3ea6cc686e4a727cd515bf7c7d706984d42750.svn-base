@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:head></h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:outputStylesheet library="css" name="report.css" />
+			<h1>DANH SÁCH NGƯỜI DÙNG</h1>
+			<h:form>
+				<p:panel header="Hỗ trợ tìm kiếm" toggleable="true"
+					styleClass="list_user" toggleSpeed="600" widgetVar="panel"
+					style="margin-bottom: 20px;">
+					<p:panelGrid style="margin: 0 auto" cellpadding="10"
+						styleClass="ui-noborder">
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Tên người dùng" />
+							</p:column>
+							<p:column>
+								<p:inputText id="fullName" value="#{usersBean.fullName}"
+									placeholder="Từ khóa tên" />
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Email" />
+							</p:column>
+							<p:column>
+								<p:inputText id="email" value="#{usersBean.email}"
+									placeholder="Từ khóa email" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Tỉnh" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="province" label="City"
+									value="#{usersBean.province}">
+									<f:selectItem itemValue="" itemLabel="--lựa chọn--" />
+									<f:selectItems value="#{provinceBean.provinceList}"
+										var="provinceValue" itemLabel="#{provinceValue.name}"
+										itemValue="#{provinceValue.name}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Quyền truy cập" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="role" value="#{usersBean.role}">
+									<f:selectItem itemValue="" itemLabel="--lựa chọn--" />
+									<f:selectItem itemValue="1" itemLabel="Quản trị viên" />
+									<f:selectItem itemValue="2" itemLabel="Chủ xe" />
+									<f:selectItem itemValue="3" itemLabel="Chủ hàng" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="4">
+								<div align="right">
+									<p:commandButton icon="fa fa-search" styleClass="btn_search"
+										actionListener="#{usersBean.searchUser}" update="table_users"
+										value="Tìm kiếm" />
+								</div>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:panel>
+				<br />
+				<div class="table_form">
+					<div class="table_content">
+						<p:dataTable id="table_users" value="#{usersBean.usersList}"
+							var="users" border="1" binding="#{table}" paginator="true"
+							rows="10" paginatorPosition="bottom" lazy="true"
+							rowIndexVar="row" emptyMessage="Không có dữ liệu"
+							currentPageReportTemplate="#{msg['label.data.table.footer']} {startRecord} #{msg['label.data.table.footer2']} {endRecord} #{msg['label.data.table.footer3']} {totalRecords} #{msg['label.data.table.footer4']} "
+							rowKey="#{users.id}"
+							rowsPerPageTemplate="#{msg['rowsPerPageTemplate']}"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+							<p:growl id="message" showDetail="true" />
+							<p:column width="5%">
+								<f:facet name="header">STT</f:facet>
+								<div align="center">#{table.rowIndex + 1}</div>
+							</p:column>
+							<p:column width="20%">
+								<f:facet name="header">Tên người dùng</f:facet>
+								<div align="left">#{users.fullName}</div>
+							</p:column>
+							<p:column width="25%">
+								<f:facet name="header">Email</f:facet>
+								<div align="left">#{users.email}</div>
+							</p:column>
+							<p:column>
+								<f:facet name="header">Tỉnh</f:facet>
+								<div align="left">#{users.provinceName}</div>
+							</p:column>
+							<p:column>
+								<f:facet name="header">Quyền truy cập</f:facet>
+								<div align="left">
+									<h:outputText value="Quản trị viên"
+										rendered="#{users.role == 1}"></h:outputText>
+									<h:outputText value="Chủ xe" rendered="#{users.role == 2}"></h:outputText>
+									<h:outputText value="Chủ hàng" rendered="#{users.role == 3}"></h:outputText>
+								</div>
+							</p:column>
+							<p:column>
+								<f:facet name="header">Trạng thái</f:facet>
+								<div align="left">
+									<h:outputText value="Chưa kích hoạt"
+										rendered="#{users.status == 0}"></h:outputText>
+									<h:outputText value="Đã kích hoạt"
+										rendered="#{users.status == 1}"></h:outputText>
+									<h:outputText value="Ngưng kích hoạt"
+										rendered="#{users.status == 2}"></h:outputText>
+								</div>
+							</p:column>
+							<p:column width="7.5%">
+								<f:facet name="header">Chi tiết</f:facet>
+								<h:outputLink
+									value="/../CEX/faces/xhtml/Users/DetailUsersView.xhtml">
+									<f:param name="id" value="#{users.id}" />
+									<i class="fa fa-edit" style="color: blue" />
+								</h:outputLink>
+							</p:column>
+							<p:column width="7.5%">
+								<f:facet name="header">Kích hoạt</f:facet>
+								<p:commandButton actionListener="#{usersBean.activateUser}"
+									rendered="#{users.status == 1}" icon="fa fa-unlock-alt"
+									update="table_users message">
+									<p:confirm header="Thông báo"
+										message="Bạn có chắc chắn muốn ngưng kích hoạt tài khoản này không?"
+										icon="ui-icon-alert" />
+									<f:param name="user_id" value="#{users.id}" />
+								</p:commandButton>
+								<p:commandButton actionListener="#{usersBean.deactivateUser}"
+									rendered="#{users.status == 2}" icon="fa fa-lock"
+									update="table_users message">
+									<p:confirm header="Thông báo"
+										message="Bạn có chắc chắn muốn kích hoạt tài khoản này không?"
+										icon="ui-icon-alert" />
+									<f:param name="user_id" value="#{users.id}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton style="left:30%" value="OK" type="button"
+								styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+							<p:commandButton style="left:30%" value="Cancel" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+	<!-- Navigation Configuration -->
+	<managed-bean>
+		<managed-bean-name>now</managed-bean-name>
+		<managed-bean-class>java.util.Date</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+	<application>
+		<message-bundle>vn.co.cex.bean.i18n.MessageResources</message-bundle>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+		<!-- Internationalized Configuration -->
+		<locale-config>
+			<default-locale>vi</default-locale>
+			<supported-locale>en</supported-locale>
+			<supported-locale>vi</supported-locale>
+			<supported-locale>jp</supported-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>vn.co.cex.bean.i18n.MessageResources</base-name>
+			<var>msg</var>
+		</resource-bundle>
+	</application>
+	<!-- navigation rule QuyetVV -->
+	<!--Login -->
+	<navigation-rule>
+		<from-view-id>/xhtml/*</from-view-id>
+		<navigation-case>
+			<from-action>#{loginBean.validateUsernamePassword}</from-action>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/xhtml/Home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{loginBean.validateUsernamePassword}</from-action>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/xhtml/Users/Login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{loginBean.loginProcess}</from-action>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/xhtml/Users/Login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{loginBean.logoutProcess}</from-action>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/xhtml/Home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{loginBean.registerProcess}</from-action>
+			<from-outcome>register</from-outcome>
+			<to-view-id>/xhtml/Users/RegisterUsers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{loginBean.userDetail}</from-action>
+			<from-outcome>userView</from-outcome>
+			<to-view-id>/xhtml/Users/DetailUsersView.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- register -->
+		<navigation-case>
+			<from-action>#{registerBean.registerCarier}</from-action>
+			<from-outcome>RegisterMessage</from-outcome>
+			<to-view-id>/xhtml/Users/RegisterMessage.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{registerBean.registerCarier}</from-action>
+			<from-outcome>register</from-outcome>
+			<to-view-id>/xhtml/Users/RegisterUsers.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!--ResetPassword -->
+
+		<navigation-case>
+			<from-action>#{updatePasswordBean.updatePassword}</from-action>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/xhtml/Home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- Users Account Information -->
+		<navigation-case>
+			<from-action>#{usersDetailBean.redirectUsersAccountInformation}</from-action>
+			<from-outcome>usersAccountInformation</from-outcome>
+			<to-view-id>/xhtml/UsersAccountInfomation/UsersAccountInfomation.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>id</name>
+					<value>#{usersDetailBean.user.id}</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+		<!-- navigation rule DuongLV open -->
+		<navigation-case>
+			<from-action>#{operationFeeAddBean.gotoListOperationFee}</from-action>
+			<from-outcome>listOperationFee</from-outcome>
+			<to-view-id>/xhtml/OperationFee/ListOperationFee.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{operationFeeEditBean.gotoListOperationFee}</from-action>
+			<from-outcome>listOperationFee</from-outcome>
+			<to-view-id>/xhtml/OperationFee/ListOperationFee.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{referencePriceEditBean.gotoListReferencePrice}</from-action>
+			<from-outcome>listReferencePrice</from-outcome>
+			<to-view-id>/xhtml/OperationFee/ReferOperationFee.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- close -->
+		<navigation-case>
+			<from-action>#{postBillOfLadingBean.gotoListBillOfLading}</from-action>
+			<from-outcome>listBillOfLading</from-outcome>
+			<to-view-id>/xhtml/BillOfLading/Common.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{homeBean.gotoHome}</from-action>
+			<from-outcome>gotoHome</from-outcome>
+			<to-view-id>/xhtml/Home.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<!-- add for report -->
+		<navigation-case>
+			<from-action>#{reportDetailBean.goToListReportUser}</from-action>
+			<from-outcome>listReportUser</from-outcome>
+			<to-view-id>/xhtml/Report/ListReportUser.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+</faces-config>

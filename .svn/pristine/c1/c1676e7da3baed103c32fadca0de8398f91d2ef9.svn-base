@@ -1,0 +1,102 @@
+package vn.co.cex.orm;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Company implements java.io.Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7838984895058325220L;
+	private Integer id;
+	private String name;
+	private String taxCode;
+	private String email;
+	private String phoneNumber;
+	private String fax;
+	private String address;
+
+	private Set<Users> users = new HashSet<Users>();
+
+	public Company() {
+	}
+
+	public Company(Integer id) {
+		this.id = id;
+	}
+
+	public Company(String name, String taxCode, String email, String phoneNumber, String fax, String address) {
+		super();
+		this.name = name;
+		this.taxCode = taxCode;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.fax = fax;
+		this.address = address;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTaxCode() {
+		return taxCode;
+	}
+
+	public void setTaxCode(String taxCode) {
+		this.taxCode = taxCode;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Set<Users> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<Users> users) {
+		this.users = users;
+	}
+}

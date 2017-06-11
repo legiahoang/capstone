@@ -1,0 +1,197 @@
+/**
+ * 
+ */
+package vn.co.cex.utils;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+
+import net.coobird.thumbnailator.Thumbnails;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+
+/**
+ * @author User
+ * 
+ */
+public class FileUtils {
+	private final static Logger log = LogManager.getLogger(FileUtils.class);
+
+	public static void copyFile(String newFileName, InputStream inputStream) {
+		try {
+			log.debug("newFileName:{}", newFileName);
+			File fileExist = new File(newFileName);
+			fileExist.mkdirs();
+			if (fileExist.exists()) {
+				fileExist.delete();
+			}
+			if (!fileExist.createNewFile()) {
+				throw new RuntimeException("Can not create the file:"
+						+ newFileName);
+			}
+			FileOutputStream outputStream = new FileOutputStream(new File(
+					newFileName));
+
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+			outputStream.flush();
+			inputStream.close();
+			outputStream.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void copyFile(String path, String newFileName,
+			InputStream inputStream) {
+		try {
+			log.debug("Path:{}, newFileName:{}", path, newFileName);
+			File file = new File(path);
+			file.mkdirs();
+			File fileExist = new File(path + File.separator + newFileName);
+			if (!fileExist.mkdir()) {
+				throw new RuntimeException("Can not create the folder:" + path);
+			}
+			if (fileExist.exists()) {
+				fileExist.delete();
+			}
+			if (!fileExist.createNewFile()) {
+				throw new RuntimeException("Can not create the file:"
+						+ newFileName);
+			}
+			FileOutputStream outputStream = new FileOutputStream(new File(
+					newFileName));
+
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+			outputStream.flush();
+			inputStream.close();
+			outputStream.close();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static String getFileContent(String filePath)
+			throws FileNotFoundException {
+		try {
+			FileReader fileReader = new FileReader(filePath);
+			BufferedReader bufferReader = new BufferedReader(fileReader);
+			String content = "";
+			String line;
+			while ((line = bufferReader.readLine()) != null) {
+				content += line;
+			}
+			bufferReader.close();
+			return content;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void copyUserAvatar(String newFileName,
+			InputStream inputStream) {
+		try {
+			log.debug("newFileName:{}", newFileName);
+			File preFile = new File(newFileName);
+			preFile.mkdirs();
+			if (preFile.exists()) {
+				preFile.delete();
+			}
+			if (!preFile.createNewFile()) {
+				throw new RuntimeException("Can not create the file:"
+						+ newFileName);
+			}
+			FileOutputStream outputStream = new FileOutputStream(new File(
+					newFileName));
+
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+			outputStream.flush();
+			inputStream.close();
+			outputStream.close();
+			Thumbnails.of(preFile).size(70, 70).toFile(new File(newFileName));
+		} catch (IOException e) {
+			System.out.println("FilUtil.copyUserAvatar:"+e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static StreamedContent downloadFileImg(String filePath)
+			throws IOException {
+		InputStream inputStream = null;
+		try {
+			log.debug("FilePath: {}", filePath);
+			File fileImage = new File(filePath);
+			inputStream = new FileInputStream(fileImage);
+			byte[] buffer = new byte[1024];
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+			int length;
+			// copy the file content in bytes
+			while ((length = inputStream.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			inputStream.close();
+			log.debug(	"File Path {} has been copied successful. ", filePath);
+
+			return new DefaultStreamedContent(new ByteArrayInputStream(
+					out.toByteArray()), "image/jpg", "avatar.jpg");
+		} catch (IOException ex) {
+			log.error("Error:", ex);
+			System.out.println("FileUtil.downloadFileImg:" +ex);
+			throw new RuntimeException(ex);
+		}
+	}
+
+	public static void saveFile(String relativePath, byte[] bytes)
+			throws FileNotFoundException {
+		try {
+			StringBuilder rootPath = new StringBuilder(getRootPath())
+					.append(relativePath);
+			// File dir = new File("C:\\Temp\\rider\\image\\VN\1\\");
+			// if (!dir.exists())
+			// dir.mkdirs();
+			File file = new File(rootPath.toString());
+			//file.mkdirs();
+			org.apache.commons.io.FileUtils.writeByteArrayToFile(file, bytes);
+			// BufferedOutputStream stream = new BufferedOutputStream(
+			// new FileOutputStream(file));
+			// stream.write(bytes);
+			// stream.close();			
+		} catch (IOException e) {
+			log.error("Error:", e);
+			System.out.println("FileUtil.savefile:" +e);
+		}
+	}
+
+	private static String getRootPath() {
+		StringBuilder stringBuilder = new StringBuilder("/home/root");
+		stringBuilder.append(File.separator);
+		return stringBuilder.toString();
+	}
+
+}

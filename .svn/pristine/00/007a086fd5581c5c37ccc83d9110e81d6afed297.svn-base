@@ -1,0 +1,77 @@
+# Pattern Regular Expression for validation
+pattern.regex.password = ^(?=.*[a-z0-9])(?=.*[A-Z])(?=.*[!@#$%])[0-9a-zA-Z!@#$%]*$
+pattern.password =^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%])[0-9a-zA-Z!@#$%]*$
+pattern.regex.email =^[_A-Za-z0-9]+(\\.[_A-Za-z0-9]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$
+pattern.regex.phone =^[0-9]{9,12}$
+pattern.regex.identity.number =^[0-9]{9,15}$
+pattern.regex.fraction.digits =##,###,##0.00
+pattern.regex.cvv = ^[0-9]{3,4}$
+pattern.regex.credit.card = ^4[0-9]{12}(?:[0-9]{3})?$
+pattern.regex.double.number = \\d{1,22}(\\.\\d{1,3})?
+pattern.regex.name = ^[a-zA-Z]{1,10}$
+pattern.regex.zipcode = ^(?=.{4,6}$)(?!.* {2,})[a-zA-Z0-9][a-zA-Z0-9 ]*[a-zA-Z0-9]$
+pattern.regex.date = ^\d{4}[-/.]\d{1,2}[-/.]\d{1,2}$
+rowsPerPageTemplate=5,10,15
+all=--All--
+confirmDialogAccept=Yes
+confirmDialogDenied=No
+confirmDialogHeader=Confirmation
+numberMaxLnt=10
+inputSize=22
+minDecimal=0.001
+file.size.limit = 1024000
+image.size.limit = 262144
+
+# Date format for displaying on the page
+dateformat.yyymmdd=yyyy/MM/dd
+dateformat.yyymmddhhmmss=yyyy-MM-dd HH:mm:ss
+dateformat.yyymmddhhmm=yyyy-MM-dd HH:mm
+dateformat.headerPage=EEEE, dd-MMMM-yyyy
+dateformat.hhmmddmmyyyy=hh:mm dd-MM-yyyy
+dateformat.hhmmaaa=hh:mm aaa
+dateformat.hhmmaaaeeeedmmmmyyyy=hh:mm aaa, EEEE d MMMM yyyy
+
+# Number format for displaying on the page
+numberformat.twodecimal=##,###,##0.00
+numberformat.nodecimal="##,###,##0
+numberformat.theedecimal=##,###,##0.000
+# currency
+
+#Header labels
+header.name=SÀN GIAO D\u1ECACH V\u1EACN T\u1EA2I VI\u1EC6T NAM
+header.title=SÀN GIAO D\u1ECACH V\u1EACN T\u1EA2I VI\u1EC6T NAM
+header.today=Today is 
+header.hello=Hello
+
+#BillOfLading property
+billoflading.goodsType=Lo\u1EA1i hàng
+billoflading.packgedFrom=Hình th\u1EE9c \u0111óng gói
+billoflading.weight=Kh\u1ED1i l\u01B0\u1EE3ng
+billoflading.volume=Th\u1EC3 tích
+billoflading.departureProvince=\u0110\u1ECBa \u0111i\u1EC3m \u0111i
+billoflading.arrivalProvince=\u0110\u1ECBa \u0111i\u1EC3m \u0111\u1EBFn
+billoflading.departureDate=Th\u1EDDi gian \u0111i
+billoflading.arrivalDate=Th\u1EDDi gian \u0111\u1EBFn
+
+
+
+#OperationFee Screen
+operationfees.pricetable=B\u1EA3ng chi phí th\u1EF1c hi\u1EC7n giao d\u1ECBch
+
+#Report property
+report.title=DANH SÁCH BÁO CÁO
+
+
+#Header labels
+header.today=Today is 
+header.hello=Hello
+
+label.data.table.footer=Hi\u1EC3n th\u1ECB
+label.data.table.footer2=\u0111\u1EBFn
+label.data.table.footer3=trong s\u1ED1
+label.data.table.footer4=b\u1EA3n ghi
+label.data.table.no.result=No records found.
+label.data.table.no.trip=No trips found.
+label.data.table.no.gift=No purchased gift cards
+label.data.table.no.code=No active promotions
+label.row.per.page1=Show

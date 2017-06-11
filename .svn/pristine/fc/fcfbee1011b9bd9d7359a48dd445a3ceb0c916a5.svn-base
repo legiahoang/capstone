@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{languageBean.locale}">
+	<h:head>
+		<title><ui:insert name="title">T-NET</ui:insert></title>
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{request.contextPath}/resources/images/logo-s.png" />
+		<script type="text/javascript">
+		function start() {
+			PF('statusDialog').show();
+		}
+
+		function stop() {
+			PF('statusDialog').hide();
+		}
+		function clickHelp() {
+			window.open("#{request.contextPath}/pages/#{home.language}/Support.xhtml")
+		}
+	</script>
+	</h:head>
+
+	<h:body>
+		<h:outputStylesheet library="css" name="main.css" />
+		<p:layout fullPage="true">
+			<p:layoutUnit position="west" size="220" minSize="220"
+				styleClass="leftmenu-layout" maxSize="240" resizable="false"
+				closable="false" collapsible="false" gutter="0">
+				<f:facet name="header">
+					<div style="margin-left: 5px">
+						<p:graphicImage style="vertical-align: middle"
+							name="#{logoutForm.getActiveIcon(view.viewId)}" />
+						<span style="margin-left: 5px">#{logoutForm.getActiveLabel(view.viewId)}</span>
+					</div>
+				</f:facet>
+				<ui:insert name="leftmenu">
+					<p>Menu Left content</p>
+				</ui:insert>
+			</p:layoutUnit>
+			<p:layoutUnit position="center">
+				<ui:insert name="driverheader">
+					<p>Driver Header</p>
+				</ui:insert>
+				<ui:insert name="menubar">
+					<p>Menu Bar</p>
+				</ui:insert>
+				<ui:insert name="content">
+					<p>Put default content here, if any.</p>
+				</ui:insert>
+				<!-- <div id="footer" class="footer" >                 	 	
+	         	  	<ui:insert name="footer">
+	                    <p>Footer</p>
+	                </ui:insert>  
+                </div> -->
+			</p:layoutUnit>
+		</p:layout>
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
+		<p:dialog widgetVar="statusDialog" appendTo="@(body)"
+			showHeader="false" draggable="false" closable="false"
+			resizable="false">
+			<img src="../../resources/images/ajax-loader.gif" />
+		</p:dialog>
+	</h:body>
+</f:view>
+</html>

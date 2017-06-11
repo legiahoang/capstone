@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 28, 2015 9:41:06 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="vn.co.cex.orm.AnswerComment" table="answercomment">
+        <id name="id" type="int">
+            <column name="Id" />
+            <generator class="identity" />
+        </id>
+        <property name="content" type="string">
+            <column name="Content" length="100" not-null="true" />
+        </property>
+        <many-to-one name="comment" class="vn.co.cex.orm.Comment"
+			lazy="false" fetch="select" >
+			<column name="CommentId" not-null="true" />
+		</many-to-one>
+        <property name="commentId" type="int" insert="false"
+			update="false">
+            <column name="CommentId" not-null="true" />
+        </property>
+        <many-to-one name="user" class="vn.co.cex.orm.Users"
+			lazy="false" fetch="select" >
+			<column name="CreatedUserId" not-null="true" />
+		</many-to-one>
+        <property name="createdUserId" type="int" insert="false" update="false">
+            <column name="CreatedUserId" not-null="true" />
+        </property>
+        <property name="created" type="timestamp">
+            <column name="Created" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

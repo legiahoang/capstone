@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 28, 2015 9:41:06 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+	<class name="vn.co.cex.orm.CarrierAuction" table="carrierauction">
+		<id name="id" type="int">
+			<column name="Id" />
+			<generator class="identity" />
+		</id>
+		<many-to-one name="billOfLading" class="vn.co.cex.orm.BillOfLading"
+			lazy="false" fetch="select">
+			<column name="BillOfLadingId" not-null="false" />
+		</many-to-one>
+		<property name="billOfLadingId" type="int" insert="false" update="false">
+			<column name="BillOfLadingId" not-null="true" />
+		</property>
+		<many-to-one name="user" class="vn.co.cex.orm.Users"
+			lazy="false" fetch="select">
+			<column name="CarrierId" not-null="false" />
+		</many-to-one>
+		<property name="carrierId" type="int" insert="false" update="false">
+			<column name="CarrierId" not-null="true" />
+		</property>
+		<property name="auctionDate" type="timestamp">
+			<column name="AuctionDate" not-null="true" />
+		</property>
+		<property name="modified" type="timestamp">
+			<column name="Modified" not-null="false" />
+		</property>
+		<property name="auctionPrice" type="float">
+			<column name="AuctionPrice" not-null="true" />
+		</property>
+		<property name="status" type="int">
+			<column name="Status" not-null="true" />
+		</property>
+		<property name="notification" type="boolean">
+			<column name="notification" default="false" not-null="true" />
+		</property>
+		<property name="note" type="string">
+			<column name="Note" not-null="false" />
+		</property>
+	</class>
+</hibernate-mapping>

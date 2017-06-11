@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Sàn giao dịch vận tải</title>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Thêm Thông tin công ty</ui:define>
+		<ui:define name="content">
+			<f:metadata>
+				<f:viewParam id="id" name="id" value="#{usersDetailBean.user.id}" />
+				<f:viewAction action="#{companyBean.init()}" />
+			</f:metadata>
+			<center>
+				<h:form id="add_Company_Information" enctype="multipart/form-data">
+					<p:growl id="msgs" showDetail="false" />
+					<p:panel header="Thêm thông tin công ty" style="width: 500px; ">
+						<h:panelGrid columns="2">
+							<h:outputLabel value="Tên công ty: " />
+							<p:inputText id="name" value="#{companyBean.name}"
+								required="true" requiredMessage="Tên không được để trống!"
+								validatorMessage="Tên không hợp lệ!">
+								<f:validateLength minimum="2" />
+							</p:inputText>
+							<p:watermark for="name" value="* Tên công ty" />
+							<p:message for="name"></p:message>
+
+							<h:outputText value="Địa chỉ Email:" />
+							<p:inputText id="email" value="#{companyBean.email}"
+								required="true" requiredMessage="Email không được để trống!"
+								validatorMessage="Email cần có mẫu characters@characters.domain">
+								<!--must be in form characters@characters.domain-->
+								<f:validateRegex
+									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></f:validateRegex>
+							</p:inputText>
+							<p:watermark for="email" value="* Email" />
+							<p:message for="email"></p:message>
+
+							<h:outputText value="Số điện thoại:" />
+							<p:inputText id="phoneNumber" value="#{companyBean.phoneNumber}"
+								required="true"
+								requiredMessage="Số điện thoại không được để trống!"
+								validatorMessage="Số điện thoại không đúng!">
+								<f:validateRegex pattern="[0-9]{10,}" />
+							</p:inputText>
+							<p:watermark for="phoneNumber" value="* Số điện thoại" />
+							<p:message for="phoneNumber"></p:message>
+
+							<h:outputText value="Fax:" />
+							<p:inputText id="fax" value="#{companyBean.fax}"
+								validatorMessage="Số fax không đúng!">
+								<f:validateRegex
+									pattern="^[0-9]{1,3}-[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$" />
+							</p:inputText>
+							<p:watermark for="fax" value="Fax" />
+							<p:message for="fax"></p:message>
+
+							<h:outputText value="Mã số thuế:" />
+							<p:inputText id="taxCode" value="#{companyBean.taxCode}"
+								required="true"
+								requiredMessage="Mã số thuế không được để trống!"
+								validatorMessage="Mã số thuế không đúng!">
+								<f:validateRegex pattern="[0-9]{10,13}" />
+							</p:inputText>
+							<p:watermark for="taxCode" value="* Mã số thuế" />
+							<p:message for="taxCode"></p:message>
+
+							<h:outputText value="Địa chỉ:" />
+							<p:inputText id="address" value="#{companyBean.address}"
+								required="true" requiredMessage="Địa chỉ không được để trống!"
+								validatorMessage="Địa chỉ không đúng!">
+								<f:validateLength minimum="2" />
+							</p:inputText>
+							<p:watermark for="address" value="* Địa chỉ" />
+							<p:message for="address"></p:message>
+
+							<h:outputLabel for="province" value="Tỉnh/Thành phố: " />
+							<p:selectOneMenu id="province" required="true"
+								requiredMessage="Tỉnh/Thành phố không được để trống!"
+								label="City" value="#{companyBean.province}">
+								<f:selectItem itemValue="" itemLabel="Tỉnh/Thành phố" />
+								<f:selectItems value="#{provinceBean.provinceList}"
+									var="provinceValue" itemLabel="#{provinceValue.name}"
+									itemValue="#{provinceValue.code}" />
+								<p:ajax
+									listener="#{districtBean.getDistrictByProvinceCode(companyBean.province)}"
+									global="false" update="district" event="change" />
+							</p:selectOneMenu>
+
+							<p:outputLabel for="district" value="Quận/Huyện: " />
+							<p:selectOneMenu id="district" label="District" required="true"
+								requiredMessage="Quận/Huyện không được để trống!"
+								value="#{companyBean.district}">
+								<f:selectItem itemValue="" itemLabel="Quận/Huyện" />
+								<f:selectItems value="#{districtBean.districtList}"
+									var="districtValue" itemLabel="#{districtValue.name}"
+									itemValue="#{districtValue.name}" />
+							</p:selectOneMenu>
+
+						</h:panelGrid>
+
+						<p:commandButton action="#{companyBean.addCompany}"
+							value="Lưu thông tin" update="add_Company_Information"
+							validateClient="true"></p:commandButton>
+					</p:panel>
+				</h:form>
+			</center>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

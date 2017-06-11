@@ -1,0 +1,868 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Thông tin người dùng</ui:define>
+		<ui:define name="content">
+			<f:metadata>
+				<f:viewAction
+					action="#{districtBean.getDistrictByProvinceCode(usersDetailBean.provinceCode)}" />
+			</f:metadata>
+			<h:form id="form_update_user" enctype="multipart/form-data"
+				widgetVar="dtWidgetVar">
+				<p:growl id="messages" showDetail="false" />
+				<h1 align="center">TRANG QUẢN TRỊ</h1>
+				<hr />
+				<div align="left" style="margin-left: 400px">
+					<p:panelGrid id="user_Detail">
+						<h3 style="margin-left: 150px" align="left">THÔNG TIN CÁ NHÂN</h3>
+						<p:graphicImage style="margin-left: 200px"
+							value="#{getUserAvatarBean.userAvatar}" height="100" width="100">
+							<f:param name="userAvatarId"
+								value="#{usersDetailBean.user.userAvatar}" />
+						</p:graphicImage>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold" value="Họ và tên: " />
+							</p:column>
+							<p:column style="border: none">
+								<h:outputText value="#{usersDetailBean.user.fullName}">
+								</h:outputText>
+							</p:column>
+							<p:column style="border: none">
+								<p:commandButton icon="ui-icon-pencil" value="Thay Đổi"
+									onclick="PF('dlg_edit_user_information').show();" />
+							</p:column>
+						</p:row>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold" value="Bạn là: " />
+							</p:column>
+							<p:column style="border: none">
+								<h:outputText value="Quản trị viên"
+									rendered="#{usersDetailBean.user.role == 1}"></h:outputText>
+								<h:outputText value="Chủ hàng"
+									rendered="#{usersDetailBean.user.role == 2}"></h:outputText>
+								<h:outputText value="Chủ xe"
+									rendered="#{usersDetailBean.user.role == 3}"></h:outputText>
+							</p:column>
+						</p:row>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold" value="Email: " />
+							</p:column>
+							<p:column style="border: none">
+								<h:outputText value="#{usersDetailBean.user.email}" />
+							</p:column>
+						</p:row>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold" value="Số điện thoại: " />
+							</p:column>
+							<p:column style="border: none">
+								<h:outputText value="#{usersDetailBean.user.phoneNumber}" />
+							</p:column>
+						</p:row>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold" value="Địa chỉ: " />
+							</p:column>
+							<p:column style="border: none">
+								<h:outputText
+									value="#{usersDetailBean.user.address}, #{usersDetailBean.districtName}, #{usersDetailBean.provinceName}" />
+							</p:column>
+						</p:row>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold"
+									value="Số chứng minh thư: " />
+							</p:column>
+							<p:column style="border: none">
+								<h:outputText value="#{usersDetailBean.user.identityCard}" />
+							</p:column>
+						</p:row>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold" value="Nơi cấp: " />
+							</p:column>
+							<p:column style="border: none">
+								<h:outputText value="#{usersDetailBean.user.identityCardPlace}" />
+							</p:column>
+						</p:row>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold" value="Ngày cấp: " />
+							</p:column>
+							<p:column style="border: none">
+								<h:outputText value="#{usersDetailBean.user.identityCardDate}">
+									<f:convertDateTime pattern="dd.MM.yyyy" />
+								</h:outputText>
+							</p:column>
+						</p:row>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold" value="Ngày tham gia: " />
+
+							</p:column>
+							<p:column style="border: none">
+								<h:outputText value="#{usersDetailBean.user.created}">
+									<f:convertDateTime pattern="dd.MM.yyyy" />
+								</h:outputText>
+							</p:column>
+						</p:row>
+						<p:row style="border: none">
+							<p:column style="border: none">
+								<p:outputLabel style="font-weight: bold"
+									value="Số dư tài khoản: " />
+							</p:column>
+							<p:column style="border: none">
+								<p:commandLink
+									action="#{usersDetailBean.redirectUsersAccountInformation}"
+									value="#{usersDetailBean.usersAccount.balance}"
+									style="color:blue" immediate="true">
+									<f:param name="id" value="#{usersDetailBean.user.id}" />
+								</p:commandLink>(VNĐ)
+								<p:spacer width="10px" height="10px" />
+								<c:choose>
+									<c:when test="#{loginBean.role == 1}">
+										<p:commandButton value="Nạp tiền"
+											onclick="PF('recharge_dlg').show();" type="button" />
+										<p:dialog header="Nạp tiền" widgetVar="recharge_dlg"
+											dynamic="true" resizable="false" modal="true">
+											<p:panelGrid id="recharge_money">
+												<p:row style="border: none">
+													<p:column style="border: none">
+														<p:outputLabel style="font-weight: bold"
+															value="Số tiền (VNĐ): " />
+													</p:column>
+													<p:column style="border: none">
+														<pe:inputNumber value="#{usersDetailBean.amount}" />
+													</p:column>
+												</p:row>
+												<p:row style="border: none">
+													<p:column colspan="2" style="border: none">
+														<p:spacer width="2px" height="10px" />
+														<p:commandButton value="XÁC NHẬN"
+															onclick="PF('recharge_dlg').hide();"
+															actionListener="#{usersDetailBean.rechargeUserAccount}"
+															update="form_update_user" style="width: 49%"
+															process="@(#form_update_user\\:recharge_money)" />
+														<p:spacer width="1px" height="10px" />
+														<p:commandButton value="HỦY BỎ" style="width: 49%"
+															onclick="PF('recharge_dlg').hide();" />
+													</p:column>
+												</p:row>
+											</p:panelGrid>
+										</p:dialog>
+									</c:when>
+									<c:otherwise>
+									</c:otherwise>
+								</c:choose>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<br></br>
+
+					<!-- Dialog update user information -->
+					<p:dialog header="Chỉnh sửa thông tin" resizable="false"
+						width="500" height="600" showEffect="clip" modal="true"
+						widgetVar="dlg_edit_user_information" hideEffect="fold"
+						dynamic="true" closeOnEscape="true">
+						<c:choose>
+							<!--Start Admin -->
+							<c:when test="#{loginBean.role == 1}">
+								<div align="center">
+									<br></br>
+									<h3>THÔNG TIN CÁ NHÂN</h3>
+									<div>
+										<p:panelGrid id="user_Detail_edit">
+											<p:row id="uploaded_file_image" style="border: none">
+												<p:column colspan="2" style="border: none">
+													<center>
+														<p:graphicImage value="#{getUserAvatarBean.userAvatar}"
+															id="upload" height="130" width="130">
+															<f:param name="userAvatarId"
+																value="#{usersDetailBean.fileName}" />
+														</p:graphicImage>
+													</center>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column colspan="2" style="border: none">
+													<center>
+														<p:fileUpload id="upload_file"
+															value="#{usersDetailBean.file}"
+															fileUploadListener="#{usersDetailBean.uploadUserAvatar}"
+															mode="advanced" skinSimple="true" auto="true"
+															allowTypes="/(\.|\/)(gif|jpe?g|png)$/" multiple="true"
+															update="upload" label="Chọn ảnh">
+														</p:fileUpload>
+													</center>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Họ và tên: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:inputText id="fullName"
+														value="#{usersDetailBean.user.fullName}" required="true"
+														requiredMessage="Tên không được để trống!"
+														validatorMessage="Tên không hợp lệ!">
+														<f:validateLength minimum="2" maximum="50" />
+													</p:inputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Bạn là: " />
+												</p:column>
+												<p:column style="border: none">
+													<h:outputText value="Quản trị viên"
+														rendered="#{usersDetailBean.user.role == 1}"></h:outputText>
+													<h:outputText value="Chủ hàng"
+														rendered="#{usersDetailBean.user.role == 2}"></h:outputText>
+													<h:outputText value="Chủ xe"
+														rendered="#{usersDetailBean.user.role == 3}"></h:outputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Email: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:inputText value="#{usersDetailBean.user.email}"
+														required="true"
+														requiredMessage="Email không được để trống!"
+														validatorMessage="Email cần có mẫu characters@characters.domain">
+														<!--must be in form characters@characters.domain-->
+														<f:validateRegex
+															pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></f:validateRegex>
+													</p:inputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Số điện thoại: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:inputText value="#{usersDetailBean.user.phoneNumber}"
+														required="true"
+														requiredMessage="Số điện thoại không được để trống!"
+														validatorMessage="Số điện thoại không đúng!">
+														<f:validateRegex pattern="^[0-9]{9,12}$" />
+													</p:inputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Địa chỉ: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:inputText value="#{usersDetailBean.user.address}"
+														required="true"
+														requiredMessage="Địa chỉ không được để trống!"
+														validatorMessage="Địa chỉ không đúng!">
+														<f:validateLength minimum="2" maximum="100" />
+													</p:inputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Tỉnh/Thành Phố:" />
+												</p:column>
+												<p:column style="border: none">
+													<p:selectOneMenu id="province" required="true"
+														requiredMessage="Tỉnh/Thành phố không được để trống!"
+														label="City" value="#{usersDetailBean.provinceCode}"
+														styleClass="notIncluded">
+														<f:selectItem itemValue="" itemLabel="--Chọn--" />
+														<f:selectItems value="#{provinceBean.provinceList}"
+															var="provinceValue" itemLabel="#{provinceValue.name}"
+															itemValue="#{provinceValue.code}" />
+														<p:ajax
+															listener="#{districtBean.getDistrictByProvinceCode(usersDetailBean.provinceCode)}"
+															global="false" update="district" />
+													</p:selectOneMenu>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Quận/Huyện: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:selectOneMenu id="district" label="District"
+														required="true"
+														requiredMessage="Quận/Huyện không được để trống!"
+														value="#{usersDetailBean.user.districtCode}">
+														<f:selectItem itemValue="" itemLabel="--Chọn--" />
+														<f:selectItems value="#{districtBean.districtList}"
+															var="districtValue" itemLabel="#{districtValue.name}"
+															itemValue="#{districtValue.code}" />
+													</p:selectOneMenu>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Số chứng minh thư: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:inputText value="#{usersDetailBean.user.identityCard}"
+														required="true"
+														requiredMessage="Số chứng minh thư không được để trống!"
+														validatorMessage="Số chứng minh thư không hợp lệ!">
+														<f:validateRegex pattern="[0-9]{9,12}" />
+													</p:inputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Nơi cấp: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:inputText
+														value="#{usersDetailBean.user.identityCardPlace}"
+														required="true" validatorMessage="Nơi cấp không đúng!"
+														requiredMessage="Nơi cấp không được để trống!">
+														<f:validateLength minimum="2" maximum="100" />
+													</p:inputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Ngày cấp: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:inputText
+														value="#{usersDetailBean.user.identityCardDate}"
+														required="true"
+														requiredMessage="Ngày cấp không được để trống!">
+														<f:convertDateTime pattern="dd.MM.yyyy" />
+													</p:inputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Ngày tham gia: " />
+												</p:column>
+												<p:column style="border: none">
+													<h:outputText value="#{usersDetailBean.user.created}">
+														<f:convertDateTime pattern="dd.MM.yyyy" />
+													</h:outputText>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+										<br></br>
+										<p:row style="border: none">
+											<p:column style="border: none">
+												<p:spacer width="120px" height="10px" />
+												<p:commandButton icon="ui-icon-pencil" value="Lưu Thay Đổi"
+													action="#{usersDetailBean.updateUsersInfo}"
+													onclick="PF('dlg_edit_user_information').hide();"
+													update="form_update_user"
+													process="@(#form_update_user\\:user_Detail_edit)" />
+												<p:spacer height="10px" width="10px" />
+												<p:commandButton value="Hủy bỏ"
+													onclick="PF('dlg_edit_user_information').hide();" />
+											</p:column>
+										</p:row>
+									</div>
+									<br></br>
+								</div>
+								<!-- End Admin -->
+							</c:when>
+							<!--Start User -->
+							<c:otherwise>
+								<div>
+									<div align="center">
+										<p:panelGrid id="user_Detail_edit">
+											<h3>THÔNG TIN CÁ NHÂN</h3>
+											<p:row id="uploaded_file_image" style="border: none">
+												<p:column colspan="2" style="border: none">
+													<center>
+														<p:graphicImage value="#{getUserAvatarBean.userAvatar}"
+															height="130" width="130">
+															<f:param name="userAvatarId"
+																value="#{usersDetailBean.user.userAvatar}" />
+														</p:graphicImage>
+													</center>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column colspan="2" style="border: none">
+													<center>
+														<p:fileUpload id="upload_file"
+															value="#{usersDetailBean.file}"
+															fileUploadListener="#{usersDetailBean.uploadUserAvatar}"
+															mode="advanced" skinSimple="true" auto="true"
+															allowTypes="/(\.|\/)(gif|jpe?g|png)$/" multiple="false"
+															update="uploaded_file_image" label="Chọn ảnh">
+														</p:fileUpload>
+													</center>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Họ và tên: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:inputText id="fullName"
+														value="#{usersDetailBean.user.fullName}" required="true"
+														requiredMessage="Tên không được để trống!"
+														validatorMessage="Tên không hợp lệ!">
+														<f:validateLength minimum="2" maximum="50" />
+													</p:inputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Bạn là: " />
+												</p:column>
+												<p:column style="border: none">
+													<h:outputText value="Quản trị viên"
+														rendered="#{usersDetailBean.user.role == 1}"></h:outputText>
+													<h:outputText value="Chủ hàng"
+														rendered="#{usersDetailBean.user.role == 2}"></h:outputText>
+													<h:outputText value="Chủ xe"
+														rendered="#{usersDetailBean.user.role == 3}"></h:outputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Email: " />
+												</p:column>
+												<p:column style="border: none">
+													<h:outputText value="#{usersDetailBean.user.email}" />
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Số điện thoại: " />
+												</p:column>
+												<p:column style="border: none">
+													<p:inputText value="#{usersDetailBean.user.phoneNumber}"
+														required="true"
+														requiredMessage="Số điện thoại không được để trống!"
+														validatorMessage="Số điện thoại không đúng!">
+														<f:validateRegex pattern="^[0-9]{9,12}$" />
+													</p:inputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Địa chỉ: " />
+												</p:column>
+												<p:column style="border: none">
+													<h:outputText
+														value="#{usersDetailBean.user.address}, #{usersDetailBean.districtName}, #{usersDetailBean.provinceName}" />
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Số chứng minh thư: " />
+												</p:column>
+												<p:column style="border: none">
+													<h:outputText value="#{usersDetailBean.user.identityCard}" />
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Nơi cấp: " />
+												</p:column>
+												<p:column style="border: none">
+													<h:outputText
+														value="#{usersDetailBean.user.identityCardPlace}" />
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold" value="Ngày cấp: " />
+												</p:column>
+												<p:column style="border: none">
+													<h:outputText
+														value="#{usersDetailBean.user.identityCardDate}">
+														<f:convertDateTime pattern="dd.MM.yyyy" />
+													</h:outputText>
+												</p:column>
+											</p:row>
+											<p:row style="border: none">
+												<p:column style="border: none">
+													<p:outputLabel style="font-weight: bold"
+														value="Ngày tham gia: " />
+												</p:column>
+												<p:column style="border: none">
+													<h:outputText value="#{usersDetailBean.user.created}">
+														<f:convertDateTime pattern="dd.MM.yyyy" />
+													</h:outputText>
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+										<p:row style="border: none">
+											<p:column style="border: none">
+												<p:spacer width="90px" height="30px" />
+												<p:commandButton icon="ui-icon-pencil" value="Lưu Thay Đổi"
+													action="#{usersDetailBean.updateUsersInfo}"
+													onclick="PF('dlg_edit_user_information').hide();"
+													update="form_update_user" />
+												<p:spacer width="10px" height="10px" />
+												<p:commandButton value="Hủy bỏ"
+													onclick="PF('dlg_edit_user_information').hide();" />
+											</p:column>
+										</p:row>
+										<br></br> <br></br>
+									</div>
+									<br></br>
+								</div>
+							</c:otherwise>
+						</c:choose>
+					</p:dialog>
+				</div>
+				<br></br>
+				<!--Company Information-->
+				<c:choose>
+					<c:when test="#{usersDetailBean.user.companyId == null}">
+						<br></br>
+						<div style="margin-left: 400px" align="left">
+							<h3 style="margin-left: 150px" align="left">THÔNG TIN CÔNG
+								TY</h3>
+							<br></br>
+							<p:commandButton style="margin-left: 130px" icon="ui-icon-pencil"
+								value="Thêm thông tin công ty"
+								onclick="PF('dlg_aad_Company').show();">
+							</p:commandButton>
+						</div>
+						<!-- Diaglog add company -->
+						<p:dialog header="Thêm thông tin công ty" resizable="false"
+							width="500" height="400" showEffect="clip" modal="true"
+							widgetVar="dlg_aad_Company" hideEffect="fold"
+							id="dlg_aad_Company" closeOnEscape="true" dynamic="true">
+							<div align="center">
+								<p:panelGrid id="company_infor">
+									<h3>THÔNG TIN CÔNG TY</h3>
+									<p:row style="border: none">
+										<p:column style="border: none">
+											<p:outputLabel style="font-weight: bold"
+												value="Tên công ty: " />
+										</p:column>
+										<p:column style="border: none">
+											<p:inputText id="name" value="#{usersDetailBean.name}"
+												required="true" requiredMessage="Tên không được để trống!"
+												validatorMessage="Tên không hợp lệ!">
+												<f:validateLength minimum="2" maximum="50" />
+											</p:inputText>
+										</p:column>
+									</p:row>
+									<p:row style="border: none">
+										<p:column style="border: none">
+											<p:outputLabel style="font-weight: bold" value="Email: " />
+										</p:column>
+										<p:column style="border: none">
+											<p:inputText id="email" value="#{usersDetailBean.email}"
+												required="true" requiredMessage="Email không được để trống!"
+												validatorMessage="Email bạn vừa nhập không đúng!">
+												<f:validateRegex
+													pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
+													<f:validateLength minimum="2" maximum="50" />
+											</p:inputText>
+										</p:column>
+									</p:row>
+									<p:row style="border: none">
+										<p:column style="border: none">
+											<p:outputLabel style="font-weight: bold"
+												value="Số điện thoại: " />
+										</p:column>
+										<p:column style="border: none">
+											<p:inputText id="phoneNumber"
+												value="#{usersDetailBean.phoneNumber}" required="true"
+												requiredMessage="Số điện thoại không được để trống!"
+												validatorMessage="Số điện thoại không đúng!">
+												<f:validateRegex pattern="[0-9]{10,13}" />
+											</p:inputText>
+										</p:column>
+									</p:row>
+									<p:row style="border: none">
+										<p:column style="border: none">
+											<p:outputLabel style="font-weight: bold" value="Fax: " />
+										</p:column>
+										<p:column style="border: none">
+											<p:inputText id="fax" value="#{usersDetailBean.fax}"
+												required="true"
+												requiredMessage="Số Fax không được để trống!"
+												validatorMessage="Số fax không đúng!">
+												<f:validateRegex
+													pattern="^[0-9]{1,3}-[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$" />
+											</p:inputText>
+										</p:column>
+									</p:row>
+									<p:row style="border: none">
+										<p:column style="border: none">
+											<p:outputLabel style="font-weight: bold" value="Địa chỉ: " />
+										</p:column>
+										<p:column style="border: none">
+											<p:inputText id="address" value="#{usersDetailBean.address}"
+												required="true"
+												requiredMessage="Địa chỉ không được để trống!"
+												validatorMessage="Địa chỉ không đúng!">
+												<f:validateLength minimum="2" maximum="100" />
+											</p:inputText>
+										</p:column>
+									</p:row>
+									<p:row style="border: none">
+										<p:column style="border: none">
+											<p:outputLabel style="font-weight: bold" value="Mã số thuế: " />
+										</p:column>
+										<p:column style="border: none">
+											<p:inputText id="taxCode" value="#{usersDetailBean.taxCode}"
+												required="true"
+												requiredMessage="Mã số thuế không được để trống!"
+												validatorMessage="Mã số thuế không đúng!">
+												<f:validateRegex pattern="[0-9]{10,13}" />
+											</p:inputText>
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<p:spacer width="65px" height="10px" />
+										<p:commandButton icon="ui-icon-pencil" value="Lưu Thay Đổi"
+											action="#{usersDetailBean.addCompany}"
+											onclick="PF('dlg_aad_Company').hide();"
+											update="form_update_user"
+											process="@(#form_update_user\\:company_infor)"></p:commandButton>
+										<p:spacer height="10px" width="10px" />
+										<p:commandButton value="Hủy bỏ"
+											onclick="PF('dlg_aad_Company').hide();" />
+									</p:column>
+								</p:row>
+							</div>
+						</p:dialog>
+						<br></br>
+					</c:when>
+					<!-- Already have company information -> update-->
+					<c:otherwise>
+						<div style="margin-left: 400px" align="left">
+							<p:panelGrid id="company_infor">
+								<h3 style="margin-left: 150px" align="left">THÔNG TIN CÔNG
+									TY</h3>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<p:outputLabel style="font-weight: bold" value="Tên công ty: " />
+									</p:column>
+									<p:column style="border: none">
+										<h:outputText value="#{usersDetailBean.company.name}">
+										</h:outputText>
+									</p:column>
+									<p:column style="border: none"></p:column>
+									<p:column style="border: none"></p:column>
+									<p:column style="border: none">
+										<c:choose>
+											<c:when test="#{loginBean.role == 1}">
+												<p:commandButton icon="ui-icon-pencil" value="Thay đổi"
+													onclick="PF('dlg_update_company_information').show();" />
+												<!-- Dialog update Company Infomation -->
+												<p:dialog header="Chỉnh sửa thông tin công ty"
+													resizable="false" width="500" height="400"
+													showEffect="clip" modal="true"
+													widgetVar="dlg_update_company_information"
+													hideEffect="fold" closeOnEscape="true" dynamic="true">
+													<c:choose>
+														<c:when test="#{loginBean.role == 1}">
+															<div>
+																<!--UPDATE -->
+																<hr />
+																<div align="center">
+																	<p:panelGrid id="company_infor_update">
+																		<h3>THÔNG TIN CÔNG TY</h3>
+																		<p:row style="border: none">
+																			<p:column style="border: none">
+																				<p:outputLabel style="font-weight: bold"
+																					value="Tên công ty: " />
+																			</p:column>
+																			<p:column style="border: none">
+																				<p:inputText value="#{usersDetailBean.company.name}"
+																					required="true"
+																					requiredMessage="Tên không được để trống!"
+																					validatorMessage="Tên không hợp lệ!">
+																					<f:validateLength minimum="2" maximum="50" />
+																				</p:inputText>
+																			</p:column>
+																		</p:row>
+																		<p:row style="border: none">
+																			<p:column style="border: none">
+																				<p:outputLabel style="font-weight: bold"
+																					value="Email: " />
+																			</p:column>
+																			<p:column style="border: none">
+																				<p:inputText
+																					value="#{usersDetailBean.company.email}"
+																					required="true"
+																					requiredMessage="Email không được để trống!"
+																					validatorMessage="Email bạn vừa nhập không đúng!">
+																					<f:validateRegex
+																						pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
+																						<f:validateLength minimum="2" maximum="50" />
+																				</p:inputText>
+																			</p:column>
+																		</p:row>
+																		<p:row style="border: none">
+																			<p:column style="border: none">
+																				<p:outputLabel style="font-weight: bold"
+																					value="Số điện thoại: " />
+																			</p:column>
+																			<p:column style="border: none">
+																				<p:inputText
+																					value="#{usersDetailBean.company.phoneNumber}"
+																					required="true"
+																					requiredMessage="Số điện thoại không được để trống!"
+																					validatorMessage="Số điện thoại không đúng!">
+																					<f:validateRegex pattern="[0-9]{10,13}" />
+																				</p:inputText>
+																			</p:column>
+																		</p:row>
+																		<p:row style="border: none">
+																			<p:column style="border: none">
+																				<p:outputLabel style="font-weight: bold"
+																					value="Fax: " />
+																			</p:column>
+																			<p:column style="border: none">
+																				<p:inputText value="#{usersDetailBean.company.fax}"
+																					required="true"
+																					requiredMessage="Số Fax không được để trống!"
+																					validatorMessage="Số fax không đúng!">
+																					<f:validateRegex
+																						pattern="^[0-9]{1,3}-[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$" />
+																				</p:inputText>
+																			</p:column>
+																		</p:row>
+																		<p:row style="border: none">
+																			<p:column style="border: none">
+																				<p:outputLabel style="font-weight: bold"
+																					value="Địa chỉ: " />
+																			</p:column>
+																			<p:column style="border: none">
+																				<p:inputText
+																					value="#{usersDetailBean.company.address}"
+																					required="true"
+																					requiredMessage="Địa chỉ không được để trống!"
+																					validatorMessage="Địa chỉ không đúng!">
+																					<f:validateLength minimum="2" maximum="100" />
+																				</p:inputText>
+																			</p:column>
+																		</p:row>
+																		<p:row style="border: none">
+																			<p:column style="border: none">
+																				<p:outputLabel style="font-weight: bold"
+																					value="Mã số thuế: " />
+																			</p:column>
+																			<p:column style="border: none">
+																				<p:inputText
+																					value="#{usersDetailBean.company.taxCode}"
+																					required="true"
+																					requiredMessage="Mã số thuế không được để trống!"
+																					validatorMessage="Mã số thuế không đúng!">
+																					<f:validateRegex pattern="[0-9]{10,13}" />
+																				</p:inputText>
+																			</p:column>
+																		</p:row>
+																	</p:panelGrid>
+																	<p:row style="border: none">
+																		<p:column style="border: none">
+																			<p:spacer width="65px" height="10px" />
+																			<p:commandButton icon="ui-icon-pencil"
+																				value="Lưu Thay Đổi"
+																				action="#{usersDetailBean.updateCompany}"
+																				onclick="PF('dlg_update_company_information').hide();"
+																				update="form_update_user"
+																				process="@(#form_update_user\\:company_infor_update)" />
+																			<p:spacer width="10px" height="10px" />
+																			<p:commandButton value="Hủy bỏ"
+																				onclick="PF('dlg_update_company_information').hide();" />
+																		</p:column>
+																	</p:row>
+																</div>
+																<br></br> <br></br>
+															</div>
+														</c:when>
+														<c:otherwise>
+														</c:otherwise>
+													</c:choose>
+												</p:dialog>
+												<br></br>
+											</c:when>
+											<c:otherwise>
+											</c:otherwise>
+										</c:choose>
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<p:outputLabel style="font-weight: bold" value="Email: " />
+									</p:column>
+									<p:column style="border: none">
+										<h:outputText value="#{usersDetailBean.company.email}">
+										</h:outputText>
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<p:outputLabel style="font-weight: bold"
+											value="Số điện thoại: " />
+									</p:column>
+									<p:column style="border: none">
+										<h:outputText value="#{usersDetailBean.company.phoneNumber}">
+										</h:outputText>
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<p:outputLabel style="font-weight: bold" value="Fax: " />
+									</p:column>
+									<p:column style="border: none">
+										<h:outputText value="#{usersDetailBean.company.fax}">
+										</h:outputText>
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<p:outputLabel style="font-weight: bold" value="Địa chỉ: " />
+									</p:column>
+									<p:column style="border: none">
+										<h:outputText value="#{usersDetailBean.company.address}" />
+									</p:column>
+								</p:row>
+								<p:row style="border: none">
+									<p:column style="border: none">
+										<p:outputLabel style="font-weight: bold" value="Mã số thuế: " />
+									</p:column>
+									<p:column style="border: none">
+										<h:outputText value="#{usersDetailBean.company.taxCode}" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</div>
+						<br></br>
+					</c:otherwise>
+				</c:choose>
+				<br></br>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

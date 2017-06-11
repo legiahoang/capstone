@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html">
+<body>
+	<ui:composition>
+		<div class="row_first">
+			<div class="column">
+				<div class="row">
+					<h4>LIÊN HỆ</h4>
+				</div>
+				<div class="row">
+					<p>SÀN GIAO DỊCH VẬN TẢI VIỆT NAM</p>
+					<p>Địa chỉ: Khu Công nghệ cao Hòa Lạc, Hà Nội, Việt Nam.</p>
+					<p>Điện thoại: (+84-4)-8888 8888 - Fax: (+84-4)-9999 9999</p>
+					<p>Email: ADMIN@CarrierTradingCenter.Com</p>
+					<p>
+						Được xây dựng và phát triển bởi Nhóm SV ĐH FPT <a
+							href="http://www.fpt.edu.vn">www.fpt.edu.vn</a>
+					</p>
+				</div>
+			</div>
+			<div class="column">
+				<div class="row">
+					<h4>THÔNG TIN</h4>
+				</div>
+				<div class="row">
+					<p>
+						<a href="#"><i class="fa fa-caret-right">&nbsp;</i></a> <a
+							href="#" title="Quy chế hoạt động">Quy chế hoạt động</a>
+					</p>
+					<p>
+						<a href="#"><i class="fa fa-caret-right">&nbsp;</i></a> <a
+							href="#" title="Giới thiệu">Giới thiệu</a>
+					</p>
+				</div>
+			</div>
+			<div class="column">
+				<div class="row">
+					<h4>DỊCH VỤ KHÁCH HÀNG</h4>
+				</div>
+				<div class="row">
+					<p>
+						<i class="fa fa-user">&nbsp;</i>Mr: Lê Văn Dương
+					</p>
+					<p>
+						<i class="fa fa-envelope-square">&nbsp;</i>Email:CarrierTradingCenter@Gmail.com
+					</p>
+					<p>
+						<i class="fa fa-phone-square">&nbsp;</i>Hotline:(+84)-1669-775-349
+					</p>
+					<p>
+						<i class="fa fa-fax">&nbsp;</i>Fax:(+84-4)-9999 9999
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="row_second" style="background-image:url('/CEX/resources/images/ctc-footer-background-2.jpg');">
+			<div class="column">
+				<div>
+					<p>© 2017 Bản quyền thuộc DuongLV - Trường Đại Học FPT</p>
+					<p>Khu Công nghệ cao Hòa Lạc, KM 29 Đại lộ Thăng Long, Hà Nội,
+						Việt Nam.</p>
+				</div>
+			</div>
+			<div class="column">
+				<div>
+					<p>
+						<a href="#">BẢO MẬT | ĐIỀU KHOẢN SỬ DỤNG</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</ui:composition>
+</body>
+</html>

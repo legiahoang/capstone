@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>Sàn giao dịch vận tải</title>
+</h:head>
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="title">Quên mật khẩu</ui:define>
+		<ui:define name="content">
+			<center>
+				<h:form id="forgotPassWord">
+					<p:growl id="forgotpass" showDetail="false" />
+					<p:panel header="Quên Mật Khẩu" style="width: 800px;">
+						<i class="fa fa-envelope"></i> Email đã đăng ký
+						<br></br>
+						<p:inputText id="email" value="#{forgotPasswordBean.email}"
+							required="true" requiredMessage="Hãy nhập địa chỉ email của bạn!"
+							style="width: 500px;"></p:inputText>
+						<br></br>
+						<br></br>
+						<p:commandButton action="#{forgotPasswordBean.getUserToReset}"
+							value="Gửi" update="forgotPassWord" ajax="true"></p:commandButton>
+						<br></br>
+						<br></br>
+						<c:choose>
+							<c:when test="#{forgotPasswordBean.state == 1}">
+								<div class="message-popup">
+									Yêu cầu thành công! <br></br> Vui lòng kiểm tra email của bạn
+									để xác nhận. Mở <a target="_blank"
+										href="http://mail.google.com">mail</a> của tôi.
+								</div>
+							</c:when>
+							<c:when test="#{forgotPasswordBean.state == 2}">
+								<div class="message-popup">
+									Yêu cầu thất bại! <br></br> Địa chỉ email của bạn không đúng,
+									Hoặc bạn chưa thực hiện đăng ký! Vui lòng nhập lại hoặc thực
+									hiện <a target="_blank" href="./RegisterUsers.xhtml">đăng
+										ký</a> bây giờ.
+								</div>
+							</c:when>
+							<c:otherwise>
+
+							</c:otherwise>
+						</c:choose>
+					</p:panel>
+				</h:form>
+			</center>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

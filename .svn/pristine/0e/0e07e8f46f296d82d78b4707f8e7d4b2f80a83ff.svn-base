@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:body>
+	<ui:composition template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+		<ui:define name="content">
+			<h:form id="summary_form">
+				<div class="row">
+					<table id="table_search">
+						<tbody>
+							<tr>
+								<td>#{msg['billoflading.goodsType']}</td>
+								<td><h:selectOneMenu id="goodsTypeId"
+										value="#{summaryBillOfLadingBean.goodsTypeId}">
+										<f:selectItem itemValue="0" itemLabel="--lựa chọn--" />
+										<f:selectItems value="#{goodsTypeBean.goodsTypeList}"
+											var="goodsTypeValue" itemLabel="#{goodsTypeValue.name}"
+											itemValue="#{goodsTypeValue.id}" />
+									</h:selectOneMenu></td>
+								<td>#{msg['billoflading.packgedFrom']}</td>
+								<td><h:selectOneMenu id="packFormId"
+										value="#{summaryBillOfLadingBean.packFormId}">
+										<f:selectItem itemValue="0" itemLabel="--lựa chọn--" />
+										<f:selectItems value="#{packagedFormBean.packagedFormList}"
+											var="packagedFormValue" itemLabel="#{packagedFormValue.name}"
+											itemValue="#{packagedFormValue.id}" />
+									</h:selectOneMenu></td>
+								<td>#{msg['billoflading.weight']}</td>
+								<td><pe:inputNumber id="weight"
+										value="#{summaryBillOfLadingBean.weight}"></pe:inputNumber> <p:watermark
+										for="weight" value="(kg)" /></td>
+								<td>#{msg['billoflading.volume']}</td>
+								<td><pe:inputNumber id="volume"
+										value="#{summaryBillOfLadingBean.volume}"></pe:inputNumber> <p:watermark
+										for="volume" value="(m&#179;)" /></td>
+							</tr>
+							<tr>
+								<td>#{msg['billoflading.departureProvince']}</td>
+								<td><h:selectOneMenu id="slbDepartureProvinceId"
+										value="#{summaryBillOfLadingBean.departureProvince}">
+										<f:selectItem itemValue="" itemLabel="--lựa chọn--" />
+										<f:selectItems value="#{provinceBean.provinceList}"
+											var="provinceValue" itemLabel="#{provinceValue.name}"
+											itemValue="#{provinceValue.name}" />
+									</h:selectOneMenu></td>
+								<td>#{msg['billoflading.arrivalProvince']}</td>
+								<td><h:selectOneMenu id="slbArrivalProvinceId"
+										value="#{summaryBillOfLadingBean.arrivalProvince}">
+										<f:selectItem itemValue="" itemLabel="--lựa chọn--" />
+										<f:selectItems value="#{provinceBean.provinceList}"
+											var="provinceValue" itemLabel="#{provinceValue.name}"
+											itemValue="#{provinceValue.name}" />
+									</h:selectOneMenu></td>
+								<td>Thời gian từ</td>
+								<td><p:calendar id="departureDate"
+										value="#{summaryBillOfLadingBean.departureDate}"
+										pattern="dd/MM/yyyy" maxlength="10"
+										converterMessage="Ngày cấp không đúng!">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</p:calendar></td>
+								<td>Đến</td>
+								<td><p:calendar id="arrivalDate"
+										value="#{summaryBillOfLadingBean.arrivalDate}"
+										pattern="dd/MM/yyyy" maxlength="10"
+										converterMessage="Ngày cấp không đúng!">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</p:calendar></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td><p:commandButton styleClass="btn_search"
+										actionListener="#{summaryBillOfLadingBean.searchBillOfLadingSummary()}"
+										update="table_billoflading_summary" value="Tìm kiếm" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<h1>THỐNG KÊ CÁC GIAO DỊCH CỦA SÀN VẬN TẢI</h1>
+					<div class="summary">
+						<div class="left_summary">
+							<c:set var="billoflading_summary"
+								value="#{summaryBillOfLadingBean.billOfLadingSummaryDTO}" />
+							<p:panelGrid id="table_billoflading_summary">
+								<p:row>
+									<p:column colspan="2" style="background-color: #00a0e0; color: #fff; text-align: center;">
+										<h:outputLabel value="Số liệu thống kê" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Thời gian: " />
+									</p:column>
+									<p:column>
+										<h:outputText value="#{billoflading_summary.dateTimeFrom}">
+											<f:convertDateTime pattern="dd.MM.yyyy" />
+										</h:outputText>
+										<h:outputText value=" - " />
+										<h:outputText value="#{billoflading_summary.dateTimeTo}">
+											<f:convertDateTime pattern="dd.MM.yyyy" />
+										</h:outputText>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Vùng: " />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{billoflading_summary.departureProvince} - #{billoflading_summary.arrivalProvince}"
+											rendered="#{billoflading_summary.departureProvince != null and billoflading_summary.arrivalProvince != null}" />
+										<h:outputText value="Tất cả"
+											rendered="#{billoflading_summary.departureProvince == null or billoflading_summary.arrivalProvince == null}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Loại hàng hóa: " />
+									</p:column>
+									<p:column>
+										<h:outputText value="#{billoflading_summary.goodsType}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Hình thức đóng gói: " />
+									</p:column>
+									<p:column>
+										<h:outputText value="#{billoflading_summary.packForm}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Tổng số vận đơn: " />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{billoflading_summary.totalBillOfLading}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Tổng giá trị giao dịch: " />
+									</p:column>
+									<p:column>
+										<h:outputText value="#{billoflading_summary.totalValue}">
+											<f:convertNumber pattern="###,###" />
+										</h:outputText>
+										<h:outputText value=" (VNĐ)" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Số vận đơn đấu đang đấu giá: " />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{billoflading_summary.billOfLadingAuctionBidding}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Số vận đơn đấu giá thành công: " />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{billoflading_summary.billOfLadingAuctionSuccess}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Số vận đơn hoàn thành giao dịch: " />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{billoflading_summary.billOfLadingAuctionCompletion}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Số vận đơn đấu giá thất bại: " />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{billoflading_summary.billOfLadingAuctionFailure}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Số Chủ xe hủy giao dịch: " />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{billoflading_summary.billOfLadingAuctionCarrierCanceled}" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column>
+										<h:outputLabel value="Số Chủ hàng hủy giao dịch: " />
+									</p:column>
+									<p:column>
+										<h:outputText
+											value="#{billoflading_summary.billOfLadingAuctionGoodsOwnerCanceled}" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</div>
+						<div class="right_summary">
+							<p:chart type="line" model="#{chartView.animatedModel1}"
+								style="width:400px;" />
+							<p:chart type="bar" model="#{chartView.animatedModel2}"
+								style="width:400px;" />
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

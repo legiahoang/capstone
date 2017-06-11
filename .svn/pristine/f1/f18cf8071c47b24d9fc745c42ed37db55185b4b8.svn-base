@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+
+	<ui:define name="title">Bảng chi phí thực hiện giao dịch</ui:define>
+
+	<ui:define name="content">
+		<div align="center" class="list_operation_fee">
+			<h:form id="form_operation">
+				<p:growl id="msgs" showDetail="true" />
+				<h1>SÀN GIAO DỊCH VẬN TẢI VIỆT NAM</h1>
+				<div class="row">
+					<div class="table_content">
+						<h4>DANH SÁCH CÁC LOẠI CHI PHÍ</h4>
+						<p:panelGrid rendered="#{loginBean.role == 1}">
+							<p:selectOneMenu value="#{operationFeeBean.status}">
+								<f:selectItem itemLabel="Đang áp dụng" itemValue="1" />
+								<f:selectItem itemLabel="Tất cả" itemValue="2" />
+								<f:selectItem itemLabel="Lịch sử" itemValue="0" />
+							</p:selectOneMenu>
+							<br />
+							<p:commandButton action="#{operationFeeBean.searchOperationFee}"
+								update="form_operation" value="Tìm kiếm"></p:commandButton>
+							<br />
+						</p:panelGrid>
+						<p:dataTable id="feeDataTable"
+							value="#{operationFeeBean.operationFees}" binding="#{table}"
+							var="operationfee" paginator="true" paginatorPosition="bottom"
+							rowIndexVar="index">
+							<p:column headerText="STT" width="5%">#{index + 1}</p:column>
+							<p:column headerText="Chi Phí" width="30%">
+								<h:outputText value="#{operationfee.feeName}" />
+							</p:column>
+							<p:column headerText="Mã" width="15%">
+								<h:outputText value="#{operationfee.code}" />
+							</p:column>
+							<p:column headerText="Giá" width="15%">
+								<h:outputText value="#{operationfee.fee}"
+									rendered="#{operationfee.type}">
+									<f:convertNumber pattern="###,###" />
+								</h:outputText>
+								<h:outputText value="(VNĐ)" rendered="#{operationfee.type}" />
+								<h:outputText value="#{operationfee.percent} (%)"
+									rendered="#{operationfee.type == false}" />
+							</p:column>
+							<p:column headerText="Mô Tả">
+								<h:outputText value="#{operationfee.description}" />
+							</p:column>
+							<p:column headerText="EDIT" width="5%"
+								rendered="#{loginBean.role == 1}">
+								<h:outputLink value="EditOperationFee.xhtml">
+									<f:param name="id" value="#{operationfee.id}" />
+									<i class="fa fa-edit" />
+								</h:outputLink>
+							</p:column>
+						</p:dataTable>
+					</div>
+				</div>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

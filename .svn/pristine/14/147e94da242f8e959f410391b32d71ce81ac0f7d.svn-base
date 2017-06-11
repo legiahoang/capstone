@@ -1,0 +1,267 @@
+package vn.co.cex.bean.report;
+
+import java.util.Date;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import vn.co.cex.bean.BaseBean;
+import vn.co.cex.bo.ReportBO;
+import vn.co.cex.dto.ReportDTO;
+import vn.co.cex.orm.Report;
+import vn.co.cex.orm.Users;
+import vn.co.cex.utils.SessionUtils;
+
+@SuppressWarnings("restriction")
+@ManagedBean(name = "reportDetailBean", eager = true)
+@ViewScoped
+public class ReportDetailBean extends BaseBean {
+	@ManagedProperty(value = "#{reportBO}")
+	private ReportBO reportBO;
+
+	private ReportDTO data;
+
+	private boolean isSuccess;
+
+	private int id;
+	private int userId;
+	private String reportTitle;
+	private String reportQuestion;
+	private String reportSolution;
+	private String reportContent;
+	private String reportReply;
+	private boolean status;
+
+	@PostConstruct
+	public void init() {
+
+		try {
+			Users user = SessionUtils.getUser();
+			HttpServletRequest request = super.getHTTPRequest();
+			HttpServletResponse response = super.getHTTPResponse();
+			if (user == null) {
+				response.sendRedirect(request.getContextPath() + "/xhtml/Users/Login.xhtml");
+				return;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// get one report by report id
+		FacesContext context = FacesContext.getCurrentInstance();
+		ExternalContext extContext = context.getExternalContext();
+		Map<String, String> params = extContext.getRequestParameterMap();
+		String id = params.get("id");
+		data = reportBO.getReportById(Integer.parseInt(id));
+
+	}
+
+	/**
+	 * @return the isSuccess
+	 */
+	public boolean getIsSuccess() {
+		return isSuccess;
+	}
+
+	/**
+	 * @param isSuccess
+	 *            the isSuccess to set
+	 */
+	public void setIsSuccess(boolean isSuccess) {
+		this.isSuccess = isSuccess;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the reportTitle
+	 */
+	public String getReportTitle() {
+		return reportTitle;
+	}
+
+	/**
+	 * @param reportTitle
+	 *            the reportTitle to set
+	 */
+	public void setReportTitle(String reportTitle) {
+		this.reportTitle = reportTitle;
+	}
+
+	/**
+	 * @return the reportQuestion
+	 */
+	public String getReportQuestion() {
+		return reportQuestion;
+	}
+
+	/**
+	 * @param reportQuestion
+	 *            the reportQuestion to set
+	 */
+	public void setReportQuestion(String reportQuestion) {
+		this.reportQuestion = reportQuestion;
+	}
+
+	/**
+	 * @return the reportSolution
+	 */
+	public String getReportSolution() {
+		return reportSolution;
+	}
+
+	/**
+	 * @param reportSolution
+	 *            the reportSolution to set
+	 */
+	public void setReportSolution(String reportSolution) {
+		this.reportSolution = reportSolution;
+	}
+
+	/**
+	 * @return the reportContent
+	 */
+	public String getReportContent() {
+		return reportContent;
+	}
+
+	/**
+	 * @param reportContent
+	 *            the reportContent to set
+	 */
+	public void setReportContent(String reportContent) {
+		this.reportContent = reportContent;
+	}
+
+	/**
+	 * @return the reportReply
+	 */
+	public String getReportReply() {
+		return reportReply;
+	}
+
+	/**
+	 * @param reportReply
+	 *            the reportReply to set
+	 */
+	public void setReportReply(String reportReply) {
+		this.reportReply = reportReply;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public boolean isStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status
+	 *            the status to set
+	 */
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @param userId
+	 *            the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	/**
+	 * @return the reportBO
+	 */
+	public ReportBO getReportBO() {
+		return reportBO;
+	}
+
+	/**
+	 * @param reportBO
+	 *            the reportBO to set
+	 */
+	public void setReportBO(ReportBO reportBO) {
+		this.reportBO = reportBO;
+	}
+
+	/**
+	 * @return the data
+	 */
+	public ReportDTO getData() {
+		return data;
+	}
+
+	/**
+	 * @param data
+	 *            the data to set
+	 */
+	public void setData(ReportDTO data) {
+		this.data = data;
+	}
+
+	/**
+	 * Administrator update report reply's information
+	 */
+	public void updateReportReply() {
+		try {
+			Report updated = data.toReport();
+			reportBO.updateReport(updated);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * add new report
+	 */
+	public void addNewReport() {
+		try {
+			userId = SessionUtils.getUser().getId();
+			Report report = new Report(userId, new Date(), reportTitle, reportQuestion, reportSolution, reportContent,
+					true);
+			isSuccess = reportBO.addNewReport(report);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Redirect to list report user page
+	 * 
+	 * @return
+	 */
+	public String goToListReportUser() {
+		return "listReportUser";
+	}
+}

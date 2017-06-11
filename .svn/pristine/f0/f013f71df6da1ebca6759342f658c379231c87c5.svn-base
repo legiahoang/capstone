@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+	<ui:define name="title">Thêm mới chi phí</ui:define>
+	<ui:define name="content">
+		<div align="center">
+			<h:form id="form_add_fee">
+				<p:growl id="msgs" showDetail="false" />
+				<p:panel header="Nhập thông tin chi phí" style="width: 500px; ">
+					<p:panelGrid styleClass="ui-noborder" id="panel_grid_add">
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Tên chi phí (*):" />
+							</p:column>
+							<p:column>
+								<p:inputText id="fee_name_input" maxlength="50"
+									value="#{operationFeeAddBean.operationFee.feeName}"
+									required="true" requiredMessage="Tên chi phí chưa được nhập." />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:message for="fee_name_input" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputText value="Mã chi phí (*):" />
+							</p:column>
+							<p:column>
+								<p:inputText id="code_input"
+									value="#{operationFeeAddBean.operationFee.code}"
+									required="true" maxlength="10"
+									requiredMessage="Mã chi phí chưa được chọn" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:message for="code_input" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputText value="Loại (*):" />
+							</p:column>
+							<p:column>
+								<h:selectOneRadio id="type_input" required="true"
+									value="#{operationFeeAddBean.operationFee.type}"
+									requiredMessage="Chưa chọn loại chi phí">
+									<f:selectItem itemValue="true" itemLabel="Cố định" />
+									<f:selectItem itemValue="false" itemLabel="Không cố định" />
+									<p:ajax update="fee_value_input fee_percent_input" />
+								</h:selectOneRadio>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:message for="type_input" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputText value="Chi phí (*):" />
+							</p:column>
+							<p:column>
+								<pe:inputNumber id="fee_value_input"
+									value="#{operationFeeAddBean.operationFee.fee}"
+									disabled="#{operationFeeAddBean.operationFee.type ne true}"
+									minValue="0" maxValue="100000" required="true"
+									requiredMessage="Thông tin chi phí chưa được nhập" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:message for="fee_value_input" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputText value="Tỉ lệ chi phí (*):" />
+							</p:column>
+							<p:column>
+								<pe:inputNumber id="fee_percent_input"
+									disabled="#{operationFeeAddBean.operationFee.type ne false}"
+									value="#{operationFeeAddBean.operationFee.percent}"
+									minValue="0" maxValue="100" required="true"
+									requiredMessage="Thông tin chi phí chưa được nhập" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:message for="fee_percent_input"></p:message>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputText value="Mô tả:" />
+							</p:column>
+							<p:column>
+								<p:inputTextarea id="fee_description_input" rows="3"
+									maxlength="300"
+									value="#{operationFeeAddBean.operationFee.description}"
+									required="true"
+									requiredMessage="Thông tin mô tả chưa được nhập" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:message for="fee_description_input" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:commandButton action="#{operationFeeAddBean.addNewFee}"
+						value="Thêm Mới" update="message_dlg form_add_fee"
+						oncomplete="if(!args.validationFailed) PF('message_dlg').show()" />
+					<p:commandButton value="Hủy bỏ"
+						onclick="history.go(-1); return false;" />
+					<p:dialog header="Thông báo" widgetVar="message_dlg"
+						id="message_dlg" resizable="false" modal="true">
+						<p:panelGrid styleClass="ui-noborder">
+							<p:row>
+								<p:column>
+									<h:outputText value="Thêm mới thành công!"
+										rendered="#{operationFeeAddBean.isSuccess == 1}" />
+									<h:outputText value="Thêm mới thất bại!"
+										rendered="#{operationFeeAddBean.isSuccess == 0}" />
+									<h:outputText value="Mã chi phí đã được sử dụng!"
+										rendered="#{operationFeeAddBean.isSuccess == -1}" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column style="text-align: center">
+									<p:commandButton value="OK" immediate="true"
+										action="#{operationFeeAddBean.gotoListOperationFee}"
+										rendered="#{operationFeeAddBean.isSuccess != -1}" />
+									<p:commandButton value="OK" immediate="true"
+										onclick="PF('message_dlg').hide()"
+										rendered="#{operationFeeAddBean.isSuccess == -1}" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:dialog>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<body>
+	<ui:composition>
+		<h:form id="header_form">
+			<div id="main_header">
+				<div>
+					<div class="reg-links">
+						<c:choose>
+							<c:when test="#{loginBean.role != 0}">
+								<i class="fa fa-globe">&nbsp;&nbsp;&nbsp;</i>
+								<i class="fa fa-user">&nbsp;</i>
+								<!--TODO: Change to view user detail information -->
+								<div class="dropdown">
+									<p:commandLink id="viewUser" action="#{loginBean.userDetail}"
+										ajax="true">
+										<h:outputText value="#{loginBean.fullName}" />
+									</p:commandLink>
+									<div class="dropdown-content">
+										<a href="/../CEX/xhtml/Users/DetailUsersView.xhtml">Thông
+											tin cá nhân</a> <a
+											href="/../CEX/faces/xhtml/UsersAccountInfomation/UsersAccountInfomation.xhtml">Thông
+											tin giao dịch</a>
+										<h:commandLink action="#{nganLuongBean.sentRequest}"
+											value="Nạp tiền tài khoản" />
+										<a href="/../CEX/xhtml/Users/UpdatePassword.xhtml">Thay
+											đổi mật khẩu</a>
+									</div>
+								</div>
+								<i class="fa fa-sign-out">&nbsp;</i>
+								<p:commandLink id="logout" action="#{loginBean.logoutProcess}"
+									ajax="true">
+									<h:outputText value="Đăng xuất" />
+								</p:commandLink>
+							</c:when>
+							<c:otherwise>
+								<i class="fa fa-globe">&nbsp;&nbsp;&nbsp;</i>
+								<i class="fa fa-sign-in">&nbsp;</i>
+								<h:outputLink id="login" value="/../CEX/xhtml/Users/Login.xhtml">
+									<h:outputText value="Đăng nhập" />
+								</h:outputLink>
+								<i class="fa fa-sign-out">&nbsp;</i>
+								<h:outputLink id="register"
+									value="/../CEX/xhtml/Users/RegisterUsers.xhtml">
+									<h:outputText value="Đăng ký" />
+								</h:outputLink>
+							</c:otherwise>
+						</c:choose>
+
+					</div>
+					<div class="hotline-support">
+						<p>
+							<i class="fa fa-phone-square">&nbsp;</i>&nbsp;01669-775-349
+							&nbsp; &nbsp; &nbsp;<i class="fa fa-envelope-square">&nbsp;</i>&nbsp;CarrierTradingCenter@Gmail.com
+						</p>
+					</div>
+				</div>
+			</div>
+			<p:layoutUnit position="north" size="100" resizable="true"
+				id="background_header" styleClass="background_header"
+				closable="true" collapsible="true">
+				<p:graphicImage value="/resources/images/ctc-tranport-bg.jpg"
+					height="155" width="100%" />
+			</p:layoutUnit>
+			<p:growl />
+			<p:menubar id="header_menu">
+				<p:menuitem value="Trang chủ" icon="fa fa-home"
+					url="/../CEX/faces/xhtml/Home.xhtml" />
+				<p:submenu label="Báo giá" icon="fa fa-money">
+					<p:menuitem value="Tham chiếu" styleClass="pricing_item"
+						url="/../CEX/faces/xhtml/OperationFee/ReferOperationFee.xhtml" />
+					<p:menuitem value="Hệ thống" styleClass="pricing_item"
+						url="/../CEX/faces/xhtml/OperationFee/ListOperationFee.xhtml" />
+					<p:menuitem value="Thêm mới" styleClass="pricing_item"
+						url="/../CEX/faces/xhtml/OperationFee/NewOperationFee.xhtml"
+						rendered="#{loginBean.role == 1}" />
+				</p:submenu>
+				<p:menuitem value="Tìm hàng chuyển" icon="fa fa-archive"
+					url="/../CEX/faces/xhtml/BillOfLading/Common.xhtml" />
+				<p:menuitem value="Giao dịch của tôi" icon="fa fa-cubes"
+					url="/../CEX/faces/xhtml/Carrier/CarrierBillOfLading.xhtml"
+					rendered="#{loginBean.role == 3}" />
+				<p:menuitem value="Giao dịch của tôi" icon="fa fa-cubes"
+					url="/../CEX/faces/xhtml/GoodsOwner/GoodsOwnerBillOfLading.xhtml"
+					rendered="#{loginBean.role == 2}" />
+				<p:menuitem value="Thống kê vận đơn" icon="fa fa-cubes"
+					url="/../CEX/faces/xhtml/Admin/SummaryBillOfLading.xhtml"
+					rendered="#{loginBean.role == 1}" />
+				<p:menuitem value="Tạo vận đơn" icon="fa fa-plus"
+					url="/../CEX/faces/xhtml/BillOfLading/PostBillOfLading.xhtml"
+					rendered="#{loginBean.role == 1 || loginBean.role == 2}" />
+				<p:menuitem value="Quản lý người dùng" icon="fa fa-users"
+					url="/../CEX/faces/xhtml/Admin/ListUsers.xhtml"
+					rendered="#{loginBean.role == 1}" />
+				<!-- thêm item báo cáo -->
+				<p:menuitem value="Báo cáo từ người dùng" icon="fa fa-file-text-o"
+					url="/../CEX/faces/xhtml/Admin/ListReportAdmin.xhtml"
+					rendered="#{loginBean.role == 1}" />
+				<p:menuitem value="Báo cáo của tôi" icon="fa fa-file-text-o"
+					url="/../CEX/faces/xhtml/Report/ListReportUser.xhtml"
+					rendered="#{loginBean.role == 2}" />
+				<p:menuitem value="Báo cáo của tôi" icon="fa fa-file-text-o"
+					url="/../CEX/faces/xhtml/Report/ListReportUser.xhtml"
+					rendered="#{loginBean.role == 3}" />
+				<p:menuitem value="Giới thiệu" icon="fa fa-file-text"
+					url="/../CEX/faces/xhtml/Introduce.xhtml" />
+				<p:menuitem value="Liên hệ" icon="fa fa-envelope"
+					url="/../CEX/faces/xhtml/Contact.xhtml" />
+			</p:menubar>
+		</h:form>
+	</ui:composition>
+</body>
+</html>

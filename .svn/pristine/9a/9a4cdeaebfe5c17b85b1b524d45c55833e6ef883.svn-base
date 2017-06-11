@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/xhtml/common/commonLayout.xhtml">
+	<ui:define name="title">Thay đổi giá tham chiếu</ui:define>
+	<ui:define name="content">
+		<div align="center">
+			<h:form id="form_edit_reference_price">
+				<p:growl id="msgs" showDetail="false" />
+				<p:panel header="Nhập giá tham chiếu" style="width: 500px; ">
+					<p:panelGrid styleClass="ui-noborder" id="panel_grid_add">
+						<p:row>
+							<p:column>
+								<h:outputLabel value="Loại hàng hóa:" />
+							</p:column>
+							<p:column>
+								<h:outputText value="#{referencePriceEditBean.goodsType.name}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputText value="Giá tham chiếu:" />
+							</p:column>
+							<p:column>
+								<pe:inputNumber id="refer_price"
+									value="#{referencePriceEditBean.goodsType.referencePrice}"
+									required="true" maxlength="10"
+									requiredMessage="Giá tham chiếu chưa được nhập" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:message for="refer_price" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<p:outputLabel style="color: red"
+									value="Lưu ý: Giá tham chiếu ở đây được tính trên 100(kg) đơn vị khối lượng và 10(km) đơn vị quảng đường." />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:commandButton
+						action="#{referencePriceEditBean.updateReferencePrice}"
+						value="Xác nhận" update="message_dlg form_edit_reference_price"
+						oncomplete="if(!args.validationFailed) PF('message_dlg').show()" />
+					<p:commandButton value="Hủy bỏ"
+						onclick="history.go(-1); return false;" />
+					<p:dialog header="Thông báo" widgetVar="message_dlg"
+						id="message_dlg" resizable="false" modal="true">
+						<p:panelGrid styleClass="ui-noborder">
+							<p:row>
+								<p:column>
+									<h:outputText value="Chỉnh sửa thành công!"
+										rendered="#{referencePriceEditBean.isSuccess}" />
+									<h:outputText value="Chỉnh sửa thất bại!"
+										rendered="#{referencePriceEditBean.isSuccess == false}" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column style="text-align: center">
+									<p:commandButton value="OK" immediate="true"
+										action="#{referencePriceEditBean.gotoListReferencePrice}" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:dialog>
+				</p:panel>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
